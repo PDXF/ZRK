@@ -23,12 +23,10 @@
         scroll-behavior: smooth;
     }
 
-    /* Remove default scrollbar styles */
     ::-webkit-scrollbar {
         display: none;
     }
 
-    /* For Firefox */
     html {
         scrollbar-width: none;
     }
@@ -191,6 +189,12 @@
         animation: glow 2s ease-in-out infinite alternate;
     }
 
+    .hero h1 span {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     @keyframes glow {
         from {
             text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
@@ -222,17 +226,81 @@
         box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4);
     }
 
-    .features {
-        padding: 100px 0;
+    .discord-link {
+        animation: pulse 2s infinite;
     }
 
-    .feature-grid {
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(0, 119, 255, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(0, 119, 255, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 119, 255, 0);
+        }
+    }
+
+    .discord-link:hover {
+        animation: none;
+    }
+
+    .discord-modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .discord-modal-content {
+        background-color: var(--card-bg-color);
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid var(--primary-color);
+        border-radius: 15px;
+        width: 300px;
+        text-align: center;
+    }
+
+    .discord-loader {
+        border: 8px solid var(--secondary-color);
+        border-top: 8px solid var(--primary-color);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Additional styles for other sections */
+    section {
+        padding: 80px 0;
+    }
+
+    h2 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .features-grid, .team-grid, .showcase-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 30px;
+        margin-top: 50px;
     }
 
-    .feature-card {
+    .feature-card, .team-card, .showcase-card {
         background-color: var(--card-bg-color);
         border-radius: 10px;
         padding: 30px;
@@ -240,71 +308,26 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .feature-card:hover {
+    .feature-card:hover, .team-card:hover, .showcase-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2);
     }
 
-    .feature-icon {
-        font-size: 3em;
-        margin-bottom: 20px;
-        color: var(--primary-color);
-    }
-
-    .team {
-        padding: 100px 0;
-        background-color: var(--card-bg-color);
-    }
-
-    .team-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 30px;
-    }
-
-    .team-member {
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
-
-    .team-member:hover {
-        transform: scale(1.05);
-    }
-
-    .team-member img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 20px;
-        border: 3px solid var(--primary-color);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .team-member:hover img {
-        transform: rotate(5deg);
-        box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
-    }
-
     .timeline {
-        padding: 100px 0;
-    }
-
-    .timeline-container {
         position: relative;
         max-width: 800px;
         margin: 0 auto;
     }
 
-    .timeline-container::after {
+    .timeline::after {
         content: '';
         position: absolute;
-        width: 2px;
+        width: 6px;
         background-color: var(--primary-color);
         top: 0;
         bottom: 0;
         left: 50%;
-        margin-left: -1px;
+        margin-left: -3px;
     }
 
     .timeline-item {
@@ -317,10 +340,10 @@
     .timeline-item::after {
         content: '';
         position: absolute;
-        width: 20px;
-        height: 20px;
-        right: -10px;
-        background-color: var(--background-color);
+        width: 25px;
+        height: 25px;
+        right: -17px;
+        background-color: var(--secondary-color);
         border: 4px solid var(--primary-color);
         top: 15px;
         border-radius: 50%;
@@ -343,9 +366,9 @@
         width: 0;
         z-index: 1;
         right: 30px;
-        border: medium solid var(--primary-color);
+        border: medium solid var(--card-bg-color);
         border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent var(--primary-color);
+        border-color: transparent transparent transparent var(--card-bg-color);
     }
 
     .right::before {
@@ -356,13 +379,13 @@
         width: 0;
         z-index: 1;
         left: 30px;
-        border: medium solid var(--primary-color);
+        border: medium solid var(--card-bg-color);
         border-width: 10px 10px 10px 0;
-        border-color: transparent var(--primary-color) transparent transparent;
+        border-color: transparent var(--card-bg-color) transparent transparent;
     }
 
     .right::after {
-        left: -10px;
+        left: -16px;
     }
 
     .timeline-content {
@@ -372,147 +395,26 @@
         border-radius: 6px;
     }
 
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(10, 14, 23, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
+    /* Animation for timeline items */
+    .timeline-item {
         opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transform: translateY(50px);
+        transition: all 0.5s ease;
     }
 
-    .loading-overlay.active {
+    .timeline-item.animate {
         opacity: 1;
-        visibility: visible;
+        transform: translateY(0);
     }
 
-    .loader {
-        width: 50px;
-        height: 50px;
-        border: 5px solid var(--primary-color);
-        border-top: 5px solid var(--secondary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .scroll-indicator {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30px;
-        height: 50px;
-        border: 2px solid var(--text-color);
-        border-radius: 15px;
-    }
-
-    .scroll-indicator::before {
-        content: '';
-        position: absolute;
-        top: 8px;
-        left: 50%;
-        width: 6px;
-        height: 6px;
-        background-color: var(--text-color);
-        border-radius: 50%;
-        transform: translateX(-50%);
-        animation: scrollIndicate 2s infinite;
-    }
-
-    @keyframes scrollIndicate {
-        0% { top: 8px; opacity: 1; }
-        100% { top: 32px; opacity: 0; }
-    }
-
-    .progress-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 3px;
-        background-color: var(--primary-color);
-        z-index: 9999;
-        transition: width 0.3s ease;
-    }
-
-    .faq {
-        padding: 100px 0;
-    }
-
-    .faq-item {
-        margin-bottom: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .faq-item:hover {
-        transform: translateX(10px);
-    }
-
-    .faq-question {
+    footer {
         background-color: var(--card-bg-color);
-        padding: 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .faq-question:hover {
-        background-color: rgba(26, 31, 46, 0.8);
-    }
-
-    .faq-answer {
-        padding: 20px;
-        background-color: rgba(26, 31, 46, 0.5);
-        border-radius: 0 0 5px 5px;
-        display: none;
-    }
-
-    .faq-item.active .faq-answer {
-        display: block;
-    }
-
-    @media screen and (max-width: 768px) {
-        .timeline-container::after {
-            left: 31px;
-        }
-        
-        .timeline-item {
-            width: 100%;
-            padding-left: 70px;
-            padding-right: 25px;
-        }
-        
-        .timeline-item::before {
-            left: 60px;
-            border: medium solid var(--primary-color);
-            border-width: 10px 10px 10px 0;
-            border-color: transparent var(--primary-color) transparent transparent;
-        }
-
-        .left::after, .right::after {
-            left: 18px;
-        }
-
-        .right {
-            left: 0%;
-        }
+        padding: 20px 0;
+        text-align: center;
     }
 </style>
 </head>
 <body>
-    <div class="progress-bar"></div>
     <header>
         <nav class="container">
             <a href="#" class="logo">ZrK</a>
@@ -520,7 +422,6 @@
                 <a href="#features">Features</a>
                 <a href="#team">Team</a>
                 <a href="#timeline">Timeline</a>
-                <a href="#interactive-demo">Demo</a>
                 <a href="#showcase">Showcase</a>
                 <a href="#faq">FAQ</a>
                 <a href="#contact">Contact</a>
@@ -529,7 +430,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 GitHub
             </a>
-            <a href="https://discord.gg/Aqh7QrPh" class="discord-link" target="_blank">
+            <a href="#" class="discord-link" id="discord-link">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
                 Discord
             </a>
@@ -539,134 +440,115 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Welcome to ZrK</h1>
+                <h1>Welcome to <span>ZrK</span></h1>
                 <p>Revolutionizing knowledge exchange through innovative AI-powered solutions.</p>
                 <a href="#features" class="cta-button">Explore Features</a>
             </div>
-            <div class="scroll-indicator"></div>
         </section>
 
-        <section id="features" class="features">
+        <section id="features">
             <div class="container">
-                <h2>Key Features</h2>
-                <div class="feature-grid">
+                <h2>Features</h2>
+                <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">🧠</div>
-                        <h3>AI-Powered Learning</h3>
-                        <p>Harness the power of artificial intelligence to enhance your learning experience.</p>
+                        <h3>AI-Powered Analysis</h3>
+                        <p>Advanced algorithms to process and analyze complex data sets.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🌐</div>
-                        <h3>Global Collaboration</h3>
-                        <p>Connect with learners and experts from around the world to share knowledge.</p>
+                        <h3>Real-time Collaboration</h3>
+                        <p>Seamless teamwork with instant updates and shared workspaces.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>Dynamic Content</h3>
-                        <p>Access a wide range of constantly updated, interactive learning materials.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>Secure Platform</h3>
-                        <p>Your data and progress are protected with state-of-the-art security measures.</p>
+                        <h3>Adaptive Learning</h3>
+                        <p>Personalized learning paths that evolve with user progress.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="team" class="team">
+        <section id="team">
             <div class="container">
                 <h2>Our Team</h2>
                 <div class="team-grid">
-                    <div class="team-member">
-                        <img src="/a/cd05f7ed-8aad-41dc-9dc2-309fe8223774" alt="PDX's avatar, stylized sticker design" width="150" height="150">
-                        <h3>PDX</h3>
-                        <p>Founder</p>
+                    <div class="team-card">
+                        <h3>John Doe</h3>
+                        <p>AI Research Lead</p>
                     </div>
-                    <div class="team-member">
-                        <img src="https://via.placeholder.com/150" alt="Placeholder image for Quantum" width="150" height="150">
-                        <h3>Quantum</h3>
-                        <p>Tester</p>
+                    <div class="team-card">
+                        <h3>Jane Smith</h3>
+                        <p>UX Designer</p>
+                    </div>
+                    <div class="team-card">
+                        <h3>Mike Johnson</h3>
+                        <p>Full Stack Developer</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="timeline" class="timeline">
+        <section id="timeline">
             <div class="container">
                 <h2>Project Timeline</h2>
-                <div class="timeline-container">
+                <div class="timeline">
                     <div class="timeline-item left">
                         <div class="timeline-content">
                             <h3>Project Inception</h3>
-                            <p>The idea for ZrK was born, aiming to revolutionize knowledge exchange.</p>
+                            <p>Q1 2023</p>
                         </div>
                     </div>
                     <div class="timeline-item right">
                         <div class="timeline-content">
-                            <h3>Development Kickoff</h3>
-                            <p>Our team began working on the core features of the platform.</p>
+                            <h3>Alpha Release</h3>
+                            <p>Q3 2023</p>
                         </div>
                     </div>
                     <div class="timeline-item left">
                         <div class="timeline-content">
                             <h3>Beta Testing</h3>
-                            <p>Early access given to select users for feedback and improvements.</p>
+                            <p>Q4 2023</p>
                         </div>
                     </div>
                     <div class="timeline-item right">
                         <div class="timeline-content">
                             <h3>Official Launch</h3>
-                            <p>ZrK is now available to the public, ready to transform learning experiences.</p>
+                            <p>Q2 2024</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="interactive-demo" class="interactive-demo">
+        <section id="showcase">
             <div class="container">
-                <h2>Interactive Demo</h2>
-                <div id="demo-container">
-                    <!-- Interactive demo content will be dynamically loaded here -->
+                <h2>Showcase</h2>
+                <div class="showcase-grid">
+                    <div class="showcase-card">
+                        <h3>Project A</h3>
+                        <p>An AI-driven data analysis tool for financial markets.</p>
+                    </div>
+                    <div class="showcase-card">
+                        <h3>Project B</h3>
+                        <p>Real-time language translation platform for global conferences.</p>
+                    </div>
+                    <div class="showcase-card">
+                        <h3>Project C</h3>
+                        <p>Adaptive learning system for STEM education.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="showcase" class="showcase">
-            <div class="container">
-                <h2>Project Showcase</h2>
-                <div id="showcase-container">
-                    <!-- Showcase content will be dynamically loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <section id="faq" class="faq">
+        <section id="faq">
             <div class="container">
                 <h2>Frequently Asked Questions</h2>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-question">What is ZrK?</div>
-                        <div class="faq-answer">ZrK is an innovative AI-powered platform designed to revolutionize knowledge exchange and learning experiences.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">How does ZrK use AI?</div>
-                        <div class="faq-answer">ZrK leverages advanced AI algorithms to personalize learning paths, provide intelligent recommendations, and enhance collaboration among users.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Is ZrK free to use?</div>
-                        <div class="faq-answer">ZrK offers both free and premium tiers. The free tier provides access to core features, while the premium tier unlocks advanced capabilities and exclusive content.</div>
-                    </div>
-                </div>
+                <!-- Add FAQ content here -->
             </div>
         </section>
 
-        <section id="contact" class="contact">
+        <section id="contact">
             <div class="container">
                 <h2>Contact Us</h2>
-                <p>Have questions or feedback? Reach out to us!</p>
-                <a href="mailto:contact@zrk.com" class="cta-button">Email Us</a>
+                <!-- Add contact form or contact information here -->
             </div>
         </section>
     </main>
@@ -677,111 +559,67 @@
         </div>
     </footer>
 
-    <div class="loading-overlay">
-        <div class="loader"></div>
+    <div id="discord-modal" class="discord-modal">
+        <div class="discord-modal-content">
+            <h3>Joining Discord...</h3>
+            <div class="discord-loader"></div>
+        </div>
     </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const header = document.querySelector('header');
-        const sections = document.querySelectorAll('section');
-        const featureCards = document.querySelectorAll('.feature-card');
-        const teamMembers = document.querySelectorAll('.team-member');
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const githubLink = document.getElementById('github-link');
-        const loadingOverlay = document.querySelector('.loading-overlay');
-        const scrollIndicator = document.querySelector('.scroll-indicator');
-        const progressBar = document.querySelector('.progress-bar');
-        const faqItems = document.querySelectorAll('.faq-item');
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        featureCards.forEach(card => {
-            card.style.opacity = 0;
-            card.style.transform = 'translateY(50px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(card);
-        });
-
-        teamMembers.forEach(member => {
-            member.style.opacity = 0;
-            member.style.transform = 'scale(0.8)';
-            member.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(member);
-        });
-
-        timelineItems.forEach(item => {
-            item.style.opacity = 0;
-            item.style.transform = 'translateX(-50px)';
-            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(item);
-        });
+        const discordLink = document.getElementById('discord-link');
+        const discordModal = document.getElementById('discord-modal');
 
         window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            if (scrollPosition > 50) {
+            if (window.scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
-
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (scrollPosition / height) * 100;
-            progressBar.style.width = scrolled + '%';
         });
-
-        githubLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadingOverlay.classList.add('active');
-            setTimeout(() => {
-                window.location.href = githubLink.href;
-            }, 2000);
-        });
-
-        scrollIndicator.addEventListener('click', () => {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
-        });
-
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                item.classList.toggle('active');
-                const answer = item.querySelector('.faq-answer');
-                if (item.classList.contains('active')) {
-                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                } else {
-                    answer.style.maxHeight = 0;
-                }
-            });
-        });
-
-        // Interactive Demo
-        const demoContainer = document.getElementById('demo-container');
-        // Add your interactive demo code here
-
-        // Project Showcase
-        const showcaseContainer = document.getElementById('showcase-container');
-        // Add your project showcase code here
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollInto
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Timeline animation
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const animateTimeline = () => {
+            timelineItems.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+                if (itemTop < window.innerHeight - 100) {
+                    item.classList.add('animate');
+                }
+            });
+        };
+        window.addEventListener('scroll', animateTimeline);
+        animateTimeline(); // Initial check on load
+
+        // Discord link click handler
+        discordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            discordModal.style.display = 'block';
+            setTimeout(() => {
+                discordModal.style.display = 'none';
+                window.open('https://discord.gg/Aqh7QrPh', '_blank');
+            }, 3000);
+        });
+
+        // Close modal if clicked outside
+        window.onclick = (event) => {
+            if (event.target == discordModal) {
+                discordModal.style.display = 'none';
+            }
+        };
+    });
+    </script>
+</body>
+</html>
