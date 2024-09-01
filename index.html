@@ -833,24 +833,34 @@ REM The full script would attempt to install persistent malware`
         }
 
         function loadNews() {
-            const newsItems = [
-                {
-                    title: "ZRK BadUSB Learning Hub Launches",
-                    content: "We're excited to announce the launch of our new BadUSB Learning Hub! This platform is designed to educate users about BadUSB techniques and their potential impacts.",
-                    fullArticle: "The ZRK BadUSB Learning Hub is a comprehensive resource for cybersecurity professionals, ethical hackers, and curious minds. Our platform offers a wide range of BadUSB scripts, detailed explanations, and best practices for defense. Remember, knowledge is power, but always use it responsibly!"
-                },
-                {
-                    title: "New 'ZRK NoEscape' Script Added",
-                    content: "We've added a new high-risk script to our database. The 'ZRK NoEscape' is a powerful tool that demonstrates the potential dangers of BadUSB attacks.",
-                    fullArticle: "The 'ZRK NoEscape' script is our most advanced creation yet. It showcases the devastating potential of BadUSB attacks when used maliciously. This script is included in our database purely for educational purposes, to highlight the importance of robust cybersecurity measures. We strongly advise against any attempt to use this script in real-world scenarios."
-                },
-                {
-                    title: "Upcoming Webinar: BadUSB Defense Strategies",
-                    content: "Join us next week for a live webinar on 'Effective Strategies to Defend Against BadUSB Attacks'. Our experts will share invaluable insights and practical tips.",
-                    fullArticle: "In our upcoming webinar, we'll dive deep into the world of BadUSB defense. Our panel of cybersecurity experts will discuss the latest trends in BadUSB attacks, demonstrate real-world scenarios, and provide actionable strategies to protect your systems. Whether you're an IT professional or a curious enthusiast, this webinar will equip you with the knowledge to stay one step ahead of potential threats."
-                }
-            ];
-
+    const newsItems = [
+        {
+            title: "ZRK BadUSB Learning Hub Launches",
+            content: "We're excited to announce the launch of our new BadUSB Learning Hub! This platform is designed to educate users about BadUSB techniques and their potential impacts.",
+            fullArticle: "The ZRK BadUSB Learning Hub is a comprehensive resource for cybersecurity professionals, ethical hackers, and curious minds. Our platform offers a wide range of BadUSB scripts, detailed explanations, and best practices for defense. Remember, knowledge is power, but always use it responsibly!"
+        },
+        {
+            title: "New 'ZRK NoEscape' Script Added",
+            content: "We've added a new high-risk script to our database. The 'ZRK NoEscape' is a powerful tool that demonstrates the potential dangers of BadUSB attacks.",
+            fullArticle: "The 'ZRK NoEscape' script is our most advanced creation yet. It showcases the devastating potential of BadUSB attacks when used maliciously. This script is included in our database purely for educational purposes, to highlight the importance of robust cybersecurity measures. We strongly advise against any attempt to use this script in real-world scenarios."
+        },
+        {
+            title: "BadUSB Defense Strategies",
+            content: "Join us next week for a live webinar on 'Effective Strategies to Defend Against BadUSB Attacks'. Our experts will share invaluable insights and practical tips.",
+            fullArticle: "In our upcoming webinar, we'll dive deep into the world of BadUSB defense. Our panel of cybersecurity experts will discuss the latest trends in BadUSB attacks, demonstrate real-world scenarios, and provide actionable strategies to protect your systems. Whether you're an IT professional or a curious enthusiast, this webinar will equip you with the knowledge to stay one step ahead of potential threats."
+        },
+        {
+            title: "Designing a Custom BadUSB Attack Simulation",
+            content: "Creating simulations for training and awareness.",
+            fullArticle: "Designing a custom BadUSB attack simulation is a powerful tool for enhancing cybersecurity training and awareness. This guide will walk you through the process of creating an effective simulation that helps participants understand and respond to BadUSB threats. Begin by identifying the specific training goals you want to achieve, such as general awareness or testing response strategies. Develop a realistic scenario that mirrors potential real-world BadUSB attacks, considering various vectors like data exfiltration or malware delivery. Set up a controlled environment for the simulation, including test systems and USB devices with simulated payloads. Conduct the simulation, ensuring participants understand the exercise’s objectives without revealing specific details. Afterward, analyze the results to assess how well participants identified and responded to the attacks. Collect feedback to identify knowledge gaps and refine your training materials. Regularly repeat simulations to keep your team updated on the latest threats and maintain preparedness. By following these steps, you can create a comprehensive BadUSB attack simulation that enhances cybersecurity training and strengthens your organization’s security posture."
+        },
+        {
+            title: "Implementing Effective USB Security Policies",
+            content: "Developing and enforcing policies to safeguard against USB-based threats.",
+            fullArticle: "Implementing effective USB security policies is crucial for protecting against USB-based threats. Start by assessing your organization’s current USB usage and identifying potential risks. Develop policies that restrict the use of unauthorized USB devices and outline procedures for securely using approved devices. Ensure that these policies include guidelines for encryption, access control, and regular audits. Train employees on the importance of USB security and how to comply with the policies. Regularly review and update the policies to address emerging threats and technological advancements. By establishing and enforcing robust USB security policies, you can significantly reduce the risk of USB-related security incidents."
+        }
+    ];
+}
             newsContent.innerHTML = '';
             newsItems.forEach(item => {
                 const newsItem = document.createElement('div');
