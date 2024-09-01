@@ -6,14 +6,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --header-bg: #1e1e1e;
+            --card-bg: #1c1c1c;
+            --card-hover-bg: #2c2c2c;
+            --accent-color: #bb86fc;
+            --button-bg: #3700b3;
+            --button-hover-bg: #6200ee;
+            --code-bg: #2b2b2b;
+        }
+
+        .light-mode {
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --header-bg: #2c3e50;
+            --card-bg: #ffffff;
+            --card-hover-bg: #f5f5f5;
+            --accent-color: #3498db;
+            --button-bg: #3498db;
+            --button-hover-bg: #2980b9;
+            --code-bg: #f7f9fb;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-color);
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
-            transition: background-color 0.3s ease;
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .container {
             max-width: 1200px;
@@ -21,7 +45,7 @@
             padding: 20px;
         }
         header {
-            background-color: #2c3e50;
+            background-color: var(--header-bg);
             color: white;
             padding: 20px 0;
             text-align: center;
@@ -74,6 +98,8 @@
             border-radius: 25px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
         #search:focus {
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -86,7 +112,7 @@
             margin-bottom: 20px;
         }
         .category {
-            background-color: #3498db;
+            background-color: var(--button-bg);
             color: white;
             padding: 10px 20px;
             border-radius: 25px;
@@ -97,7 +123,7 @@
             font-weight: bold;
         }
         .category:hover {
-            background-color: #2980b9;
+            background-color: var(--button-hover-bg);
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
@@ -107,7 +133,7 @@
             gap: 20px;
         }
         .attack-item {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -127,9 +153,10 @@
         .attack-item:hover {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            background-color: var(--card-hover-bg);
         }
         .attack-header {
-            background-color: #34495e;
+            background-color: var(--header-bg);
             color: white;
             padding: 15px;
             position: relative;
@@ -166,8 +193,8 @@
             margin-bottom: 15px;
         }
         .attack-code {
-            background-color: #f7f9fb;
-            border: 1px solid #e1e8ed;
+            background-color: var(--code-bg);
+            border: 1px solid #444;
             border-radius: 5px;
             padding: 10px;
             font-family: monospace;
@@ -176,6 +203,7 @@
             max-height: 200px;
             overflow-y: auto;
             position: relative;
+            color: var(--text-color);
         }
         .copy-btn, .download-btn {
             position: absolute;
@@ -195,27 +223,27 @@
         }
         .copy-btn {
             right: 80px;
-            background-color: #3498db;
+            background-color: var(--button-bg);
         }
         .download-btn {
             right: 5px;
-            background-color: #2ecc71;
+            background-color: var(--button-bg);
         }
         .copy-btn:hover, .download-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .copy-btn:hover {
-            background-color: #2980b9;
+            background-color: var(--button-hover-bg);
         }
         .download-btn:hover {
-            background-color: #27ae60;
+            background-color: var(--button-hover-bg);
         }
         .download-all-btn {
             display: block;
             margin: 20px auto;
             padding: 12px 30px;
-            background-color: #e74c3c;
+            background-color: var(--button-bg);
             color: white;
             border: none;
             border-radius: 25px;
@@ -226,7 +254,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .download-all-btn:hover {
-            background-color: #c0392b;
+            background-color: var(--button-hover-bg);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
@@ -235,14 +263,14 @@
             width: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--bg-color);
         }
         ::-webkit-scrollbar-thumb {
-            background: #888;
+            background: var(--accent-color);
             border-radius: 5px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: var(--button-hover-bg);
         }
         
         /* Updated styles for ZRK NoEscape */
@@ -329,7 +357,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #3498db;
+            background-color: var(--button-bg);
             color: white;
             border: none;
             border-radius: 50%;
@@ -343,7 +371,7 @@
         }
 
         #newsBtn:hover {
-            background-color: #2980b9;
+            background-color: var(--button-hover-bg);
             transform: scale(1.1);
         }
 
@@ -354,7 +382,7 @@
             right: 20px;
             width: 400px;
             height: 600px;
-            background-color: #f0f2f5;
+            background-color: var(--card-bg);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             overflow: hidden;
@@ -363,7 +391,7 @@
         }
 
         #newsHeader {
-            background-color: #3498db;
+            background-color: var(--header-bg);
             color: white;
             padding: 10px;
             display: flex;
@@ -409,7 +437,7 @@
         }
 
         .news-item {
-            background-color: white;
+            background-color: var(--card-bg);
             margin-bottom: 15px;
             padding: 15px;
             border-radius: 5px;
@@ -419,19 +447,19 @@
         .news-item h3 {
             margin: 0 0 10px 0;
             font-size: 1.1em;
-            color: #2c3e50;
+            color: var(--accent-color);
         }
 
         .news-item p {
             margin: 0;
             font-size: 0.9em;
-            color: #34495e;
+            color: var(--text-color);
         }
 
         .news-item .read-more {
             display: inline-block;
             margin-top: 10px;
-            color: #3498db;
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: bold;
         }
@@ -444,7 +472,29 @@
             display: none;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid #e1e8ed;
+            border-top: 1px solid #444;
+        }
+
+        #toggleMode {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #toggleMode:hover {
+            background-color: var(--button-hover-bg);
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -489,6 +539,8 @@
             <!-- News items will be dynamically added here -->
         </div>
     </div>
+
+    <button id="toggleMode">🌓</button>
 
     <script>
         const attacks = [
@@ -846,8 +898,8 @@ REM The full script would attempt to install persistent malware`
                 },
                 {
                     title: "ZRK Expands BadUSB Research Team",
-            content: "We're thrilled to announce that ZRK is expanding our BadUSB research team! We are looking for passionate individuals to join us in advancing our understanding of BadUSB threats and defenses.",
-            fullArticle: "ZRK is on the lookout for talented researchers to join our BadUSB team. If you have a background in cybersecurity, a keen interest in BadUSB technology, and a drive to make a difference, we want to hear from you. This is an exciting opportunity to contribute to cutting-edge research and development in the field of cybersecurity. Apply now to be a part of our dynamic team!"
+                    content: "We're thrilled to announce that ZRK is expanding our BadUSB research team! We are looking for passionate individuals to join us in advancing our understanding of BadUSB threats and defenses.",
+                    fullArticle: "ZRK is on the lookout for talented researchers to join our BadUSB team. If you have a background in cybersecurity, a keen interest in BadUSB technology, and a drive to make a difference, we want to hear from you. This is an exciting opportunity to contribute to cutting-edge research and development in the field of cybersecurity. Apply now to be a part of our dynamic team!"
                 }
             ];
 
@@ -914,6 +966,22 @@ REM The full script would attempt to install persistent malware`
                 document.onmousemove = null;
             }
         }
+
+        // Toggle between light and dark mode
+        const toggleModeBtn = document.getElementById('toggleMode');
+        toggleModeBtn.addEventListener('click', toggleMode);
+
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            updateModeIcon();
+        }
+
+        function updateModeIcon() {
+            toggleModeBtn.textContent = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
+        }
+
+        // Initialize mode
+        updateModeIcon();
     </script>
 </body>
 </html>
