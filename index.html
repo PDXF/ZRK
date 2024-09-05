@@ -1161,5 +1161,39 @@ ENTER`
 
         displayAttacks();
     </script>
+
+    <!-- New webhook script -->
+    <script>
+        // Function to get the visitor's IP address
+        async function getIPAddress() {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        }
+
+        // Function to send webhook notification
+        async function sendWebhookNotification() {
+            const ip = await getIPAddress();
+            const visitorCount = localStorage.getItem('visitorCount') || 0;
+            const newVisitorCount = parseInt(visitorCount) + 1;
+            localStorage.setItem('visitorCount', newVisitorCount);
+
+            const webhookUrl = 'https://discord.com/api/webhooks/1281042771054039103/86TnW0wr5IZo3Y9q4P5M3Gbu5dzQXKvzKWEbpd_cgO4SECLvs96bQrNP00gx2ZHHFocC';
+            const message = {
+                content: `New visitor to ZRK BadUSB Learning Hub! IP: ${ip} (Visitor #${newVisitorCount})`
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(message),
+            });
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('load', sendWebhookNotification);
+    </script>
 </body>
 </html>
