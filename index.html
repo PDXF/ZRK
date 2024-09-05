@@ -1,4 +1,13 @@
-<html><head><base href="https://zrk-badusb-learning.com/">
+<html>
+<head>
+    <base href="https://zrk-badusb-learning.com/">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/5M4FBVh/image.png">
+    <meta property="og:title" content="ZRK BadUSB Learning">
+    <meta property="og:description" content="Learn about BadUSB techniques and security">
+    <meta property="og:image" content="https://i.ibb.co/5M4FBVh/image.png">
+    <meta property="og:url" content="https://zrk-badusb-learning.com/">
+    <meta property="og:type" content="website">
+</head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZRK BadUSB Learning Hub</title>
@@ -1194,6 +1203,67 @@ ENTER`
 
         // Call the function when the page loads
         window.addEventListener('load', sendWebhookNotification);
+    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - BadUSB Free Services</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        .faq-question {
+            background-color: #333333;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .faq-answer {
+            display: none;
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 0 0 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Frequently Asked Questions - BadUSB Free Services</h1>
+    
+    <div class="faq-item">
+        <div class="faq-question">What are BadUSB free services?</div>
+        <div class="faq-answer">BadUSB free services are security measures and tools designed to protect against BadUSB attacks, which exploit vulnerabilities in USB devices. These services help identify, prevent, and mitigate potential threats.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How can I protect my devices from BadUSB attacks?</div>
+        <div class="faq-answer">To protect your devices, use our BadUSB detection software, keep your systems updated, disable autorun for USB devices, and only use trusted USB devices. Our free services provide additional layers of protection and guidance.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Are your BadUSB free services compatible with all operating systems?</div>
+        <div class="faq-answer">Our free services are compatible with most major operating systems, including Windows, macOS, and Linux. Check our compatibility list for specific versions and requirements.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How often should I scan my devices for BadUSB threats?</div>
+        <div class="faq-answer">We recommend running a scan at least once a week and immediately after connecting any new or unfamiliar USB devices. Our free service includes automated scheduled scans for your convenience.</div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.faq-question');
+        questions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            });
+        });
     </script>
 </body>
 </html>
