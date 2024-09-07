@@ -105,6 +105,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
 
         .badusb-card h3 {
@@ -166,7 +168,8 @@
         .settings-card input[type="range"],
         .settings-card input[type="number"],
         .settings-card input[type="color"],
-        .settings-card input[type="text"] {
+        .settings-card input[type="text"],
+        .settings-card input[type="file"] {
             margin-right: 10px;
             width: 100%;
             margin-top: 5px;
@@ -345,6 +348,183 @@
             --background-color: #121212;
             --text-color: #ffffff;
         }
+
+        .plugin-form {
+            margin-bottom: 20px;
+        }
+
+        .plugin-form textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .plugin-form button,
+        .plugin-item button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .plugin-form button:hover,
+        .plugin-item button:hover {
+            background-color: #fb8c00;
+        }
+
+        .plugin-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .plugin-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .plugin-item button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .history-section {
+            padding: 20px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .history-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .history-item i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--accent-color);
+        }
+
+        .history-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .script-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .download-date {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes downloadProgress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+
+        .download-progress {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          background-color: var(--accent-color);
+          animation: downloadProgress 1s linear;
+        }
+
+        .badusb-card button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .news-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .news-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .news-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .news-date {
+            font-size: 0.8em;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .news-category {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .news-item:nth-child(1) { animation-delay: 0.1s; }
+        .news-item:nth-child(2) { animation-delay: 0.2s; }
+        .news-item:nth-child(3) { animation-delay: 0.3s; }
+        .news-item:nth-child(4) { animation-delay: 0.4s; }
+        .news-item:nth-child(5) { animation-delay: 0.5s; }
+        .news-item:nth-child(6) { animation-delay: 0.6s; }
+        .news-item:nth-child(7) { animation-delay: 0.7s; }
     </style>
 </head>
 <body>
@@ -356,6 +536,7 @@
 
         const BadUSBCard = ({ scriptName, scriptContent, category, setDownloadHistory }) => {
             const [expanded, setExpanded] = useState(false);
+            const [downloading, setDownloading] = useState(false);
 
             const handleCopy = () => {
                 navigator.clipboard.writeText(scriptContent)
@@ -365,18 +546,22 @@
 
             const handleDownload = () => {
                 if (window.confirm(`Are you sure you want to download "${scriptName}"? This script may be potentially harmful.`)) {
-                    const newDownload = { scriptName, date: new Date().toLocaleString() };
-                    setDownloadHistory(prevHistory => [...prevHistory, newDownload]);
-                    
-                    const blob = new Blob([scriptContent], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${scriptName}.txt`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    setDownloading(true);
+                    setTimeout(() => {
+                        const newDownload = { scriptName, date: new Date().toLocaleString() };
+                        setDownloadHistory(prevHistory => [...prevHistory, newDownload]);
+                        
+                        const blob = new Blob([scriptContent], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${scriptName}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        setDownloading(false);
+                    }, 1000); // Simulate download for 1 second
                 }
             };
 
@@ -392,8 +577,11 @@
                     </div>
                     <div className="card-buttons">
                         <button onClick={handleCopy}>Copy</button>
-                        <button onClick={handleDownload}>Download</button>
+                        <button onClick={handleDownload} disabled={downloading}>
+                            {downloading ? 'Downloading...' : 'Download'}
+                        </button>
                     </div>
+                    {downloading && <div className="download-progress"></div>}
                 </div>
             );
         };
@@ -402,13 +590,17 @@
             return (
                 <div className="history-section">
                     <h2>Download History</h2>
-                    <ul>
+                    <div className="history-list">
                         {downloadHistory.map((download, index) => (
-                            <li key={index}>
-                                {download.scriptName} - {download.date}
-                            </li>
+                            <div key={index} className="history-item">
+                                <i className="fas fa-file-download"></i>
+                                <div className="history-details">
+                                    <span className="script-name">{download.scriptName}</span>
+                                    <span className="download-date">{download.date}</span>
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             );
         };
@@ -427,9 +619,14 @@
                     sidebarWidth: 80,
                     gradientColor1: '#4caf50',
                     gradientColor2: '#2196f3',
-                    userName: 'User' // Add this line
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
                 };
             });
+
+            const [customBackground, setCustomBackground] = useState(settings.customBackground || '');
+            const [isCustomBackgroundGif, setIsCustomBackgroundGif] = useState(settings.isCustomBackgroundGif || false);
 
             useEffect(() => {
                 localStorage.setItem('zrkBadUSBSettings', JSON.stringify(settings));
@@ -452,10 +649,259 @@
                     sidebarWidth: 80,
                     gradientColor1: '#4caf50',
                     gradientColor2: '#2196f3',
-                    userName: 'User'
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
                 };
                 setSettings(defaultSettings);
             };
+
+            const handleBackgroundChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setCustomBackground(reader.result);
+                        setIsCustomBackgroundGif(file.type === 'image/gif');
+                        handleChange('customBackground', reader.result);
+                        handleChange('isCustomBackgroundGif', file.type === 'image/gif');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const removeCustomBackground = () => {
+                setCustomBackground('');
+                setIsCustomBackgroundGif(false);
+                handleChange('customBackground', '');
+                handleChange('isCustomBackgroundGif', false);
+            };
+
+            const applyTheme = (themeIndex) => {
+                if (themeIndex !== "") {
+                    const theme = themes[themeIndex];
+                    setSettings(prevSettings => ({
+                        ...prevSettings,
+                        darkMode: theme.darkMode,
+                        accentColor: theme.accentColor,
+                        gradientColor1: theme.gradientColor1,
+                        gradientColor2: theme.gradientColor2,
+                    }));
+                }
+            };
+
+            const themes = [
+                {
+                    name: "Default",
+                    darkMode: false,
+                    accentColor: '#ff9800',
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                },
+                {
+                    name: "Dark Mode",
+                    darkMode: true,
+                    accentColor: '#7e57c2',
+                    gradientColor1: '#303f9f',
+                    gradientColor2: '#1976d2',
+                },
+                {
+                    name: "Neon",
+                    darkMode: true,
+                    accentColor: '#00ffff',
+                    gradientColor1: '#ff00ff',
+                    gradientColor2: '#00ff00',
+                },
+                {
+                    name: "Earthy",
+                    darkMode: false,
+                    accentColor: '#795548',
+                    gradientColor1: '#8d6e63',
+                    gradientColor2: '#a1887f',
+                },
+                {
+                    name: "Ocean",
+                    darkMode: true,
+                    accentColor: '#00bcd4',
+                    gradientColor1: '#006064',
+                    gradientColor2: '#0097a7',
+                },
+                {
+                    name: "Sunset",
+                    darkMode: false,
+                    accentColor: '#ff5722',
+                    gradientColor1: '#ff9800',
+                    gradientColor2: '#ff5722',
+                },
+                {
+                    name: "Forest",
+                    darkMode: false,
+                    accentColor: '#4caf50',
+                    gradientColor1: '#1b5e20',
+                    gradientColor2: '#43a047',
+                },
+                {
+                    name: "Cyberpunk",
+                    darkMode: true,
+                    accentColor: '#ffd600',
+                    gradientColor1: '#d500f9',
+                    gradientColor2: '#651fff',
+                },
+                {
+                    name: "Pastel",
+                    darkMode: false,
+                    accentColor: '#f48fb1',
+                    gradientColor1: '#b2ebf2',
+                    gradientColor2: '#fff9c4',
+                },
+                {
+                    name: "Monochrome",
+                    darkMode: true,
+                    accentColor: '#ffffff',
+                    gradientColor1: '#212121',
+                    gradientColor2: '#757575',
+                },
+                {
+                    name: "Retro",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#ffeb3b',
+                    gradientColor2: '#76ff03',
+                },
+                {
+                    name: "Space",
+                    darkMode: true,
+                    accentColor: '#e1bee7',
+                    gradientColor1: '#311b92',
+                    gradientColor2: '#4a148c',
+                },
+                {
+                    name: "Autumn",
+                    darkMode: false,
+                    accentColor: '#ff6f00',
+                    gradientColor1: '#bf360c',
+                    gradientColor2: '#e65100',
+                },
+                {
+                    name: "Ice",
+                    darkMode: true,
+                    accentColor: '#80deea',
+                    gradientColor1: '#01579b',
+                    gradientColor2: '#0288d1',
+                },
+                {
+                    name: "Sunset",
+                    darkMode: false,
+                    accentColor: '#ff9e80',
+                    gradientColor1: '#ff6e40',
+                    gradientColor2: '#ff3d00',
+                },
+                {
+                    name: "Midnight",
+                    darkMode: true,
+                    accentColor: '#b388ff',
+                    gradientColor1: '#1a237e',
+                    gradientColor2: '#283593',
+                },
+                {
+                    name: "Forest",
+                    darkMode: false,
+                    accentColor: '#69f0ae',
+                    gradientColor1: '#1b5e20',
+                    gradientColor2: '#2e7d32',
+                },
+                {
+                    name: "Lavender",
+                    darkMode: false,
+                    accentColor: '#ea80fc',
+                    gradientColor1: '#9c27b0',
+                    gradientColor2: '#7b1fa2',
+                },
+                {
+                    name: "Cyberpunk",
+                    darkMode: true,
+                    accentColor: '#ffff00',
+                    gradientColor1: '#ff00ff',
+                    gradientColor2: '#00ffff',
+                },
+                {
+                    name: "Sepia",
+                    darkMode: false,
+                    accentColor: '#d7ccc8',
+                    gradientColor1: '#795548',
+                    gradientColor2: '#5d4037',
+                },
+                {
+                    name: "Neon",
+                    darkMode: true,
+                    accentColor: '#1de9b6',
+                    gradientColor1: '#b71c1c',
+                    gradientColor2: '#880e4f',
+                },
+                {
+                    name: "Pastel",
+                    darkMode: false,
+                    accentColor: '#ffccbc',
+                    gradientColor1: '#ffcc80',
+                    gradientColor2: '#fff59d',
+                },
+                {
+                    name: "Monochrome",
+                    darkMode: true,
+                    accentColor: '#ffffff',
+                    gradientColor1: '#212121',
+                    gradientColor2: '#424242',
+                },
+                {
+                    name: "Candy",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#f50057',
+                    gradientColor2: '#ff80ab',
+                },
+                {
+                    name: "Steampunk",
+                    darkMode: true,
+                    accentColor: '#ffd54f',
+                    gradientColor1: '#3e2723',
+                    gradientColor2: '#4e342e',
+                },
+                {
+                    name: "Tropical",
+                    darkMode: false,
+                    accentColor: '#ffd180',
+                    gradientColor1: '#00bfa5',
+                    gradientColor2: '#1de9b6',
+                },
+                {
+                    name: "Noir",
+                    darkMode: true,
+                    accentColor: '#bdbdbd',
+                    gradientColor1: '#000000',
+                    gradientColor2: '#212121',
+                },
+                {
+                    name: "Bubblegum",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#f50057',
+                    gradientColor2: '#ff80ab',
+                },
+                {
+                    name: "Synthwave",
+                    darkMode: true,
+                    accentColor: '#ff00ff',
+                    gradientColor1: '#3f51b5',
+                    gradientColor2: '#7c4dff',
+                },
+                {
+                    name: "Minimalist",
+                    darkMode: false,
+                    accentColor: '#000000',
+                    gradientColor1: '#ffffff',
+                    gradientColor2: '#f5f5f5',
+                }
+            ];
 
             return (
                 <div className="settings-grid">
@@ -565,6 +1011,29 @@
                         </label>
                     </div>
                     <div className="settings-card">
+                        <h3>Themes</h3>
+                        <select onChange={(e) => applyTheme(e.target.value)}>
+                            <option value="">Select a theme</option>
+                            {themes.map((theme, index) => (
+                                <option key={index} value={index}>{theme.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Custom Background</h3>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBackgroundChange}
+                        />
+                        {customBackground && (
+                            <div>
+                                <img src={customBackground} alt="Custom background preview" style={{maxWidth: '100%', maxHeight: '200px'}} />
+                                <button onClick={removeCustomBackground}>Remove Custom Background</button>
+                            </div>
+                        )}
+                    </div>
+                    <div className="settings-card">
                         <h3>Reset Settings</h3>
                         <button onClick={resetSettings}>Reset Graphics Settings</button>
                     </div>
@@ -585,6 +1054,20 @@
             } else {
                 document.body.classList.remove('dark-mode');
             }
+
+            if (settings.customBackground) {
+                document.body.style.backgroundImage = `url(${settings.customBackground})`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundAttachment = 'fixed';
+                if (settings.isCustomBackgroundGif) {
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                } else {
+                    document.body.style.backgroundRepeat = 'repeat';
+                }
+            } else {
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = settings.darkMode ? '#121212' : '#1a1a2e';
+            }
         };
 
         const ProfileSection = () => {
@@ -599,6 +1082,66 @@
                         <button>Edit Profile</button>
                         <button>Change Password</button>
                     </div>
+                </div>
+            );
+        };
+
+        const NewsContent = () => {
+            const newsItems = [
+                { 
+                    title: "Revolutionary BadUSB Script Unveiled", 
+                    content: "A groundbreaking BadUSB script capable of bypassing advanced security measures has been released. Cybersecurity experts warn of potential misuse.",
+                    date: "2024-06-15",
+                    category: "New Release"
+                },
+                { 
+                    title: "Global Cybersecurity Summit 2024", 
+                    content: "World leaders in cybersecurity are gathering next month to discuss the evolving landscape of digital threats and defense strategies.",
+                    date: "2024-06-14",
+                    category: "Event"
+                },
+                { 
+                    title: "AI-Powered BadUSB Detection Tool", 
+                    content: "A new AI-driven tool claims to detect and neutralize BadUSB attacks with 99.9% accuracy. Beta testing phase starts next week.",
+                    date: "2024-06-13",
+                    category: "Technology"
+                },
+                { 
+                    title: "Ethical Hacking Championship 2024", 
+                    content: "The annual Ethical Hacking Championship is now open for registrations. This year's theme: 'Securing the Internet of Things'.",
+                    date: "2024-06-12",
+                    category: "Competition"
+                },
+                { 
+                    title: "New Legislation on Cybercrime", 
+                    content: "The International Cybercrime Treaty has been ratified by 50 countries, setting a new global standard for prosecuting digital crimes.",
+                    date: "2024-06-11",
+                    category: "Legal"
+                },
+                { 
+                    title: "Quantum-Resistant Encryption Breakthrough", 
+                    content: "Researchers have developed a new encryption method that claims to be resistant to quantum computer attacks, potentially revolutionizing data security.",
+                    date: "2024-06-10",
+                    category: "Research"
+                },
+                { 
+                    title: "BadUSB Incidents on the Rise", 
+                    content: "A recent report shows a 300% increase in BadUSB-related security breaches in the first quarter of 2024. Experts call for increased vigilance.",
+                    date: "2024-06-09",
+                    category: "Security Alert"
+                }
+            ];
+
+            return (
+                <div className="news-content">
+                    {newsItems.map((item, index) => (
+                        <div key={index} className="news-item">
+                            <span className="news-category">{item.category}</span>
+                            <h3>{item.title}</h3>
+                            <p className="news-date">{item.date}</p>
+                            <p>{item.content}</p>
+                        </div>
+                    ))}
                 </div>
             );
         };
@@ -622,14 +1165,25 @@
                     sidebarWidth: 80,
                     gradientColor1: '#4caf50',
                     gradientColor2: '#2196f3',
-                    userName: 'User'
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
                 };
             });
+            const [plugins, setPlugins] = useState(() => {
+                const savedPlugins = localStorage.getItem('zrkBadUSBPlugins');
+                return savedPlugins ? JSON.parse(savedPlugins) : [];
+            });
+            const [pluginHTML, setPluginHTML] = useState('');
 
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 60000);
                 return () => clearInterval(timer);
             }, []);
+
+            useEffect(() => {
+                localStorage.setItem('zrkBadUSBPlugins', JSON.stringify(plugins));
+            }, [plugins]);
 
             const getGreeting = () => {
                 const hour = currentTime.getHours();
@@ -1218,15 +1772,29 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
               (selectedCategory === 'All' || script.category === selectedCategory)
             );
 
+            const addPlugin = () => {
+                if (pluginHTML.trim()) {
+                    const newPlugins = [...plugins, pluginHTML];
+                    setPlugins(newPlugins);
+                    setPluginHTML('');
+                }
+            };
+
+            const removePlugin = (index) => {
+                const newPlugins = plugins.filter((_, i) => i !== index);
+                setPlugins(newPlugins);
+            };
+
             return (
                 <div className="app-container">
                     <div className="sidebar">
                         <div className="sidebar-icons">
                             <i className="icon fas fa-home" onClick={() => handleSectionChange('home')}></i>
-                            <i className="icon fas fa-microchip" onClick={() => handleSectionChange('devices')}></i>
+                            <i className="icon fas fa-newspaper" onClick={() => handleSectionChange('news')}></i>
                             <i className="icon fas fa-code" onClick={() => handleSectionChange('scripts')}></i>
                             <i className="icon fas fa-history" onClick={() => handleSectionChange('history')}></i>
                             <i className="icon fas fa-book" onClick={() => handleSectionChange('documentation')}></i>
+                            <i className="icon fas fa-puzzle-piece" onClick={() => handleSectionChange('plugins')}></i>
                             <div className="bottom-icons">
                                 <i className="icon fas fa-user" onClick={() => handleSectionChange('profile')}></i>
                                 <i className="icon fas fa-cog" onClick={() => handleSectionChange('settings')}></i>
@@ -1258,7 +1826,6 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                                 <div className="quick-actions">
                                     <h4>Quick Actions</h4>
                                     <button onClick={() => handleSectionChange('scripts')}>Browse Scripts</button>
-                                    <button onClick={() => handleSectionChange('devices')}>Manage Devices</button>
                                     <button onClick={() => handleSectionChange('documentation')}>Read Docs</button>
                                 </div>
                                 <div className="news-ticker">
@@ -1267,9 +1834,9 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                                 </div>
                             </div>
                         </div>
-                        <div className={`content-section ${activeSection === 'devices' ? 'active' : ''}`}>
-                            <h2>Devices</h2>
-                            <p>Manage your BadUSB devices here</p>
+                        <div className={`content-section ${activeSection === 'news' ? 'active' : ''}`}>
+                            <h2>News</h2>
+                            <NewsContent />
                         </div>
                         <div className={`content-section ${activeSection === 'scripts' ? 'active' : ''}`}>
                             <div className="search-and-filter">
@@ -1330,6 +1897,25 @@ REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it 
                         <div className={`content-section ${activeSection === 'settings' ? 'active' : ''}`}>
                             <h2>Settings</h2>
                             <SettingsSection />
+                        </div>
+                        <div className={`content-section ${activeSection === 'plugins' ? 'active' : ''}`}>
+                            <h2>Plugins</h2>
+                            <div className="plugin-form">
+                                <textarea
+                                    placeholder="Paste your plugin HTML here..."
+                                    value={pluginHTML}
+                                    onChange={(e) => setPluginHTML(e.target.value)}
+                                ></textarea>
+                                <button onClick={addPlugin}>Add Plugin</button>
+                            </div>
+                            <div className="plugin-list">
+                                {plugins.map((plugin, index) => (
+                                    <div key={index} className="plugin-item">
+                                        <div dangerouslySetInnerHTML={{ __html: plugin }} />
+                                        <button onClick={() => removePlugin(index)}>Remove</button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
