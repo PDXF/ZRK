@@ -1078,6 +1078,15 @@ async function uploadVideo() {
         hideLoading();
     }
 }
+const client = new Client();
+
+client
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('66e1f2480025660bc51f');
+
+// Call initApp when the page loads
+window.onload = initApp;
 </script>
+
 </body>
 </html>
