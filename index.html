@@ -594,7 +594,6 @@ async function login() {
         const user = await localforage.getItem(username);
         if (user && user.password === password) {
             currentUser = username;
-            localStorage.setItem('currentUser', username);
             updateNavBar();
             showHomePage();
         } else {
@@ -647,22 +646,8 @@ function isValidUsername(username) {
 
 function logout() {
     currentUser = null;
-    localStorage.removeItem('currentUser');
     updateNavBar();
     showLoginRegister();
-}
-
-function initApp() {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUser = storedUser;
-    }
-    updateNavBar();
-    if (currentUser) {
-        showHomePage();
-    } else {
-        showLoginRegister();
-    }
 }
 
 function showHomePage() {
@@ -1011,10 +996,6 @@ function handleSwipe() {
 
 // Modify initApp function
 function initApp() {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUser = storedUser;
-    }
     updateNavBar();
     if (currentUser) {
         showHomePage();
@@ -1078,15 +1059,6 @@ async function uploadVideo() {
         hideLoading();
     }
 }
-const client = new Client();
-
-client
-    .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject('66e1f2480025660bc51f');
-
-// Call initApp when the page loads
-window.onload = initApp;
 </script>
-
 </body>
 </html>
