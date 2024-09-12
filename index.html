@@ -1,1064 +1,1723 @@
-<html><head><base href="https://flickly.com/">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flickly</title>
-<style>
-    :root {
-        --primary-color: #00f2ea;
-        --secondary-color: #ff0050;
-        --bg-color: #000000;
-        --text-color: #ffffff;
-        --card-bg: #121212;
-    }
-    body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        transition: background-color 0.3s ease;
-        overflow-x: hidden;
-    }
-    .container {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0;
-    }
-    .navbar {
-        background-color: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        transition: all 0.3s ease;
-    }
-    .navbar-brand {
-        font-size: 28px;
-        font-weight: bold;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transition: transform 0.3s ease;
-    }
-    .navbar-brand:hover {
-        transform: scale(1.05);
-    }
-    .navbar-nav {
-        display: flex;
-        gap: 15px;
-    }
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: bold;
-    }
-    .btn-primary {
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        color: var(--bg-color);
-    }
-    .btn-secondary {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: var(--text-color);
-    }
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    .video-feed {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 70px;
-        height: calc(100vh - 70px);
-    }
-    .video-container {
-        display: flex;
-        width: 100%;
-        height: 100%;
-    }
-    .video-player {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-    .video-item {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    .video-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    .action-btn {
-        background: rgba(0, 0, 0, 0.5);
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        color: var(--text-color);
-        transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
-        font-size: 18px;
-    }
-    .action-btn:hover {
-        transform: scale(1.1);
-        color: var(--primary-color);
-        background-color: rgba(0, 0, 0, 0.7);
-    }
-    .video-info {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        max-width: 50%;
-    }
-    .profile-pic {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        margin-right: 10px;
-        border: 2px solid var(--primary-color);
-        transition: transform 0.3s ease;
-    }
-    .profile-pic:hover {
-        transform: scale(1.1);
-    }
-    .username {
-        font-weight: bold;
-        color: var(--text-color);
-        transition: color 0.3s ease;
-    }
-    .username:hover {
-        color: var(--primary-color);
-    }
-    .comment-section {
-        flex: 0 0 300px;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.8);
-        overflow-y: auto;
-        max-height: 100%;
-    }
-    .comment {
-        background-color: rgba(255, 255, 255, 0.05);
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        transition: background-color 0.3s ease;
-    }
-    .comment:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-    #profile-page {
-        text-align: center;
-        max-width: 800px;
-        margin: 80px auto 0;
-        padding: 20px;
-    }
-    #profile-info {
-        margin-bottom: 20px;
-    }
-    #user-videos {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-    }
-    .profile-video-container {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 9/16;
-        overflow: hidden;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-    .profile-video-container:hover {
-        transform: scale(1.05);
-    }
-    .profile-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .profile-video-info {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .profile-video-info i {
-        margin-right: 5px;
-    }
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
-    .login-card {
-        width: 300px;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        background-color: var(--card-bg);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .login-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    }
-    .login-card h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .login-card input {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 15px;
-        border: none;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: var(--text-color);
-        transition: background-color 0.3s ease;
-    }
-    .login-card input:focus {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    .login-card .btn {
-        width: 100%;
-    }
-    .login-toggle {
-        text-align: center;
-        margin-top: 15px;
-    }
-    .login-toggle a {
-        color: var(--primary-color);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    .login-toggle a:hover {
-        color: var(--secondary-color);
-    }
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-    .loading-spinner {
-        width: 100px;
-        height: 100px;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    .fade-in {
-        animation: fadeIn 0.5s ease-in;
-    }
-    .upload-btn {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        color: var(--bg-color);
-        padding: 15px 30px;
-        border-radius: 30px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    .upload-btn:hover {
-        transform: translateX(-50%) translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-    }
-    .upload-form-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-    }
-    .upload-form {
-        background-color: var(--card-bg);
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 500px;
-    }
-    .upload-form input, .upload-form textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid var(--primary-color);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: var(--text-color);
-    }
-    .upload-form button {
-        width: 100%;
-        padding: 10px;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        color: var(--bg-color);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    @media (max-width: 768px) {
-        .video-container {
+<html><head><base href="https://advanced-badusb-interface.com/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZrK BadUSB Learning Hub</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-color: #4caf50;
+            --secondary-color: #2196f3;
+            --accent-color: #ff9800;
+            --text-color: #ffffff;
+            --background-color: #1a1a2e;
+            --sidebar-width: 80px;
+            --transition-speed: 0.3s;
+            --font-size: 16px;
+            --animation-speed: 0.3s;
+            --gradient-color-1: #4caf50;
+            --gradient-color-2: #2196f3;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: var(--font-size);
+        }
+
+        #root {
+            height: 100%;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100%;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--gradient-color-1), var(--gradient-color-2));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+            z-index: 1000;
+            transition: width var(--animation-speed) ease;
+        }
+
+        .sidebar-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .sidebar-icons .icon {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar-icons .icon:hover {
+            color: var(--accent-color);
+        }
+
+        .sidebar-icons .bottom-icons {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .badusb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        .badusb-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badusb-card h3 {
+            margin: 0 0 10px 0;
+        }
+
+        .badusb-card .card-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .badusb-card button {
+            flex: 1;
+            margin: 0 5px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .badusb-card button:hover {
+            background-color: #fb8c00;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .settings-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .settings-card h3 {
+            margin-top: 0;
+        }
+
+        .settings-card label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .settings-card input[type="checkbox"],
+        .settings-card input[type="range"],
+        .settings-card input[type="number"],
+        .settings-card input[type="color"],
+        .settings-card input[type="text"],
+        .settings-card input[type="file"] {
+            margin-right: 10px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .settings-card button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-card button:hover {
+            background-color: #fb8c00;
+        }
+
+        .profile-section {
+            padding: 20px;
+        }
+
+        .profile-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-actions button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .profile-actions button:hover {
+            background-color: #fb8c00;
+        }
+
+        .documentation-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .documentation-content h3 {
+            margin-top: 20px;
+            color: var(--accent-color);
+        }
+
+        .documentation-content ol {
+            padding-left: 20px;
+        }
+
+        .documentation-content li {
+            margin-bottom: 10px;
+        }
+
+        .search-and-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-and-filter input,
+        .search-and-filter select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .badusb-card .category {
+            font-size: 0.8em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .home-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .greeting, .summary, .featured-script, .quick-actions, .news-ticker {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .greeting h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .quick-actions button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-actions button:hover {
+            background-color: #fb8c00;
+        }
+
+        .news-ticker marquee {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .sidebar-icons {
+                flex-direction: row;
+                justify-content: space-around;
+                width: 100%;
+            }
+
+            .sidebar-icons .icon {
+                margin: 0 5px;
+                font-size: 20px;
+            }
+
+            .sidebar-icons .bottom-icons {
+                position: static;
+                flex-direction: row;
+            }
+
+            .main-content {
+                padding: 10px;
+                margin-bottom: 60px; /* Add space for the fixed sidebar at the bottom */
+            }
+
+            .badusb-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .home-content {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-and-filter {
+                flex-direction: column;
+            }
+
+            .search-and-filter input,
+            .search-and-filter select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .badusb-card {
+                padding: 15px;
+            }
+
+            .badusb-card h3 {
+                font-size: 18px;
+            }
+
+            .badusb-card .card-buttons button {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .news-item {
+                padding: 15px;
+            }
+
+            .news-item h3 {
+                font-size: 18px;
+            }
+
+            .documentation-content {
+                padding: 0 10px;
+            }
+
+            #codeEditorContainer {
+                height: 300px;
+            }
+
+            .feedback-form textarea {
+                height: 100px;
+            }
+        }
+
+        .script-content {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .script-content pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode {
+            --background-color: #121212;
+            --text-color: #ffffff;
+        }
+
+        .plugin-form {
+            margin-bottom: 20px;
+        }
+
+        .plugin-form textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .plugin-form button,
+        .plugin-item button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .plugin-form button:hover,
+        .plugin-item button:hover {
+            background-color: #fb8c00;
+        }
+
+        .plugin-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .plugin-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .plugin-item button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .history-section {
+            padding: 20px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .history-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .history-item i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--accent-color);
+        }
+
+        .history-details {
+            display: flex;
             flex-direction: column;
         }
-        .comment-section {
-            flex: 0 0 auto;
-            max-height: 30vh;
+
+        .script-name {
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-    }
-    .card {
-        background-color: var(--card-bg);
-        border-radius: 10px;
-        padding: 20px;
-        margin: 20px auto;
-        max-width: 500px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    #bio {
-        width: 100%;
-        height: 100px;
-        margin-bottom: 10px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid var(--primary-color);
-        background-color: rgba(255, 255, 255, 0.1);
-        color: var(--text-color);
-    }
-    #profileColor {
-        width: 100%;
-        height: 40px;
-        margin-bottom: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: transparent;
-    }
-    #edit-profile-preview {
-        margin-top: 20px;
-        padding: 10px;
-        border: 1px solid var(--primary-color);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+        .download-date {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes downloadProgress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+
+        .download-progress {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          background-color: var(--accent-color);
+          animation: downloadProgress 1s linear;
+        }
+
+        .badusb-card button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .news-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .news-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .news-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .news-date {
+            font-size: 0.8em;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .news-category {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .news-item:nth-child(1) { animation-delay: 0.1s; }
+        .news-item:nth-child(2) { animation-delay: 0.2s; }
+        .news-item:nth-child(3) { animation-delay: 0.3s; }
+        .news-item:nth-child(4) { animation-delay: 0.4s; }
+        .news-item:nth-child(5) { animation-delay: 0.5s; }
+        .news-item:nth-child(6) { animation-delay: 0.6s; }
+        .news-item:nth-child(7) { animation-delay: 0.7s; }
+
+        .predefined-plugins, .custom-plugins {
+            margin-top: 20px;
+        }
+
+        .plugin-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        .plugin-item h4 {
+            margin-top: 0;
+        }
+
+        .plugin-item button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .plugin-item button:hover {
+            background-color: #fb8c00;
+        }
+
+        .CodeMirror {
+            height: 100% !important;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            resize: vertical;
+        }
+
+        .feedback-form button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .feedback-form button:hover {
+            background-color: #fb8c00;
+        }
+    </style>
 </head>
 <body>
-<div class="navbar">
-    <div class="navbar-brand">Flickly</div>
-    <div class="navbar-nav">
-        <div id="user-nav"></div>
-    </div>
-</div>
-
-<div class="container">
-    <div id="main-content"></div>
-</div>
-
-<button id="upload-btn" class="upload-btn" onclick="showUploadForm()" style="display: none;">
-    <i class="fas fa-plus"></i> Upload Video
-</button>
-
-<div id="loading-overlay" class="loading-overlay" style="display: none;">
-    <img src="/a/ad2fa8c8-fc54-41cc-bb9c-9fd012c40a98" alt="Loading..." class="loading-spinner">
-</div>
-
-<div id="upload-form-container" class="upload-form-container" style="display: none;">
-    <div class="upload-form">
-        <h2>Upload Video</h2>
-        <input type="text" id="video-title" placeholder="Video Title">
-        <textarea id="video-description" placeholder="Video Description"></textarea>
-        <input type="text" id="video-tags" placeholder="Tags (comma-separated)">
-        <input type="file" id="video-file" accept="video/*">
-        <button onclick="uploadVideo()">Upload</button>
-        <button onclick="hideUploadForm()">Cancel</button>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
-<script>
-let currentUser = null;
-let currentVideoIndex = 0;
-let videos = [];
-
-function showLoading() {
-    document.getElementById('loading-overlay').style.display = 'flex';
-}
-
-function hideLoading() {
-    document.getElementById('loading-overlay').style.display = 'none';
-}
-
-function updateNavBar() {
-    const userNav = document.getElementById('user-nav');
-    const uploadBtn = document.getElementById('upload-btn');
-    if (userNav) {
-        if (currentUser) {
-            userNav.innerHTML = `
-                <button class="btn btn-secondary" onclick="showHomePage()">
-                    <i class="fas fa-home"></i> Home
-                </button>
-                <button class="btn btn-secondary" onclick="showProfile('${currentUser}')">
-                    <i class="fas fa-user"></i> Profile
-                </button>
-                <button class="btn btn-primary" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            `;
-            if (uploadBtn) uploadBtn.style.display = 'block';
-        } else {
-            userNav.innerHTML = `
-                <button class="btn btn-primary" onclick="showLoginRegister()">
-                    <i class="fas fa-sign-in-alt"></i> Login/Register
-                </button>
-            `;
-            if (uploadBtn) uploadBtn.style.display = 'none';
-        }
-    }
-}
-
-async function showProfile(username) {
-    removeScrollEvents();
-    showLoading();
-    try {
-        const user = await localforage.getItem(username);
-        if (user) {
-            const mainContent = document.getElementById('main-content');
-            mainContent.innerHTML = `
-                <div id="profile-page" class="fade-in">
-                    <div class="profile-pic" style="width: 100px; height: 100px; font-size: 48px; margin: 0 auto 20px;">
-                        ${username.charAt(0).toUpperCase()}
-                    </div>
-                    <h2>${username}</h2>
-                    <div id="profile-info"></div>
-                    ${currentUser === username ? '<button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>' : ''}
-                    <div id="user-videos"></div>
-                </div>
-            `;
-            document.querySelector('#profile-page .profile-pic').style.backgroundColor = user.profileInfo.profileColor;
-            displayProfileInfo(user.profileInfo);
-            loadUserVideos(username);
-        } else {
-            alert('User not found');
-        }
-    } catch (error) {
-        console.error('Error loading profile:', error);
-        alert('Error loading profile. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-
-function displayProfileInfo(profileInfo) {
-    const profileInfoDiv = document.getElementById('profile-info');
-    profileInfoDiv.innerHTML = `
-        <p>${profileInfo.bio || 'No bio yet'}</p>
-    `;
-}
-
-function editProfile() {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-        <div class="card fade-in">
-            <h2>Edit Profile</h2>
-            <textarea id="bio" placeholder="Enter your bio"></textarea>
-            <input type="color" id="profileColor" value="#00f2ea">
-            <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
-            <div id="edit-profile-preview"></div>
-        </div>
-    `;
-    updateProfilePreview();
-    document.getElementById('bio').addEventListener('input', updateProfilePreview);
-    document.getElementById('profileColor').addEventListener('input', updateProfilePreview);
-}
-
-function updateProfilePreview() {
-    const bio = document.getElementById('bio').value;
-    const profileColor = document.getElementById('profileColor').value;
-    const previewDiv = document.getElementById('edit-profile-preview');
-    
-    previewDiv.innerHTML = `
-        <h3>Profile Preview</h3>
-        <div class="profile-pic" style="width: 50px; height: 50px; font-size: 24px; background-color: ${profileColor};">
-            ${currentUser.charAt(0).toUpperCase()}
-        </div>
-        <p><strong>${currentUser}</strong></p>
-        <p>${bio || 'No bio yet'}</p>
-    `;
-}
-
-async function saveProfile() {
-    const bio = document.getElementById('bio').value;
-    const profileColor = document.getElementById('profileColor').value;
-
-    showLoading();
-    try {
-        const user = await localforage.getItem(currentUser);
-        user.profileInfo = { bio, profileColor };
-        await localforage.setItem(currentUser, user);
-        alert('Profile updated successfully');
-        showProfile(currentUser);
-    } catch (error) {
-        console.error('Error saving profile:', error);
-        alert('Error saving profile. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-
-function showLoginRegister(isLogin = true) {
-    removeScrollEvents();
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-        <div class="login-container fade-in">
-            <div class="login-card">
-                <h2>${isLogin ? 'Login to Flickly' : 'Join Flickly'}</h2>
-                <input type="text" id="username" placeholder="Username">
-                <input type="password" id="password" placeholder="Password">
-                <button class="btn btn-primary" onclick="${isLogin ? 'login()' : 'register()'}">
-                    ${isLogin ? 'Login' : 'Register'}
-                </button>
-                <div class="login-toggle">
-                    ${isLogin ? 'New user?' : 'Already have an account?'}
-                    <a href="#" onclick="showLoginRegister(${!isLogin}); return false;">${isLogin ? 'Register' : 'Login'}</a>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-async function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    showLoading();
-    try {
-        const user = await localforage.getItem(username);
-        if (user && user.password === password) {
-            currentUser = username;
-            updateNavBar();
-            showHomePage();
-        } else {
-            alert('Invalid username or password');
-        }
-    } catch (error) {
-        console.error('Error during login:', error);
-        alert('An error occurred during login. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-
-async function register() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if (!isValidUsername(username)) {
-        alert('Invalid username. It must be 3-20 characters long and not contain spaces or end with dots/underscores.');
-        return;
-    }
-
-    showLoading();
-    try {
-        const existingUser = await localforage.getItem(username);
-        if (existingUser) {
-            alert('Username already exists');
-        } else {
-            await localforage.setItem(username, { 
-                password, 
-                profileInfo: {
-                    bio: '',
-                    profileColor: '#' + Math.floor(Math.random()*16777215).toString(16)
-                }
-            });
-            alert('Registration successful. You can now log in.');
-            showLoginRegister(true);
-        }
-    } catch (error) {
-        console.error('Error during registration:', error);
-        alert('An error occurred during registration. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-
-function isValidUsername(username) {
-    return /^[a-zA-Z0-9_]{3,20}$/.test(username) && !username.endsWith('_') && !username.endsWith('.');
-}
-
-function logout() {
-    currentUser = null;
-    updateNavBar();
-    showLoginRegister();
-}
-
-function showHomePage() {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-        <div class="video-feed fade-in">
-            <div class="video-container">
-                <div class="video-player" id="video-player"></div>
-                <div class="comment-section" id="comment-section" style="display: none;"></div>
-            </div>
-        </div>
-    `;
-    loadVideos();
-    addScrollEvents();
-    
-    const uploadBtn = document.getElementById('upload-btn');
-    if (uploadBtn && currentUser) {
-        uploadBtn.style.display = 'block';
-    }
-}
-
-async function loadVideos() {
-    showLoading();
-    try {
-        const keys = await localforage.keys();
-        const videoKeys = keys.filter(key => key.startsWith('video_'));
-        videos = [];
-
-        for (const key of videoKeys) {
-            const value = await localforage.getItem(key);
-            if (value && value.videoData) {
-                videos.push(value);
-            }
-        }
-
-        if (videos.length === 0) {
-            const videoPlayer = document.getElementById('video-player');
-            videoPlayer.innerHTML = '<p class="fade-in">No videos available. Be the first to upload!</p>';
-        } else {
-            showVideo(0);
-        }
-    } catch (error) {
-        console.error('Error loading videos:', error);
-        const videoPlayer = document.getElementById('video-player');
-        videoPlayer.innerHTML = '<p class="fade-in">Error loading videos. Please try again later.</p>';
-    } finally {
-        hideLoading();
-    }
-}
-
-async function showVideo(index) {
-    const videoPlayer = document.getElementById('video-player');
-    const video = videos[index];
-
-    if (!video) return;
-
-    const userInfo = await localforage.getItem(video.username);
-    const profileColor = userInfo?.profileInfo?.profileColor || '#00f2ea';
-
-    videoPlayer.innerHTML = `
-        <video class="video-item" src="${video.videoData}" autoplay loop></video>
-        <div class="video-actions">
-            <button class="action-btn" id="play-pause-btn-${video.id}" onclick="togglePlayPause('${video.id}')">
-                <i class="fas fa-pause"></i>
-            </button>
-            <button class="action-btn" onclick="toggleLike('${video.id}')">
-                <i class="fas fa-heart"></i>
-                <span id="like-count-${video.id}">${video.likes.length}</span>
-            </button>
-            <button class="action-btn" onclick="toggleComments('${video.id}')">
-                <i class="fas fa-comment"></i>
-                <span id="comment-count-${video.id}">${video.comments.length}</span>
-            </button>
-            ${video.username === currentUser ? `
-                <button class="action-btn" onclick="deleteVideo('${video.id}')">
-                    <i class="fas fa-trash"></i>
-                </button>
-            ` : ''}
-        </div>
-        <div class="video-info">
-            <div class="profile-pic" style="background-color: ${profileColor};" onclick="showProfile('${video.username}')">
-                ${video.username.charAt(0).toUpperCase()}
-            </div>
-            <span class="username" onclick="showProfile('${video.username}')">${video.username}</span>
-        </div>
-    `;
-
-    const videoElement = videoPlayer.querySelector('video');
-    videoElement.addEventListener('ended', () => {
-        currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-        showVideo(currentVideoIndex);
-    });
-
-    updateCommentSection(video);
-}
-
-function togglePlayPause(videoId) {
-    const videoElement = document.querySelector('.video-item');
-    const playPauseBtn = document.getElementById(`play-pause-btn-${videoId}`);
-    
-    if (videoElement.paused) {
-        videoElement.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        videoElement.pause();
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-    }
-}
-
-function updateCommentSection(video) {
-    const commentSection = document.getElementById('comment-section');
-    commentSection.innerHTML = `
-        <h3>Comments</h3>
-        <div id="comments-${video.id}"></div>
-        ${currentUser ? `
-            <input type="text" id="comment-input-${video.id}" placeholder="Add a comment">
-            <button class="btn btn-primary" onclick="addComment('${video.id}')">Post</button>
-        ` : '<p>Login to comment</p>'}
-    `;
-
-    const commentsContainer = document.getElementById(`comments-${video.id}`);
-    commentsContainer.innerHTML = '';
-    video.comments.forEach(comment => {
-        const commentElement = createCommentElement(comment);
-        commentsContainer.appendChild(commentElement);
-    });
-}
-
-function createCommentElement(comment) {
-    const commentElement = document.createElement('div');
-    commentElement.className = 'comment fade-in';
-    commentElement.innerHTML = `<strong>${comment.username}:</strong> ${comment.text}`;
-    return commentElement;
-}
-
-async function toggleLike(videoId) {
-    if (!currentUser) {
-        alert('Please log in to like videos.');
-        return;
-    }
-
-    const videoIndex = videos.findIndex(v => v.id === videoId);
-    if (videoIndex === -1) return;
-
-    const video = videos[videoIndex];
-    const likeIndex = video.likes.indexOf(currentUser);
-
-    if (likeIndex === -1) {
-        video.likes.push(currentUser);
-    } else {
-        video.likes.splice(likeIndex, 1);
-    }
-
-    try {
-        await localforage.setItem(videoId, video);
-        document.getElementById(`like-count-${videoId}`).textContent = video.likes.length;
-    } catch (error) {
-        console.error('Error toggling like:', error);
-        alert('Error liking video. Please try again.');
-    }
-}
-
-function toggleComments(videoId) {
-    const commentSection = document.getElementById('comment-section');
-    commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
-}
-
-async function addComment(videoId) {
-    if (!currentUser) {
-        alert('Please log in to comment.');
-        return;
-    }
-
-    const commentInput = document.getElementById(`comment-input-${videoId}`);
-    const commentText = commentInput.value.trim();
-
-    if (commentText !== '') {
-        const videoIndex = videos.findIndex(v => v.id === videoId);
-        if (videoIndex === -1) return;
-
-        const video = videos[videoIndex];
-        video.comments.push({
-            username: currentUser,
-            text: commentText
-        });
-
-        try {
-            await localforage.setItem(videoId, video);
-            updateCommentSection(video);
-            commentInput.value = '';
-            document.getElementById(`comment-count-${videoId}`).textContent = video.comments.length;
-        } catch (error) {
-            console.error('Error adding comment:', error);
-            alert('Error adding comment. Please try again.');
-        }
-    }
-}
-
-async function deleteVideo(videoId) {
-    if (confirm('Are you sure you want to delete this video?')) {
-        showLoading();
-        try {
-            await localforage.removeItem(videoId);
-            videos = videos.filter(v => v.id !== videoId);
-            if (videos.length > 0) {
-                currentVideoIndex = currentVideoIndex % videos.length;
-                showVideo(currentVideoIndex);
-            } else {
-                showHomePage();
-            }
-        } catch (error) {
-            console.error('Error deleting video:', error);
-            alert('Error deleting video. Please try again.');
-        } finally {
-            hideLoading();
-        }
-    }
-}
-
-async function loadUserVideos(username) {
-    const userVideos = document.getElementById('user-videos');
-    userVideos.innerHTML = '<h3>User Videos</h3>';
-
-    showLoading();
-    try {
-        const keys = await localforage.keys();
-        const videoKeys = keys.filter(key => key.startsWith('video_'));
-
-        let videosFound = false;
-        for (const key of videoKeys) {
-            const video = await localforage.getItem(key);
-            if (video && video.username === username) {
-                videosFound = true;
-                const videoContainer = document.createElement('div');
-                videoContainer.className = 'profile-video-container fade-in';
-                videoContainer.innerHTML = `
-                    <video class="profile-video" src="${video.videoData}"></video>
-                    <div class="profile-video-info">
-                        <span><i class="fas fa-heart"></i> ${video.likes.length}</span>
-                        <span><i class="fas fa-comment"></i> ${video.comments.length}</span>
-                    </div>
-                `;
-                videoContainer.onclick = () => showVideoDetails(video);
-                userVideos.appendChild(videoContainer);
-            }
-        }
-
-        if (!videosFound) {
-            userVideos.innerHTML += '<p class="fade-in">No videos uploaded yet.</p>';
-        }
-    } catch (error) {
-        console.error('Error loading user videos:', error);
-        userVideos.innerHTML += '<p class="fade-in">Error loading videos. Please try again later.</p>';
-    } finally {
-        hideLoading();
-    }
-}
-
-function showVideoDetails(video) {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-        <div class="video-feed fade-in">
-            <div class="video-container">
-                <div class="video-player" id="video-player"></div>
-                <div class="comment-section" id="comment-section"></div>
-            </div>
-        </div>
-    `;
-    showVideo(videos.findIndex(v => v.id === video.id));
-}
-
-// Handle video scrolling with animation
-function scrollToNextVideo(direction) {
-    const videoPlayer = document.getElementById('video-player');
-    if (!videoPlayer) return;
-
-    const currentVideo = videoPlayer.querySelector('.video-item');
-    if (!currentVideo) return;
-
-    // Pause the current video
-    currentVideo.pause();
-
-    if (direction === 'next' && currentVideoIndex < videos.length - 1) {
-        currentVideoIndex++;
-    } else if (direction === 'prev' && currentVideoIndex > 0) {
-        currentVideoIndex--;
-    } else {
-        return; // Don't scroll if at the beginning or end
-    }
-
-    currentVideo.style.transform = `translateY(${direction === 'next' ? '-100%' : '100%'})`;
-    currentVideo.style.opacity = '0';
-
-    setTimeout(() => {
-        showVideo(currentVideoIndex);
-        const newVideo = videoPlayer.querySelector('.video-item');
-        if (newVideo) {
-            newVideo.style.transform = 'translateY(0)';
-            newVideo.style.opacity = '1';
-        }
-    }, 300);
-}
-
-// New function to add scroll events
-function addScrollEvents() {
-    document.addEventListener('wheel', handleWheel);
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchend', handleTouchEnd);
-}
-
-// New function to remove scroll events
-function removeScrollEvents() {
-    document.removeEventListener('wheel', handleWheel);
-    document.removeEventListener('touchstart', handleTouchStart);
-    document.removeEventListener('touchend', handleTouchEnd);
-}
-
-// Separate event handler functions
-function handleWheel(event) {
-    if (event.deltaY > 0) {
-        scrollToNextVideo('next');
-    } else if (event.deltaY < 0) {
-        scrollToNextVideo('prev');
-    }
-}
-
-function handleTouchStart(e) {
-    touchStartY = e.touches[0].clientY;
-}
-
-function handleTouchEnd(e) {
-    touchEndY = e.changedTouches[0].clientY;
-    handleSwipe();
-}
-
-function handleSwipe() {
-    const swipeThreshold = 50;
-    const swipeDistance = touchStartY - touchEndY;
-
-    if (swipeDistance > swipeThreshold) {
-        scrollToNextVideo('next');
-    } else if (swipeDistance < -swipeThreshold) {
-        scrollToNextVideo('prev');
-    }
-}
-
-// Modify initApp function
-function initApp() {
-    updateNavBar();
-    if (currentUser) {
-        showHomePage();
-    } else {
-        showLoginRegister();
-    }
-}
-
-// Call initApp when the page loads
-window.onload = initApp;
-
-function showUploadForm() {
-    document.getElementById('upload-form-container').style.display = 'flex';
-}
-
-function hideUploadForm() {
-    document.getElementById('upload-form-container').style.display = 'none';
-}
-
-async function uploadVideo() {
-    const title = document.getElementById('video-title').value;
-    const description = document.getElementById('video-description').value;
-    const tags = document.getElementById('video-tags').value.split(',').map(tag => tag.trim());
-    const file = document.getElementById('video-file').files[0];
-
-    if (!title || !file) {
-        alert('Please provide a title and select a video file.');
-        return;
-    }
-
-    showLoading();
-
-    try {
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const videoData = e.target.result;
-            const videoId = 'video_' + Date.now();
-            const video = {
-                id: videoId,
-                username: currentUser,
-                title: title,
-                description: description,
-                tags: tags,
-                videoData: videoData,
-                likes: [],
-                comments: [],
-                timestamp: Date.now()
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const AppName = "ZrK BadUSB Learning Hub";
+
+        const BadUSBCard = ({ scriptName, scriptContent, category, setDownloadHistory }) => {
+            const [expanded, setExpanded] = useState(false);
+            const [downloading, setDownloading] = useState(false);
+
+            const handleCopy = () => {
+                navigator.clipboard.writeText(scriptContent)
+                    .then(() => alert(`Copied ${scriptName} to clipboard`))
+                    .catch(err => console.error('Failed to copy: ', err));
             };
 
-            await localforage.setItem(videoId, video);
-            videos.unshift(video);
-            hideUploadForm();
-            showHomePage();
-            alert('Video uploaded successfully!');
+            const handleDownload = () => {
+                if (window.confirm(`Are you sure you want to download "${scriptName}"? This script may be potentially harmful.`)) {
+                    setDownloading(true);
+                    setTimeout(() => {
+                        const newDownload = { scriptName, date: new Date().toLocaleString() };
+                        setDownloadHistory(prevHistory => [...prevHistory, newDownload]);
+                        
+                        const blob = new Blob([scriptContent], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${scriptName}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        setDownloading(false);
+                    }, 1000);
+                }
+            };
+
+            return (
+                <div className="badusb-card">
+                    <h3>{scriptName}</h3>
+                    <p className="category">{category}</p>
+                    <div className="script-content">
+                        <pre>{expanded ? scriptContent : `${scriptContent.slice(0, 100)}...`}</pre>
+                        <button onClick={() => setExpanded(!expanded)}>
+                            {expanded ? 'Show Less' : 'Show More'}
+                        </button>
+                    </div>
+                    <div className="card-buttons">
+                        <button onClick={handleCopy}>Copy</button>
+                        <button onClick={handleDownload} disabled={downloading}>
+                            {downloading ? 'Downloading...' : 'Download'}
+                        </button>
+                    </div>
+                    {downloading && <div className="download-progress"></div>}
+                </div>
+            );
         };
-        reader.readAsDataURL(file);
-    } catch (error) {
-        console.error('Error uploading video:', error);
-        alert('Error uploading video. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-</script>
+
+        const HistorySection = ({ downloadHistory }) => {
+            return (
+                <div className="history-section">
+                    <h2>Download History</h2>
+                    <div className="history-list">
+                        {downloadHistory.map((download, index) => (
+                            <div key={index} className="history-item">
+                                <i className="fas fa-file-download"></i>
+                                <div className="history-details">
+                                    <span className="script-name">{download.scriptName}</span>
+                                    <span className="download-date">{download.date}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const SettingsSection = () => {
+            const [settings, setSettings] = useState(() => {
+                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
+                return savedSettings ? JSON.parse(savedSettings) : {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
+                };
+            });
+
+            const [customBackground, setCustomBackground] = useState(settings.customBackground || '');
+            const [isCustomBackgroundGif, setIsCustomBackgroundGif] = useState(settings.isCustomBackgroundGif || false);
+
+            useEffect(() => {
+                localStorage.setItem('zrkBadUSBSettings', JSON.stringify(settings));
+                applySettings(settings);
+            }, [settings]);
+
+            const handleChange = (setting, value) => {
+                setSettings(prev => ({ ...prev, [setting]: value }));
+            };
+
+            const resetSettings = () => {
+                const defaultSettings = {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
+                };
+                setSettings(defaultSettings);
+            };
+
+            const handleBackgroundChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setCustomBackground(reader.result);
+                        setIsCustomBackgroundGif(file.type === 'image/gif');
+                        handleChange('customBackground', reader.result);
+                        handleChange('isCustomBackgroundGif', file.type === 'image/gif');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const removeCustomBackground = () => {
+                setCustomBackground('');
+                setIsCustomBackgroundGif(false);
+                handleChange('customBackground', '');
+                handleChange('isCustomBackgroundGif', false);
+            };
+
+            const applyTheme = (themeIndex) => {
+                if (themeIndex !== "") {
+                    const theme = themes[themeIndex];
+                    setSettings(prevSettings => ({
+                        ...prevSettings,
+                        darkMode: theme.darkMode,
+                        accentColor: theme.accentColor,
+                        gradientColor1: theme.gradientColor1,
+                        gradientColor2: theme.gradientColor2,
+                    }));
+                }
+            };
+
+            const themes = [
+                {
+                    name: "Default",
+                    darkMode: false,
+                    accentColor: '#ff9800',
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                },
+                {
+                    name: "Dark Mode",
+                    darkMode: true,
+                    accentColor: '#7e57c2',
+                    gradientColor1: '#303f9f',
+                    gradientColor2: '#1976d2',
+                },
+                {
+                    name: "Neon",
+                    darkMode: true,
+                    accentColor: '#00ffff',
+                    gradientColor1: '#ff00ff',
+                    gradientColor2: '#00ff00',
+                },
+                {
+                    name: "Earthy",
+                    darkMode: false,
+                    accentColor: '#795548',
+                    gradientColor1: '#8d6e63',
+                    gradientColor2: '#a1887f',
+                },
+                {
+                    name: "Ocean",
+                    darkMode: true,
+                    accentColor: '#00bcd4',
+                    gradientColor1: '#006064',
+                    gradientColor2: '#0097a7',
+                },
+                {
+                    name: "Sunset",
+                    darkMode: false,
+                    accentColor: '#ff5722',
+                    gradientColor1: '#ff9800',
+                    gradientColor2: '#ff5722',
+                },
+                {
+                    name: "Forest",
+                    darkMode: false,
+                    accentColor: '#4caf50',
+                    gradientColor1: '#1b5e20',
+                    gradientColor2: '#43a047',
+                },
+                {
+                    name: "Cyberpunk",
+                    darkMode: true,
+                    accentColor: '#ffd600',
+                    gradientColor1: '#d500f9',
+                    gradientColor2: '#651fff',
+                },
+                {
+                    name: "Pastel",
+                    darkMode: false,
+                    accentColor: '#f48fb1',
+                    gradientColor1: '#b2ebf2',
+                    gradientColor2: '#fff9c4',
+                },
+                {
+                    name: "Monochrome",
+                    darkMode: true,
+                    accentColor: '#ffffff',
+                    gradientColor1: '#212121',
+                    gradientColor2: '#757575',
+                },
+                {
+                    name: "Retro",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#ffeb3b',
+                    gradientColor2: '#76ff03',
+                },
+                {
+                    name: "Space",
+                    darkMode: true,
+                    accentColor: '#e1bee7',
+                    gradientColor1: '#311b92',
+                    gradientColor2: '#4a148c',
+                },
+                {
+                    name: "Autumn",
+                    darkMode: false,
+                    accentColor: '#ff6f00',
+                    gradientColor1: '#bf360c',
+                    gradientColor2: '#e65100',
+                },
+                {
+                    name: "Ice",
+                    darkMode: true,
+                    accentColor: '#80deea',
+                    gradientColor1: '#01579b',
+                    gradientColor2: '#0288d1',
+                },
+                {
+                    name: "Sunset",
+                    darkMode: false,
+                    accentColor: '#ff9e80',
+                    gradientColor1: '#ff6e40',
+                    gradientColor2: '#ff3d00',
+                },
+                {
+                    name: "Midnight",
+                    darkMode: true,
+                    accentColor: '#b388ff',
+                    gradientColor1: '#1a237e',
+                    gradientColor2: '#283593',
+                },
+                {
+                    name: "Forest",
+                    darkMode: false,
+                    accentColor: '#69f0ae',
+                    gradientColor1: '#1b5e20',
+                    gradientColor2: '#2e7d32',
+                },
+                {
+                    name: "Lavender",
+                    darkMode: false,
+                    accentColor: '#ea80fc',
+                    gradientColor1: '#9c27b0',
+                    gradientColor2: '#7b1fa2',
+                },
+                {
+                    name: "Cyberpunk",
+                    darkMode: true,
+                    accentColor: '#ffff00',
+                    gradientColor1: '#ff00ff',
+                    gradientColor2: '#00ffff',
+                },
+                {
+                    name: "Sepia",
+                    darkMode: false,
+                    accentColor: '#d7ccc8',
+                    gradientColor1: '#795548',
+                    gradientColor2: '#5d4037',
+                },
+                {
+                    name: "Neon",
+                    darkMode: true,
+                    accentColor: '#1de9b6',
+                    gradientColor1: '#b71c1c',
+                    gradientColor2: '#880e4f',
+                },
+                {
+                    name: "Pastel",
+                    darkMode: false,
+                    accentColor: '#ffccbc',
+                    gradientColor1: '#ffcc80',
+                    gradientColor2: '#fff59d',
+                },
+                {
+                    name: "Monochrome",
+                    darkMode: true,
+                    accentColor: '#ffffff',
+                    gradientColor1: '#212121',
+                    gradientColor2: '#424242',
+                },
+                {
+                    name: "Candy",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#f50057',
+                    gradientColor2: '#ff80ab',
+                },
+                {
+                    name: "Steampunk",
+                    darkMode: true,
+                    accentColor: '#ffd54f',
+                    gradientColor1: '#3e2723',
+                    gradientColor2: '#4e342e',
+                },
+                {
+                    name: "Tropical",
+                    darkMode: false,
+                    accentColor: '#ffd180',
+                    gradientColor1: '#00bfa5',
+                    gradientColor2: '#1de9b6',
+                },
+                {
+                    name: "Noir",
+                    darkMode: true,
+                    accentColor: '#bdbdbd',
+                    gradientColor1: '#000000',
+                    gradientColor2: '#212121',
+                },
+                {
+                    name: "Bubblegum",
+                    darkMode: false,
+                    accentColor: '#ff4081',
+                    gradientColor1: '#f50057',
+                    gradientColor2: '#ff80ab',
+                },
+                {
+                    name: "Synthwave",
+                    darkMode: true,
+                    accentColor: '#ff00ff',
+                    gradientColor1: '#3f51b5',
+                    gradientColor2: '#7c4dff',
+                },
+                {
+                    name: "Minimalist",
+                    darkMode: false,
+                    accentColor: '#000000',
+                    gradientColor1: '#ffffff',
+                    gradientColor2: '#f5f5f5',
+                }
+            ];
+
+            return (
+                <div className="settings-grid">
+                    <div className="settings-card">
+                        <h3>General Settings</h3>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.darkMode}
+                                onChange={(e) => handleChange('darkMode', e.target.checked)}
+                            /> Enable dark mode
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.showNotifications}
+                                onChange={(e) => handleChange('showNotifications', e.target.checked)}
+                            /> Show notifications
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Security Settings</h3>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.twoFactorAuth}
+                                onChange={(e) => handleChange('twoFactorAuth', e.target.checked)}
+                            /> Enable two-factor authentication
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.autoLogout}
+                                onChange={(e) => handleChange('autoLogout', e.target.checked)}
+                            /> Auto-logout after inactivity
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>User Settings</h3>
+                        <label>
+                            Your Name:
+                            <input
+                                type="text"
+                                value={settings.userName}
+                                onChange={(e) => handleChange('userName', e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Graphics Settings</h3>
+                        <label>
+                            Animation speed:
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={settings.animationSpeed}
+                                onChange={(e) => handleChange('animationSpeed', parseInt(e.target.value))}
+                            />
+                        </label>
+                        <label>
+                            Font size:
+                            <input
+                                type="number"
+                                min="12"
+                                max="24"
+                                value={settings.fontSize}
+                                onChange={(e) => handleChange('fontSize', parseInt(e.target.value))}
+                            /> px
+                        </label>
+                        <label>
+                            Accent color:
+                            <input
+                                type="color"
+                                value={settings.accentColor}
+                                onChange={(e) => handleChange('accentColor', e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Sidebar width:
+                            <input
+                                type="range"
+                                min="60"
+                                max="200"
+                                value={settings.sidebarWidth}
+                                onChange={(e) => handleChange('sidebarWidth', parseInt(e.target.value))}
+                            /> px
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Gradient Colors</h3>
+                        <label>
+                            Gradient Color 1:
+                            <input
+                                type="color"
+                                value={settings.gradientColor1}
+                                onChange={(e) => handleChange('gradientColor1', e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Gradient Color 2:
+                            <input
+                                type="color"
+                                value={settings.gradientColor2}
+                                onChange={(e) => handleChange('gradientColor2', e.target.value)}
+                            />
+                        </label>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Themes</h3>
+                        <select onChange={(e) => applyTheme(e.target.value)}>
+                            <option value="">Select a theme</option>
+                            {themes.map((theme, index) => (
+                                <option key={index} value={index}>{theme.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="settings-card">
+                        <h3>Custom Background</h3>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBackgroundChange}
+                        />
+                        {customBackground && (
+                            <div>
+                                <img src={customBackground} alt="Custom background preview" style={{maxWidth: '100%', maxHeight: '200px'}} />
+                                <button onClick={removeCustomBackground}>Remove Custom Background</button>
+                            </div>
+                        )}
+                    </div>
+                    <div className="settings-card">
+                        <h3>Reset Settings</h3>
+                        <button onClick={resetSettings}>Reset Graphics Settings</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const applySettings = (settings) => {
+            document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+            document.documentElement.style.setProperty('--sidebar-width', `${settings.sidebarWidth}px`);
+            document.documentElement.style.setProperty('--font-size', `${settings.fontSize}px`);
+            document.documentElement.style.setProperty('--animation-speed', `${settings.animationSpeed / 100}s`);
+            document.documentElement.style.setProperty('--gradient-color-1', settings.gradientColor1);
+            document.documentElement.style.setProperty('--gradient-color-2', settings.gradientColor2);
+            
+            if (settings.darkMode) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+
+            if (settings.customBackground) {
+                document.body.style.backgroundImage = `url(${settings.customBackground})`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundAttachment = 'fixed';
+                if (settings.isCustomBackgroundGif) {
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                } else {
+                    document.body.style.backgroundRepeat = 'repeat';
+                }
+            } else {
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = settings.darkMode ? '#121212' : '#1a1a2e';
+            }
+        };
+
+        const ProfileSection = () => {
+            return (
+                <div className="profile-section">
+                    <div className="profile-info">
+                        <h2>John Doe</h2>
+                        <p>Email: john.doe@example.com</p>
+                        <p>Member since: January 1, 2023</p>
+                    </div>
+                    <div className="profile-actions">
+                        <button>Edit Profile</button>
+                        <button>Change Password</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const NewsContent = () => {
+            const newsItems = [
+                { 
+                    title: "Revolutionary BadUSB Script Unveiled", 
+                    content: "A groundbreaking BadUSB script capable of bypassing advanced security measures has been released. Cybersecurity experts warn of potential misuse.",
+                    date: "2024-06-15",
+                    category: "New Release"
+                },
+                { 
+                    title: "Global Cybersecurity Summit 2024", 
+                    content: "World leaders in cybersecurity are gathering next month to discuss the evolving landscape of digital threats and defense strategies.",
+                    date: "2024-06-14",
+                    category: "Event"
+                },
+                { 
+                    title: "AI-Powered BadUSB Detection Tool", 
+                    content: "A new AI-driven tool claims to detect and neutralize BadUSB attacks with 99.9% accuracy. Beta testing phase starts next week.",
+                    date: "2024-06-13",
+                    category: "Technology"
+                },
+                { 
+                    title: "Ethical Hacking Championship 2024", 
+                    content: "The annual Ethical Hacking Championship is now open for registrations. This year's theme: 'Securing the Internet of Things'.",
+                    date: "2024-06-12",
+                    category: "Competition"
+                },
+                { 
+                    title: "New Legislation on Cybercrime", 
+                    content: "The International Cybercrime Treaty has been ratified by 50 countries, setting a new global standard for prosecuting digital crimes.",
+                    date: "2024-06-11",
+                    category: "Legal"
+                },
+                { 
+                    title: "Quantum-Resistant Encryption Breakthrough", 
+                    content: "Researchers have developed a new encryption method that claims to be resistant to quantum computer attacks, potentially revolutionizing data security.",
+                    date: "2024-06-10",
+                    category: "Research"
+                },
+                { 
+                    title: "BadUSB Incidents on the Rise", 
+                    content: "A recent report shows a 300% increase in BadUSB-related security breaches in the first quarter of 2024. Experts call for increased vigilance.",
+                    date: "2024-06-09",
+                    category: "Security Alert"
+                }
+            ];
+
+            return (
+                <div className="news-content">
+                    {newsItems.map((item, index) => (
+                        <div key={index} className="news-item">
+                            <span className="news-category">{item.category}</span>
+                            <h3>{item.title}</h3>
+                            <p className="news-date">{item.date}</p>
+                            <p>{item.content}</p>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeSection, setActiveSection] = useState('home');
+            const [downloadHistory, setDownloadHistory] = useState([]);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedCategory, setSelectedCategory] = useState('All');
+            const [currentTime, setCurrentTime] = useState(new Date());
+            const [settings, setSettings] = useState(() => {
+                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
+                return savedSettings ? JSON.parse(savedSettings) : {
+                    darkMode: false,
+                    showNotifications: true,
+                    twoFactorAuth: false,
+                    autoLogout: false,
+                    animationSpeed: 50,
+                    fontSize: 16,
+                    accentColor: '#ff9800',
+                    sidebarWidth: 80,
+                    gradientColor1: '#4caf50',
+                    gradientColor2: '#2196f3',
+                    userName: 'User',
+                    customBackground: '',
+                    isCustomBackgroundGif: false,
+                };
+            });
+            const [plugins, setPlugins] = useState(() => {
+                const savedPlugins = localStorage.getItem('zrkBadUSBPlugins');
+                return savedPlugins ? JSON.parse(savedPlugins) : [];
+            });
+            const [pluginHTML, setPluginHTML] = useState('');
+            const [codeEditorInitialized, setCodeEditorInitialized] = useState(false);
+
+            const [preDefinedPlugins, setPreDefinedPlugins] = useState([
+              { 
+                name: "Dark Mode", 
+                html: '<div class="dark-mode-plugin">Dark Mode: <input type="checkbox" id="darkModeToggle" /></div>', 
+                active: false,
+                onActivate: () => {
+                    document.body.classList.add('dark-mode');
+                },
+                onDeactivate: () => {
+                    document.body.classList.remove('dark-mode');
+                }
+              },
+              { 
+                name: "Weather Widget", 
+                html: '<div class="weather-widget">Weather: <span id="weatherInfo">Loading...</span></div>', 
+                active: false,
+                onActivate: () => {
+                    document.getElementById('weatherInfo').innerText = "Sunny, 25°C";
+                }
+              },
+              { 
+                name: "Clock", 
+                html: '<div class="clock-widget">Time: <span id="clockDisplay"></span></div>', 
+                active: false,
+                onActivate: () => {
+                    setInterval(() => {
+                        document.getElementById('clockDisplay').innerText = new Date().toLocaleTimeString();
+                    }, 1000);
+                }
+              },
+              { 
+                name: "Todo List", 
+                html: '<div class="todo-list"><h3>Todo List</h3><ul id="todoItems"></ul><input type="text" id="newTodoItem" /><button id="addTodoItem">Add</button></div>', 
+                active: false,
+                onActivate: () => {
+                    document.getElementById('addTodoItem').addEventListener('click', () => {
+                        const input = document.getElementById('newTodoItem');
+                        const li = document.createElement('li');
+                        li.textContent = input.value;
+                        document.getElementById('todoItems').appendChild(li);
+                        input.value = '';
+                    });
+                }
+              },
+              { 
+                name: "Calculator", 
+                html: '<div class="calculator"><input type="text" id="calcDisplay" readonly /><br><button>7</button><button>8</button><button>9</button><button>+</button><br><button>4</button><button>5</button><button>6</button><button>-</button><br><button>1</button><button>2</button><button>3</button><button>*</button><br><button>0</button><button>.</button><button>=</button><button>/</button></div>', 
+                active: false,
+                onActivate: () => {
+                    const calcDisplay = document.getElementById('calcDisplay');
+                    document.querySelector('.calculator').addEventListener('click', (e) => {
+                        if (e.target.tagName === 'BUTTON') {
+                            if (e.target.textContent === '=') {
+                                calcDisplay.value = eval(calcDisplay.value);
+                            } else {
+                                calcDisplay.value += e.target.textContent;
+                            }
+                        }
+                    });
+                }
+              },
+              {
+                name: "Code Editor",
+                html: '<div id="codeEditorContainer" style="height: 400px; border: 1px solid #ccc;"></div>',
+                active: false,
+                onActivate: () => {
+                    const editor = CodeMirror(document.getElementById('codeEditorContainer'), {
+                        mode: "javascript",
+                        theme: "dracula",
+                        lineNumbers: true,
+                        value: "// Start coding here"
+                    });
+                },
+                addButton: {
+                    name: "Open Code Editor",
+                    onClick: () => handleSectionChange('codeEditor')
+                }
+              },
+            ]);
+
+            const [customButtons, setCustomButtons] = useState([]);
+
+            const togglePlugin = (index) => {
+                const newPlugins = [...preDefinedPlugins];
+                newPlugins[index].active = !newPlugins[index].active;
+                setPreDefinedPlugins(newPlugins);
+
+                if (newPlugins[index].active) {
+                    if (newPlugins[index].onActivate) {
+                        newPlugins[index].onActivate();
+                    }
+                    if (newPlugins[index].addButton) {
+                        setCustomButtons(prev => [...prev, newPlugins[index].addButton]);
+                    }
+                    if (newPlugins[index].name === "Code Editor") {
+                        document.querySelector('link[href*="codemirror.min.css"]').setAttribute('disabled', 'disabled');
+                        const darkThemeLink = document.createElement('link');
+                        darkThemeLink.rel = 'stylesheet';
+                        darkThemeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css';
+                        document.head.appendChild(darkThemeLink);
+                    }
+                } else {
+                    if (newPlugins[index].onDeactivate) {
+                        newPlugins[index].onDeactivate();
+                    }
+                    if (newPlugins[index].addButton) {
+                        setCustomButtons(prev => prev.filter(button => button.name !== newPlugins[index].addButton.name));
+                    }
+                    if (newPlugins[index].name === "Code Editor") {
+                        document.querySelector('link[href*="dracula.min.css"]').remove();
+                        document.querySelector('link[href*="codemirror.min.css"]').removeAttribute('disabled');
+                    }
+                }
+            };
+
+            useEffect(() => {
+                const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+                return () => clearInterval(timer);
+            }, []);
+
+            useEffect(() => {
+                localStorage.setItem('zrkBadUSBPlugins', JSON.stringify(plugins));
+            }, [plugins]);
+
+            const getGreeting = () => {
+                const hour = currentTime.getHours();
+                if (hour < 12) return "Good morning";
+                if (hour < 18) return "Good afternoon";
+                return "Good evening";
+            };
+
+            const badUSBScripts = [
+                { name: 'BadUSB Script 1', content: 'Content for Script 1', category: 'Utility' },
+                { name: 'BadUSB Script 2', content: 'Content for Script 2', category: 'Utility' },
+                { name: 'BadUSB Script 3', content: 'Content for Script 3', category: 'Utility' },
+                { name: 'BadUSB Script 4', content: 'Content for Script 4', category: 'Utility' },
+                { name: 'BadUSB Script 5', content: 'Content for Script 5', category: 'Utility' },
+                { name: 'BadUSB Script 6', content: 'Content for Script 6', category: 'Utility' },
+                { name: 'BadUSB Script 7', content: 'Content for Script 7', category: 'Utility' },
+                { name: 'BadUSB Script 8', content: 'Content for Script 8', category: 'Utility' },
+                { name: 'BadUSB Script 9', content: 'Content for Script 9', category: 'Utility' },
+                { name: 'BadUSB Script 10', content: 'Content for Script 10', category: 'Utility' },
+                { name: 'BadUSB Script 11', content: 'Content for Script 11', category: 'Utility' },
+                { name: 'BadUSB Script 12', content: 'Content for Script 12', category: 'Utility' },
+                { name: 'BadUSB Script 13', content: 'Content for Script 13', category: 'Utility' },
+                { name: 'BadUSB Script 14', content: 'Content for Script 14', category: 'Utility' },
+                { name: 'BadUSB Script 15', content: 'Content for Script 15', category: 'Utility' },
+                { name: 'BadUSB Script 16', content: 'Content for Script 16', category: 'Utility' },
+                { name: 'BadUSB Script 17', content: 'Content for Script 17', category: 'Utility' },
+                { name: 'BadUSB Script 18', content: 'Content for Script 18', category: 'Utility' },
+                { name: 'BadUSB Script 19', content: 'Content for Script 19', category: 'Utility' },
+                { name: 'BadUSB Script 20', content: 'Content for Script 20', category: 'Utility' },
+                { name: 'BadUSB Script 21', content: 'Content for Script 21', category: 'Utility' },
+                { name: 'BadUSB Script 22', content: 'Content for Script 22', category: 'Utility' },
+                { name: 'BadUSB Script 23', content: 'Content for Script 23', category: 'Utility' },
+                { name: 'BadUSB Script 24', content: `Forward First Email (Mobile)`, category: 'Utility' },
+                { name: 'Forward First Email (Desktop)', content: `Forward First Email (Desktop)`, category: 'Utility' },
+                { name: 'Modify Hosts File', content: 'Modify Hosts File', category: 'Security' },
+                { name: 'Phishing Host Injection', content: 'Phishing Host Injection', category: 'Security' },
+                { name: 'Play WAV File', content: 'Play WAV File', category: 'Prank' },
+                { name: 'Close Windows Script', content: 'Close Windows Script', category: 'Prank' },
+                { name: 'Automailer', content: 'Automailer', category: 'Prank' },
+                { name: 'Broken Capslock', content: 'Broken Capslock', category: 'Prank' },
+                { name: 'Broken Capslock (Save)', content: 'Broken Capslock (Save)', category: 'Prank' },
+                { name: 'Cartman Spam', content: 'Cartman Spam', category: 'Prank' },
+                { name: 'Fake Update (Edge)', content: 'Fake Update (Edge)', category: 'Prank' },
+                { name: 'Fake Update (IE)', content: 'Fake Update (IE)', category: 'Prank' },
+                { name: 'Fake Windows Update', content: 'Fake Windows Update', category: 'Prank' },
+                { name: 'JumpScare', content: 'JumpScare', category: 'Prank' },
+                { name: 'LoL Uninstaller', content: 'LoL Uninstaller', category: 'Prank' },
+                { name: 'Ratlocker', content: 'Ratlocker', category: 'Ransomware' },
+                { 
+                    name: 'Credential Harvester (Dropbox)', 
+                    content: 'Credential Harvester (Dropbox)', 
+                    category: 'Exfiltration' 
+                }
+            ];
+
+            const handleSectionChange = (section) => {
+                setActiveSection(section);
+                if (section === 'codeEditor' && !codeEditorInitialized) {
+                    setTimeout(() => {
+                        const editor = CodeMirror(document.getElementById('codeEditorContainer'), {
+                            mode: "javascript",
+                            theme: "dracula",
+                            lineNumbers: true,
+                            value: "// Start coding here"
+                        });
+                        setCodeEditorInitialized(true);
+                    }, 0);
+                }
+            };
+
+            const categories = ['All', 'Prank', 'Security', 'Utility', 'Ransomware', 'Exfiltration'];
+
+            const filteredScripts = badUSBScripts.filter(script => 
+              script.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              (selectedCategory === 'All' || script.category === selectedCategory)
+            );
+
+            const addPlugin = () => {
+                if (pluginHTML.trim()) {
+                    const newPlugins = [...plugins, pluginHTML];
+                    setPlugins(newPlugins);
+                    setPluginHTML('');
+                }
+            };
+
+            const removePlugin = (index) => {
+                const newPlugins = plugins.filter((_, i) => i !== index);
+                setPlugins(newPlugins);
+            };
+
+            const submitFeedback = () => {
+                const feedbackText = document.getElementById('feedbackText').value;
+                if (feedbackText.trim() === '') {
+                    alert('Please enter some feedback before submitting.');
+                    return;
+                }
+
+                const webhookURL = 'https://discord.com/api/webhooks/1278039014057836756/yI4EhNURdmFu-iFJNsdNxrds-43VQEzwqEkyg2tWHf8vNpCG3tydwbSUZww6hPvMKF7b';
+
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: `New Feedback:\n${feedbackText}`
+                    }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Feedback submitted successfully!');
+                        document.getElementById('feedbackText').value = '';
+                    } else {
+                        alert('Failed to submit feedback. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting feedback. Please try again later.');
+                });
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="sidebar">
+                        <div className="sidebar-icons">
+                            <i className="icon fas fa-home" onClick={() => handleSectionChange('home')}></i>
+                            <i className="icon fas fa-newspaper" onClick={() => handleSectionChange('news')}></i>
+                            <i className="icon fas fa-code" onClick={() => handleSectionChange('scripts')}></i>
+                            <i className="icon fas fa-history" onClick={() => handleSectionChange('history')}></i>
+                            <i className="icon fas fa-book" onClick={() => handleSectionChange('documentation')}></i>
+                            <i className="icon fas fa-puzzle-piece" onClick={() => handleSectionChange('plugins')}></i>
+                            <i className="icon fas fa-code-branch" onClick={() => handleSectionChange('codeEditor')}></i>
+                            <i className="icon fas fa-comment-alt" onClick={() => handleSectionChange('feedback')}></i>
+                            <div className="bottom-icons">
+                                <i className="icon fas fa-user" onClick={() => handleSectionChange('profile')}></i>
+                                <i className="icon fas fa-cog" onClick={() => handleSectionChange('settings')}></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="main-content">
+                        {customButtons.map((button, index) => (
+                            <button key={index} onClick={button.onClick}>{button.name}</button>
+                        ))}
+                        <div className={`content-section ${activeSection === 'home' ? 'active' : ''}`}>
+                            <h2>Welcome to {AppName}</h2>
+                            <div className="home-content">
+                                <div className="greeting">
+                                    <h3>{getGreeting()}, {settings.userName}!</h3>
+                                    <p>It's {currentTime.toLocaleTimeString()} on {currentTime.toLocaleDateString()}</p>
+                                </div>
+                                <div className="summary">
+                                    <h4>At a Glance</h4>
+                                    <p>Total Scripts: {badUSBScripts.length}</p>
+                                    <p>Recent Downloads: {downloadHistory.length}</p>
+                                </div>
+                                <div className="featured-script">
+                                    <h4>Featured Script</h4>
+                                    <BadUSBCard 
+                                        scriptName={badUSBScripts[0].name}
+                                        scriptContent={badUSBScripts[0].content}
+                                        category={badUSBScripts[0].category}
+                                        setDownloadHistory={setDownloadHistory}
+                                    />
+                                </div>
+                                <div className="quick-actions">
+                                    <h4>Quick Actions</h4>
+                                    <button onClick={() => handleSectionChange('scripts')}>Browse Scripts</button>
+                                    <button onClick={() => handleSectionChange('documentation')}>Read Docs</button>
+                                </div>
+                                <div className="news-ticker">
+                                    <h4>Latest Updates</h4>
+                                    <marquee>New security features added! | Check out our latest Prank scripts | Don't forget to update your devices</marquee>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'news' ? 'active' : ''}`}>
+                            <h2>News</h2>
+                            <NewsContent />
+                        </div>
+                        <div className={`content-section ${activeSection === 'scripts' ? 'active' : ''}`}>
+                            <div className="search-and-filter">
+                                <input 
+                                    type="text" 
+                                    placeholder="Search scripts..." 
+                                    value={searchTerm} 
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <select 
+                                    value={selectedCategory} 
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                >
+                                    {categories.map(category => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="badusb-grid">
+                                {filteredScripts.map((script, index) => (
+                                    <BadUSBCard 
+                                        key={index} 
+                                        scriptName={script.name} 
+                                        scriptContent={script.content} 
+                                        category={script.category}
+                                        setDownloadHistory={setDownloadHistory} 
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'history' ? 'active' : ''}`}>
+                            <HistorySection downloadHistory={downloadHistory} />
+                        </div>
+                        <div className={`content-section ${activeSection === 'documentation' ? 'active' : ''}`}>
+                            <h2>{AppName} Documentation</h2>
+                            <div className="documentation-content">
+                                <h3>Getting Started</h3>
+                                <p>Welcome to the {AppName} documentation. Here you'll find information on how to use our platform effectively.</p>
+
+                                <h3>Using BadUSB Scripts</h3>
+                                <p>BadUSB scripts are powerful tools for automating USB-based tasks. Here's how to use them:</p>
+                                <ol>
+                                    <li>Browse the available scripts in the 'Scripts' section.</li>
+                                    <li>Click 'Copy' to copy the script to your clipboard.</li>
+                                    <li>Click 'Download' to save the script to your device.</li>
+                                </ol>
+
+                                <h3>Safety Precautions</h3>
+                                <p>Always exercise caution when using BadUSB scripts. Ensure you understand the script's functionality before executing it.</p>
+
+                                <h3>Troubleshooting</h3>
+                                <p>If you encounter any issues, please check our FAQ section or contact our support team.</p>
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'profile' ? 'active' : ''}`}>
+                            <ProfileSection />
+                        </div>
+                        <div className={`content-section ${activeSection === 'settings' ? 'active' : ''}`}>
+                            <h2>Settings</h2>
+                            <SettingsSection />
+                        </div>
+                        <div className={`content-section ${activeSection === 'plugins' ? 'active' : ''}`}>
+                            <h2>Plugins</h2>
+                            <div className="plugin-form">
+                                <textarea
+                                    placeholder="Paste your custom plugin HTML here..."
+                                    value={pluginHTML}
+                                    onChange={(e) => setPluginHTML(e.target.value)}
+                                ></textarea>
+                                <button onClick={addPlugin}>Add Custom Plugin</button>
+                            </div>
+                            <div className="predefined-plugins">
+                                <h3>Pre-defined Plugins</h3>
+                                {preDefinedPlugins.map((plugin, index) => (
+                                    <div key={index} className="plugin-item">
+                                        <h4>{plugin.name}</h4>
+                                        <button onClick={() => togglePlugin(index)}>
+                                            {plugin.active ? 'Deactivate' : 'Activate'}
+                                        </button>
+                                        {plugin.active && <div dangerouslySetInnerHTML={{ __html: plugin.html }} />}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="custom-plugins">
+                                 <h3>Custom Plugins</h3>
+                                {plugins.map((plugin, index) => (
+                                    <div key={index} className="plugin-item">
+                                        <div dangerouslySetInnerHTML={{ __html: plugin }} />
+                                        <button onClick={() => removePlugin(index)}>Remove</button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'codeEditor' ? 'active' : ''}`}>
+                            <h2>Code Editor</h2>
+                            <div id="codeEditorContainer" style={{ height: '400px', border: '1px solid #ccc' }}></div>
+                        </div>
+                        <div className={`content-section ${activeSection === 'feedback' ? 'active' : ''}`}>
+                            <h2>Feedback</h2>
+                            <div className="feedback-form">
+                                <textarea
+                                    id="feedbackText"
+                                    placeholder="Enter your feedback or suggestions here..."
+                                    rows="5"
+                                ></textarea>
+                                <button onClick={submitFeedback}>Submit Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
 </body>
 </html>
