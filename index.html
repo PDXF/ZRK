@@ -143,7 +143,7 @@
             position: relative;
         }
 
-        .code-database, .home-content, .search-content, .profile-content, .settings-content, .download-history, .favorites-content {
+        .code-database, .home-content, .search-content, .profile-content, .settings-content, .download-history, .favorites-content, .personal-scripts-content {
             flex: 1;
             background: rgba(26, 26, 46, 0.8);
             border-radius: 15px;
@@ -153,9 +153,9 @@
 
         .code-snippet {
             border: 1px solid rgb(255, 255, 255, 0.2);
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 10px;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
@@ -163,12 +163,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            cursor: pointer;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .snippet-header h3 {
             margin: 0;
+            font-size: 1.2em;
+            color: var(--accent-color);
         }
 
         .collapse-icon {
@@ -181,22 +183,13 @@
         }
 
         .snippet-content {
-            max-height: 1000px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .snippet-content.collapsed {
-            max-height: 0;
-        }
-
-        .snippet-content pre {
-            margin: 0;
-            padding: 10px;
+            padding: 15px;
         }
 
         .button-group {
-            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
         }
 
         .news-item, .random-code, .download-history-item {
@@ -243,8 +236,9 @@
         }
 
         .code-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         button.copy-button {
@@ -667,24 +661,215 @@
         .favorite-button {
             background: none;
             border: none;
-            color: #ccc;
-            font-size: 18px;
+            color: var(--accent-color);
+            font-size: 1.5em;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .favorite-button:hover {
+            transform: scale(1.1);
         }
 
         .favorite-button.active {
-            color: var(--accent-color);
+            color: var(--primary-color);
         }
 
         .favorites-content {
             padding: 20px;
         }
 
-        .favorites-content .code-list {
-            margin-top: 20px;
+        .favorites-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .no-favorites-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin-top: 50px;
+        }
+
+        .code-snippet {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .code-snippet:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
+        .drop-zone {
+          border: 2px dashed var(--accent-color);
+          border-radius: 10px;
+          padding: 20px;
+          text-align: center;
+          margin-bottom: 20px;
+          transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .upload-button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: var(--accent-color);
+          color: var(--text-color);
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        .personal-scripts-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 20px;
+        }
+
+        .personal-script-item {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          padding: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .personal-script-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+
+        .modal-content {
+          background-color: var(--background-color);
+          padding: 20px;
+          border-radius: 10px;
+          width: 300px;
+        }
+
+        .modal-content input {
+          width: 100%;
+          padding: 10px;
+          margin: 10px 0;
+          border-radius: 5px;
+          border: 1px solid var(--accent-color);
+          background-color: rgba(255, 255, 255, 0.1);
+          color: var(--text-color);
+        }
+
+        .modal-content button {
+          margin-right: 10px;
+          padding: 5px 10px;
+          background-color: var(--accent-color);
+          color: var(--text-color);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+        .personal-scripts-content .code-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .personal-scripts-content .code-snippet {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .personal-scripts-content .code-snippet:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .personal-scripts-content .snippet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+        }
+
+        .personal-scripts-content .snippet-content {
+            padding: 15px;
+        }
+
+        .personal-scripts-content .snippet-content.collapsed {
+            display: none;
+        }
+
+        .personal-scripts-content .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .personal-scripts-content .button-group button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .personal-scripts-content .button-group button:hover {
+            transform: scale(1.05);
+        }
+
+        .personal-scripts-content .button-group button:active {
+            transform: scale(0.95);
+        }
+
+        .personal-scripts-content .remove-button {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .documentation-content {
+            padding: 20px;
+        }
+
+        .documentation-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .documentation-navigation button {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .documentation-navigation button:hover {
+            background-color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
@@ -932,12 +1117,13 @@ web_scraper('https://example.com')`,
         );
 
         const FavoriteButton = ({ snippet, toggleFavorite, isFavorite }) => (
-          <button 
-            className={`favorite-button ${isFavorite ? 'active' : ''}`}
-            onClick={() => toggleFavorite(snippet)}
-          >
-            <i className={`fas fa-star ${isFavorite ? 'fas' : 'far'}`}></i>
-          </button>
+            <button 
+                className={`favorite-button ${isFavorite ? 'active' : ''}`}
+                onClick={() => toggleFavorite(snippet)}
+                title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            >
+                <i className={`fas fa-star ${isFavorite ? 'fas' : 'far'}`}></i>
+            </button>
         );
 
         const CodeSnippet = ({ snippet, index, copyToClipboard, copiedIndex, downloadFile, toggleFavorite, isFavorite }) => {
@@ -974,6 +1160,66 @@ web_scraper('https://example.com')`,
                                 onClick={() => downloadFile(snippet)}
                             >
                                 Download {snippet.type === 'python' ? '.py' : '.txt'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const PersonalCodeSnippet = ({ snippet, index, removePersonalScript }) => {
+            const [isCollapsed, setIsCollapsed] = useState(true);
+            const [copiedIndex, setCopiedIndex] = useState(null);
+
+            const toggleCollapse = () => {
+                setIsCollapsed(!isCollapsed);
+            };
+
+            const copyToClipboard = (code) => {
+                navigator.clipboard.writeText(code).then(() => {
+                    setCopiedIndex(index);
+                    setTimeout(() => setCopiedIndex(null), 2000);
+                });
+            };
+
+            const downloadFile = () => {
+                const element = document.createElement("a");
+                const file = new Blob([snippet.content], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                element.download = `${snippet.name}.${snippet.type === 'python' ? 'py' : 'txt'}`;
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            };
+
+            return (
+                <div className="code-snippet">
+                    <div className="snippet-header" onClick={toggleCollapse}>
+                        <h3>{snippet.name}</h3>
+                        <span className={`collapse-icon ${isCollapsed ? 'collapsed' : 'expanded'}`}>
+                            {isCollapsed ? '▼' : '▲'}
+                        </span>
+                    </div>
+                    <div className={`snippet-content ${isCollapsed ? 'collapsed' : 'expanded'}`}>
+                        <pre><code>{snippet.content}</code></pre>
+                        <div className="button-group">
+                            <button 
+                                className="copy-button" 
+                                onClick={() => copyToClipboard(snippet.content)}
+                            >
+                                {copiedIndex === index ? 'Copied!' : 'Copy Code'}
+                            </button>
+                            <button 
+                                className="download-button" 
+                                onClick={downloadFile}
+                            >
+                                Download {snippet.type === 'python' ? '.py' : '.txt'}
+                            </button>
+                            <button 
+                                className="remove-button" 
+                                onClick={() => removePersonalScript(index)}
+                            >
+                                Remove
                             </button>
                         </div>
                     </div>
@@ -1030,75 +1276,41 @@ web_scraper('https://example.com')`,
             }
         };
 
-        const Settings = ({ currentTheme, changeTheme, currentLayout, changeLayout }) => {
+        const Documentation = ({ currentPage, setCurrentPage }) => {
+            const pages = [
+                {
+                    title: "About Our Service",
+                    content: "CodeVault is a comprehensive database for Python and BadUSB scripts. We provide a platform for developers and security professionals to share, discover, and manage code snippets and scripts."
+                },
+                {
+                    title: "Usage Guidelines",
+                    content: "Our service is intended for educational and professional use only. Users are expected to use the scripts and code snippets responsibly and in compliance with all applicable laws and regulations."
+                },
+                {
+                    title: "Rules and Policies",
+                    content: "Our service is intended strictly for educational and professional use, and we place a strong emphasis on responsible and ethical behavior when utilizing the tools, scripts, and code snippets provided. Users are expected to engage with the material on this platform with the understanding that it is meant to promote learning, technical proficiency, and professional development within a lawful framework.
+
+It is essential that any use of the provided scripts, code snippets, or related content fully complies with local, regional, national, and international laws and regulations. Each user is responsible for ensuring that their actions, whether they involve testing, development, or deployment of code or technical solutions, are both lawful and ethical. This includes, but is not limited to, compliance with cybersecurity laws, intellectual property rights, privacy standards, data protection regulations, and other legal considerations that may apply to the user’s specific location, industry, or project.
+
+Additionally, we take pride in fostering an inclusive and welcoming environment for all users. A significant portion of our staff team identifies as furries, and we maintain a zero-tolerance policy for any form of hate or discrimination, whether it’s based on identity, personal interests, or affiliations. We expect all users to respect the diversity within our community and to treat fellow users and staff with kindness and professionalism. Hate speech, harassment, or any form of discriminatory behavior will not be tolerated and may result in immediate termination of access to our service, along with any applicable legal consequences.
+
+We also want to make it clear that our service must not be used for illegal, unethical, or unauthorized activities, including, but not limited to, hacking, exploiting system vulnerabilities, unauthorized network access, or any behavior that could cause harm to individuals, organizations, or systems. Users are expected to act with integrity, professionalism, and respect for others, considering the potential impact of their actions in both virtual and real-world contexts.
+
+Failure to comply with these guidelines may result in the suspension or termination of your account and, depending on the severity of the violation, could lead to legal repercussions. By using our service, users agree to abide by the law, promote ethical behavior, and respect the inclusive nature of our community."
+                }
+            ];
+
             return (
-                <div className="settings-content custom-scrollbar">
-                    <h2>Settings</h2>
-                    <div className="theme-settings">
-                        <h3>Choose a Theme</h3>
-                        <div className="theme-buttons">
-                            <button 
-                                className={`theme-button ${currentTheme === 'cosmic_flipper' ? 'active' : ''}`}
-                                onClick={() => changeTheme('cosmic_flipper')}
-                            >
-                                <div className="theme-preview cosmic-flipper-theme"></div>
-                                <span>Cosmic Flipper</span>
-                                <p>A Flipper Zero floating in deep space</p>
-                            </button>
-                            <button 
-                                className={`theme-button ${currentTheme === 'retro_hack' ? 'active' : ''}`}
-                                onClick={() => changeTheme('retro_hack')}
-                            >
-                                <div className="theme-preview retro-hack-theme"></div>
-                                <span>Retro Hack</span>
-                                <p>An old computer running a hacking program</p>
-                            </button>
-                            <button 
-                                className={`theme-button ${currentTheme === 'the_street' ? 'active' : ''}`}
-                                onClick={() => changeTheme('the_street')}
-                            >
-                                <div className="theme-preview the-street-theme"></div>
-                                <span>The Street</span>
-                                <p>A futuristic cyberpunk street scene</p>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="layout-settings">
-                        <h3>Choose a Layout</h3>
-                        <div className="layout-buttons">
-                            <button 
-                                className={`layout-button ${currentLayout === 'default' ? 'active' : ''}`}
-                                onClick={() => changeLayout('default')}
-                            >
-                                <div className="layout-preview default-layout"></div>
-                                <span>Default</span>
-                                <p>Standard sidebar width</p>
-                            </button>
-                            <button 
-                                className={`layout-button ${currentLayout === 'wide' ? 'active' : ''}`}
-                                onClick={() => changeLayout('wide')}
-                            >
-                                <div className="layout-preview wide-layout"></div>
-                                <span>Wide</span>
-                                <p>Wider sidebar for more information</p>
-                            </button>
-                            <button 
-                                className={`layout-button ${currentLayout === 'compact' ? 'active' : ''}`}
-                                onClick={() => changeLayout('compact')}
-                            >
-                                <div className="layout-preview compact-layout"></div>
-                                <span>Compact</span>
-                                <p>Narrower sidebar for more content space</p>
-                            </button>
-                            <button 
-                                className={`layout-button ${currentLayout === 'fullscreen' ? 'active' : ''}`}
-                                onClick={() => changeLayout('fullscreen')}
-                            >
-                                <div className="layout-preview fullscreen-layout"></div>
-                                <span>Fullscreen</span>
-                                <p>Hide sidebar for maximum content space</p>
-                            </button>
-                        </div>
+                <div className="documentation-content custom-scrollbar">
+                    <h2>{pages[currentPage].title}</h2>
+                    <p>{pages[currentPage].content}</p>
+                    <div className="documentation-navigation">
+                        {currentPage > 0 && (
+                            <button onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                        )}
+                        {currentPage < pages.length - 1 && (
+                            <button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+                        )}
                     </div>
                 </div>
             );
@@ -1131,6 +1343,11 @@ web_scraper('https://example.com')`,
             });
             const [isDownloading, setIsDownloading] = useState(false);
             const [downloadProgress, setDownloadProgress] = useState(0);
+            const [personalScripts, setPersonalScripts] = useState(() => {
+                const savedScripts = localStorage.getItem('personalScripts');
+                return savedScripts ? JSON.parse(savedScripts) : [];
+            });
+            const [currentDocPage, setCurrentDocPage] = useState(0);
 
             const toggleFavorite = useCallback((snippet) => {
                 setFavorites(prevFavorites => {
@@ -1173,7 +1390,16 @@ web_scraper('https://example.com')`,
             useEffect(() => {
                 localStorage.setItem('currentTheme', currentTheme);
                 localStorage.setItem('currentLayout', currentLayout);
-            }, [currentTheme, currentLayout]);
+                localStorage.setItem('personalScripts', JSON.stringify(personalScripts));
+            }, [currentTheme, currentLayout, personalScripts]);
+
+            const addPersonalScript = (script) => {
+                setPersonalScripts(prevScripts => [...prevScripts, script]);
+            };
+
+            const removePersonalScript = (index) => {
+                setPersonalScripts(prevScripts => prevScripts.filter((_, i) => i !== index));
+            };
 
             const copyToClipboard = (code, index) => {
                 navigator.clipboard.writeText(code).then(() => {
@@ -1385,24 +1611,40 @@ web_scraper('https://example.com')`,
                         return (
                             <div className="favorites-content custom-scrollbar">
                                 <h2>Favorite Scripts</h2>
-                                <div className="code-list">
-                                    {favorites.map((snippet, index) => (
-                                        <CodeSnippet 
-                                            key={index}
-                                            snippet={snippet}
-                                            index={index}
-                                            copyToClipboard={copyToClipboard}
-                                            copiedIndex={copiedIndex}
-                                            downloadFile={downloadFile}
-                                            toggleFavorite={toggleFavorite}
-                                            isFavorite={isFavorite}
-                                        />
-                                    ))}
-                                </div>
-                                {favorites.length === 0 && (
-                                    <p>You haven't added any favorites yet. Star a script to add it here!</p>
+                                {favorites.length === 0 ? (
+                                    <p className="no-favorites-message">You haven't added any favorites yet. Star a script to add it here!</p>
+                                ) : (
+                                    <div className="code-list favorites-list">
+                                        {favorites.map((snippet, index) => (
+                                            <CodeSnippet 
+                                                key={index}
+                                                snippet={snippet}
+                                                index={index}
+                                                copyToClipboard={copyToClipboard}
+                                                copiedIndex={copiedIndex}
+                                                downloadFile={downloadFile}
+                                                toggleFavorite={toggleFavorite}
+                                                isFavorite={isFavorite}
+                                            />
+                                        ))}
+                                    </div>
                                 )}
                             </div>
+                        );
+                    case 'personal':
+                        return (
+                            <PersonalScripts 
+                                personalScripts={personalScripts}
+                                addPersonalScript={addPersonalScript}
+                                removePersonalScript={removePersonalScript}
+                            />
+                        );
+                    case 'documentation':
+                        return (
+                            <Documentation 
+                                currentPage={currentDocPage}
+                                setCurrentPage={setCurrentDocPage}
+                            />
                         );
                     case 'profile':
                         return (
@@ -1472,6 +1714,18 @@ web_scraper('https://example.com')`,
                                 <i 
                                     className={`icon fas fa-download ${activeTab === 'downloads' ? 'active' : ''}`} 
                                     onClick={() => setActiveTab('downloads')}
+                                    onMouseEnter={(e) => handleIconHover(e, true)}
+                                    onMouseLeave={(e) => handleIconHover(e, false)}
+                                ></i>
+                                <i 
+                                    className={`icon fas fa-file-code ${activeTab === 'personal' ? 'active' : ''}`} 
+                                    onClick={() => setActiveTab('personal')}
+                                    onMouseEnter={(e) => handleIconHover(e, true)}
+                                    onMouseLeave={(e) => handleIconHover(e, false)}
+                                ></i>
+                                <i 
+                                    className={`icon fas fa-book ${activeTab === 'documentation' ? 'active' : ''}`} 
+                                    onClick={() => setActiveTab('documentation')}
                                     onMouseEnter={(e) => handleIconHover(e, true)}
                                     onMouseLeave={(e) => handleIconHover(e, false)}
                                 ></i>
