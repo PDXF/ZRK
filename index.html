@@ -846,30 +846,6 @@
             background-color: #ff4d4d;
             color: white;
         }
-
-        .documentation-content {
-            padding: 20px;
-        }
-
-        .documentation-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .documentation-navigation button {
-            padding: 10px 20px;
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .documentation-navigation button:hover {
-            background-color: var(--secondary-color);
-        }
     </style>
 </head>
 <body>
@@ -1276,36 +1252,102 @@ web_scraper('https://example.com')`,
             }
         };
 
-        const Documentation = ({ currentPage, setCurrentPage }) => {
-            const pages = [
-                {
-                    title: "About Our Service",
-                    content: "CodeVault is a comprehensive database for Python and BadUSB scripts. We provide a platform for developers and security professionals to share, discover, and manage code snippets and scripts."
-                },
-                {
-                    title: "Usage Guidelines",
-                    content: "Our service is intended for educational and professional use only. Users are expected to use the scripts and code snippets responsibly and in compliance with all applicable laws and regulations."
-                },
-                {
-                    title: "Rules and Policies",
-                    content: "1. Do not use scripts for malicious purposes.\n2. Respect intellectual property rights.\n3. Do not share personally identifiable information.\n4. Report any suspicious or abusive content.\n5. Be respectful to other community members."
-                }
-            ];
+        const PersonalScripts = ({ personalScripts, addPersonalScript, removePersonalScript }) => {
+          const [dragOver, setDragOver] = useState(false);
+          const [newScriptName, setNewScriptName] = useState('');
+          const [showModal, setShowModal] = useState(false);
+          const [currentFile, setCurrentFile] = useState(null);
 
-            return (
-                <div className="documentation-content custom-scrollbar">
-                    <h2>{pages[currentPage].title}</h2>
-                    <p>{pages[currentPage].content}</p>
-                    <div className="documentation-navigation">
-                        {currentPage > 0 && (
-                            <button onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-                        )}
-                        {currentPage < pages.length - 1 && (
-                            <button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-                        )}
-                    </div>
+          const handleDragOver = (e) => {
+            e.preventDefault();
+            setDragOver(true);
+          };
+
+          const handleDragLeave = () => {
+            setDragOver(false);
+          };
+
+          const handleDrop = (e) => {
+            e.preventDefault();
+            setDragOver(false);
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith('.txt') || file.name.endsWith('.py'))) {
+              setCurrentFile(file);
+              setShowModal(true);
+            }
+          };
+
+          const handleFileUpload = (e) => {
+            const file = e.target.files[0];
+            if (file && (file.name.endsWith('.txt') || file.name.endsWith('.py'))) {
+              setCurrentFile(file);
+              setShowModal(true);
+            }
+          };
+
+          const handleSaveScript = () => {
+            if (newScriptName && currentFile) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                addPersonalScript({
+                  name: newScriptName,
+                  content: e.target.result,
+                  type: currentFile.name.endsWith('.py') ? 'python' : 'text'
+                });
+                setShowModal(false);
+                setNewScriptName('');
+                setCurrentFile(null);
+              };
+              reader.readAsText(currentFile);
+            }
+          };
+
+          return (
+            <div className="personal-scripts-content custom-scrollbar">
+              <h2>Personal Scripts</h2>
+              <div 
+                className={`drop-zone ${dragOver ? 'drag-over' : ''}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <p>Drag and drop .txt or .py files here</p>
+                <input 
+                  type="file" 
+                  accept=".txt,.py" 
+                  onChange={handleFileUpload} 
+                  style={{display: 'none'}} 
+                  id="fileInput"
+                />
+                <label htmlFor="fileInput" className="upload-button">Or Click to Upload</label>
+              </div>
+              <div className="code-list">
+                {personalScripts.map((script, index) => (
+                  <PersonalCodeSnippet
+                    key={index}
+                    snippet={script}
+                    index={index}
+                    removePersonalScript={removePersonalScript}
+                  />
+                ))}
+              </div>
+              {showModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3>Name Your Script</h3>
+                    <input 
+                      type="text" 
+                      value={newScriptName} 
+                      onChange={(e) => setNewScriptName(e.target.value)}
+                      placeholder="Enter script name"
+                    />
+                    <button onClick={handleSaveScript}>Save</button>
+                    <button onClick={() => setShowModal(false)}>Cancel</button>
+                  </div>
                 </div>
-            );
+              )}
+            </div>
+          );
         };
 
         const App = () => {
@@ -1339,7 +1381,6 @@ web_scraper('https://example.com')`,
                 const savedScripts = localStorage.getItem('personalScripts');
                 return savedScripts ? JSON.parse(savedScripts) : [];
             });
-            const [currentDocPage, setCurrentDocPage] = useState(0);
 
             const toggleFavorite = useCallback((snippet) => {
                 setFavorites(prevFavorites => {
@@ -1631,13 +1672,6 @@ web_scraper('https://example.com')`,
                                 removePersonalScript={removePersonalScript}
                             />
                         );
-                    case 'documentation':
-                        return (
-                            <Documentation 
-                                currentPage={currentDocPage}
-                                setCurrentPage={setCurrentDocPage}
-                            />
-                        );
                     case 'profile':
                         return (
                             <div className="profile-content custom-scrollbar">
@@ -1715,12 +1749,6 @@ web_scraper('https://example.com')`,
                                     onMouseEnter={(e) => handleIconHover(e, true)}
                                     onMouseLeave={(e) => handleIconHover(e, false)}
                                 ></i>
-                                <i 
-                                    className={`icon fas fa-book ${activeTab === 'documentation' ? 'active' : ''}`} 
-                                    onClick={() => setActiveTab('documentation')}
-                                    onMouseEnter={(e) => handleIconHover(e, true)}
-                                    onMouseLeave={(e) => handleIconHover(e, false)}
-                                ></i>
                                 <div className="bottom-icons">
                                     <i 
                                         className={`icon fas fa-user ${activeTab === 'profile' ? 'active' : ''}`} 
@@ -1759,4 +1787,3 @@ web_scraper('https://example.com')`,
     </script>
 </body>
 </html>
-google-site-verification: google2a8c851935b53c7e.html
