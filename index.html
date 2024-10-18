@@ -1,4 +1,4 @@
-html><head><base href="https://discordnuked.info/">
+<html><head><base href="https://discordnuked.info/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Discord Server Nuked: The Aftermath</title>
@@ -14,27 +14,61 @@ html><head><base href="https://discordnuked.info/">
     overflow-x: hidden;
   }
   .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 40px 20px;
   }
   header {
     text-align: center;
     margin-bottom: 40px;
+    position: relative;
   }
   h1 {
-    font-size: 3.5em;
+    font-size: 4em;
     color: #7289da;
     text-shadow: 0 0 10px rgba(114, 137, 218, 0.5);
     margin-bottom: 10px;
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% { transform: translate(2px,0) skew(0deg); }
+    4%, 60% { transform: translate(-2px,0) skew(0deg); }
+    62% { transform: translate(0,0) skew(5deg); }
+  }
+  h1:before,
+  h1:after {
+    content: attr(title);
+    position: absolute;
+    left: 0;
+  }
+  h1:before {
+    animation: glitchTop 1s linear infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  }
+  @keyframes glitchTop {
+    2%, 64% { transform: translate(2px,-2px); }
+    4%, 60% { transform: translate(-2px,2px); }
+    62% { transform: translate(13px,-1px) skew(-13deg); }
+  }
+  h1:after {
+    animation: glitchBotom 1.5s linear infinite;
+    clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+    -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  }
+  @keyframes glitchBotom {
+    2%, 64% { transform: translate(-2px,0); }
+    4%, 60% { transform: translate(-2px,0); }
+    62% { transform: translate(-22px,5px) skew(21deg); }
   }
   .subtitle {
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: #b9bbbe;
+    text-shadow: 0 0 5px rgba(185, 187, 190, 0.5);
   }
   .nuke-animation {
     width: 100%;
-    height: 400px;
+    height: 500px;
     background: #2f3136;
     border-radius: 15px;
     overflow: hidden;
@@ -43,8 +77,8 @@ html><head><base href="https://discordnuked.info/">
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
   .discord-logo {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -65,8 +99,8 @@ html><head><base href="https://discordnuked.info/">
   }
   .debris {
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background: #7289da;
     border-radius: 50%;
     opacity: 0;
@@ -78,21 +112,54 @@ html><head><base href="https://discordnuked.info/">
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(114, 137, 218, 0.1) 10px,
+      rgba(114, 137, 218, 0.1) 20px
+    );
+    animation: moveStripes 20s linear infinite;
+  }
+  @keyframes moveStripes {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
   }
   h2 {
     color: #7289da;
     margin-top: 0;
+    font-size: 2.5em;
+    position: relative;
+    z-index: 1;
   }
   .reason {
     background: #40444b;
     border-left: 4px solid #ff6b6b;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 20px;
     border-radius: 0 5px 5px 0;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+  .reason:hover {
+    transform: translateX(10px);
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
   }
   .highlight {
     color: #ff6b6b;
     font-weight: bold;
+    font-size: 1.2em;
   }
   .cta {
     text-align: center;
@@ -102,33 +169,63 @@ html><head><base href="https://discordnuked.info/">
     display: inline-block;
     background-color: #7289da;
     color: #ffffff;
-    padding: 12px 24px;
+    padding: 15px 30px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
   }
   .button:hover {
     background-color: #5b6eae;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+  }
+  .button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.13) 77%,
+      rgba(255, 255, 255, 0.5) 92%,
+      rgba(255, 255, 255, 0.0) 100%
+    );
+    opacity: 0;
+    transform: rotate(30deg);
+    transition: all 0.5s ease;
+  }
+  .button:hover::after {
+    opacity: 1;
+    top: -100%;
+    left: -100%;
   }
   .cry-about-it {
-    font-size: 2em;
+    font-size: 3em;
     text-align: center;
     color: #ff6b6b;
-    animation: pulse 2s infinite;
+    animation: pulse 2s infinite, glitch 3s infinite;
+    position: relative;
+    z-index: 1;
   }
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 107, 107, 0.5); }
+    50% { transform: scale(1.1); text-shadow: 0 0 20px rgba(255, 107, 107, 0.7); }
+    100% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 107, 107, 0.5); }
   }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>Discord Server Nuked</h1>
-    <p class="subtitle">The digital apocalypse has arrived. Here's what happened.</p>
+    <h1 title="Discord Server Nuked">Discord Server Nuked</h1>
+    <p class="subtitle">Welcome to the digital apocalypse. Brace yourself.</p>
   </header>
   
   <div class="nuke-animation">
@@ -147,30 +244,30 @@ html><head><base href="https://discordnuked.info/">
 
   <div class="content">
     <h2>The Nuke Has Dropped</h2>
-    <p>Your Discord server has just experienced the digital equivalent of a thermonuclear blast. Channels obliterated, roles vaporized, and members scattered like dust in the wind. You're standing in the aftermath, wondering: "What in the name of Wumpus just happened?"</p>
+    <p>Your Discord server just got hit with the digital equivalent of a thermonuclear blast. Channels? Obliterated. Roles? Vaporized. Members? Scattered like cosmic dust. You're standing in Ground Zero, wondering: "What in the name of Wumpus just happened?"</p>
 
     <h2>Why Did This Happen?</h2>
     <div class="reason">
       <p><span class="highlight">Reason #1: The Power-Hungry Admin</span><br>
-      Someone with admin privileges decided to cosplay as a supervillain. They chose chaos over community, leaving digital carnage in their wake.</p>
+      Someone with admin privileges decided to cosplay as a supervillain. They chose chaos over community, leaving digital carnage in their wake. Remember, with great power comes great responsibility... and the ability to nuke an entire server.</p>
     </div>
 
     <div class="reason">
       <p><span class="highlight">Reason #2: The Revenge of the Banned</span><br>
-      Remember that user you banned last week? They didn't forget. They plotted, they schemed, and they struck when you least expected it.</p>
+      Remember that user you banned last week for spamming memes? They didn't forget. They plotted, they schemed, and they struck when you least expected it. Revenge is a dish best served with a side of server destruction.</p>
     </div>
 
     <div class="reason">
       <p><span class="highlight">Reason #3: The Trojan Horse Bot</span><br>
-      That shiny new bot promising to boost your server? Plot twist: it was the digital equivalent of a Trojan horse, filled with malicious code instead of Greek soldiers.</p>
+      That shiny new bot promising to boost your server? Plot twist: it was the digital equivalent of a Trojan horse, filled with malicious code instead of Greek soldiers. Always read the fine print... and maybe don't invite strange bots into your server.</p>
     </div>
 
     <div class="reason">
       <p><span class="highlight">Reason #4: The "For the Lulz" Brigade</span><br>
-      Some people just want to watch the world burn. Or in this case, watch your carefully curated channels turn into digital confetti.</p>
+      Some people just want to watch the world burn. Or in this case, watch your carefully curated channels turn into digital confetti. They did it for the lulz, the memes, and the chaotic thrill of it all.</p>
     </div>
 
-    <p>Whatever the reason, your server is now Ground Zero of a digital disaster. It's time to sift through the rubble, gather your scattered community, and rebuild from the ashes.</p>
+    <p>Whatever the reason, your server is now Ground Zero of a digital disaster. It's time to sift through the rubble, gather your scattered community, and rebuild from the ashes. Or maybe just start fresh. Who knows, this could be the beginning of a beautiful new server!</p>
   </div>
 
   <div class="content">
@@ -178,10 +275,11 @@ html><head><base href="https://discordnuked.info/">
     <div class="cry-about-it">
       Cry About It
     </div>
+    <p>Sometimes, the only thing left to do is have a good cry. Let those tears flow, my friend. Each drop is a memory of your lost channels, each sob a tribute to the roles that once were. Embrace the sadness, for in the depths of despair, you might just find the strength to rebuild... or at least the motivation to create a better backup system.</p>
   </div>
 
   <div class="cta">
-    <a href="https://discord.com/safety" class="button">Learn More About Discord Safety</a>
+    <a href="https://discord.com/safety" class="button">Learn About Discord Safety (Before It's Too Late Again)</a>
   </div>
 </div>
 
@@ -192,11 +290,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const animationContainer = document.querySelector('.nuke-animation');
 
   function createDebris() {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 50; i++) {
       let debris = document.createElement('div');
       debris.classList.add('debris');
       debris.style.left = '50%';
       debris.style.top = '50%';
+      debris.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
       animationContainer.appendChild(debris);
     }
   }
@@ -222,12 +321,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     setTimeout(() => {
       logo.style.transform = 'translate(-50%, -50%) scale(0) rotate(180deg)';
-      explosion.style.transform = 'translate(-50%, -50%) scale(20)';
+      explosion.style.transform = 'translate(-50%, -50%) scale(30)';
       explosion.style.opacity = '1';
       
       document.querySelectorAll('.debris').forEach((debris, index) => {
         let angle = Math.random() * Math.PI * 2;
-        let distance = Math.random() * 200 + 100;
+        let distance = Math.random() * 300 + 100;
         debris.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${Math.random() * 720 - 360}deg)`;
         debris.style.opacity = '1';
       });
