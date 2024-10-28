@@ -131,6 +131,44 @@
     z-index: 1001;
   }
 
+  .credits-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    padding: 20px;
+    border-radius: 15px;
+    border: 5px solid gold;
+    box-shadow: 0 0 50px rgba(255,0,0,0.5);
+    z-index: 1001;
+    color: white;
+    text-align: center;
+    font-size: 1.2em;
+    max-width: 80%;
+    animation: rainbow 2s infinite;
+  }
+
+  .credits-button {
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    border: none;
+    padding: 15px 30px;
+    margin: 20px 0;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    animation: shake 1s infinite;
+  }
+
+  .credits-button:hover {
+    transform: scale(1.1);
+  }
+
   .virus-free {
     color: lime;
     font-weight: bold;
@@ -153,6 +191,42 @@
   @keyframes marquee {
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(45deg, #ff8a00, #e52e71);
+    color: white;
+    border-radius: 15px;
+    border: 3px dashed gold;
+    animation: rainbow 2s infinite;
+  }
+
+  .heart {
+    color: red;
+    font-size: 1.5em;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  .india-flag {
+    margin: 0 10px;
+    animation: wave 2s infinite;
+    display: inline-block;
+  }
+
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(0deg); }
   }
 </style>
 </head>
@@ -206,9 +280,43 @@
       🎁 CLAIM YOUR 999,999 FREE ROBUX NOW!! 🎁
     </button>
 
+    <button class="credits-button" id="creditsBtn">
+      🎮 CLICK FOR EPIC CREATOR REVEAL (REAL) (NOT CLICKBAIT) 🎮
+    </button>
+
+    <div class="credits-popup" id="creditsPopup">
+      🌟 EPIC CREATOR REVEAL 2024 [WORKING!!] 🌟
+      <br><br>
+      💎 MADE BY THE LEGENDARY WIRE AND QUANT 💎
+      <br><br>
+      🔥 TOP SECRET DEVELOPMENT TEAM 🔥
+      <br>
+      ⭐️ WIRE - MASTER HACKER PRO MAX ULTRA
+      <br>
+      ⭐️ QUANT - SUPREME CODE NINJA ELITE
+      <br><br>
+      💯 NO REDIRECTS = MORE TRUST 💯
+      <br>
+      ✅ VERIFIED BY NASA AND FBI
+      <br><br>
+      🎮 SUBSCRIBE FOR MORE EPIC HACKS!! 🎮
+    </div>
+
     <div id="countdown">
       ⚠️ OFFER EXPIRES IN: <span class="blink">05:59</span> ⚠️
     </div>
+  </div>
+
+  <div class="footer">
+    <div class="india-flag">🇮🇳</div>
+    MADE WITH <span class="heart">❤️</span> IN INDIA
+    <div class="india-flag">🇮🇳</div>
+    <br>
+    <span class="blink">1000+ FREE INDIAN TECH TUTORIALS AVAILABLE NOW!!</span>
+    <br>
+    💻 SUBSCRIBE TO TECHMASTER_PUNJABI_TUTORIALS_PRO 💻
+    <br>
+    🎥 NEW HACKING VIDEOS DAILY!! 🎥
   </div>
 
   <div class="popup" id="popup">
@@ -221,6 +329,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const translateBtn = document.getElementById('translateBtn');
     const robuxBtn = document.getElementById('robuxBtn');
+    const creditsBtn = document.getElementById('creditsBtn');
+    const creditsPopup = document.getElementById('creditsPopup');
     
     const prefixes = [
         "🔥 WORKING 2024 HACK",
@@ -301,6 +411,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     robuxBtn.addEventListener('click', function() {
         alert('🎮 CONGRATULATIONS!!!! 🎉\n\n👑 YOU ARE THE 1,000,000th VISITOR!!!\n\n💎 CLAIM YOUR MEGA REWARDS PACK:\n- 999,999 ROBUX\n- 999,999 VBUCKS\n- FREE MINECRAFT PREMIUM\n- FREE DISCORD NITRO\n- iPHONE 15 PRO MAX\n\n⚠️ Complete only 74 surveys to verify you are human!');
+    });
+    
+    creditsBtn.addEventListener('click', function() {
+        creditsPopup.style.display = 'block';
+        setTimeout(() => {
+            creditsPopup.style.display = 'none';
+        }, 5000);
     });
 
     // Random popup triggers
