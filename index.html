@@ -1,62 +1,1197 @@
-<html><head><base href="https://websim.ai" />
-<title>FBI SEIZURE NOTICE</title>
+<html><head><base href="https://www.webdoom-explorer.com/">
+<title>WebDOOM</title>
 <style>
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-.container {
-    max-width: 800px;
-    padding: 20px;
-}
-h1 {
-    color: #ff0000;
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-.warning {
-    color: #ff0000;
-    font-weight: bold;
-}
-.blink {
-    animation: blink-animation 1s steps(5, start) infinite;
-}
-@keyframes blink-animation {
-    to {
-        visibility: hidden;
+    @font-face {
+        font-family: 'AmazDooMLeft';
+        src: url('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/AmazDooMLeft.ttf') format('truetype');
     }
-}
+
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    canvas { width: 100%; height: 100%; display: block; }
+    #titleScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+    #titleScreen h1 {
+        font-family: 'AmazDooMLeft', Arial, sans-serif;
+        font-size: 6em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px #000;
+        font-weight: normal;
+    }
+    #playButton {
+        display: none;
+    }
+    #playButtonImage {
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    #playButtonImage:hover {
+        transform: scale(1.1);
+    }
+    #settingsButtonImage {
+        cursor: pointer;
+        transition: transform 0.3s;
+        margin-top: 20px;
+    }
+    #settingsButtonImage:hover {
+        transform: scale(1.1);
+    }
+    #settingsMenu {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+    #settingsMenu h2 {
+        margin-top: 0;
+    }
+    #settingsMenu div {
+        margin-bottom: 15px;
+    }
+    #settingsMenu label {
+        display: inline-block;
+        width: 150px;
+    }
+    #settingsMenu input[type="range"] {
+        width: 200px;
+    }
+    #backButton {
+        display: block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #backButton:hover {
+        background-color: #45a049;
+    }
+    #pistolImage {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scale(1.25);
+        display: none;
+        z-index: 999;
+        transition: transform 0.1s ease-out;
+    }
+    #fistImage {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scale(1.25);
+        display: none;
+        z-index: 999;
+    }
+    #grayRectangle {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background-color: rgba(128, 128, 128, 0.5);
+        z-index: 1000;
+        display: none;
+        pointer-events: none;
+    }
+    #healthInfo {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        color: white;
+        font-family: 'Arial', sans-serif;
+        z-index: 1001;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    #healthValue {
+        font-family: 'AmazDooMLeft', Arial, sans-serif;
+        font-size: 48px;
+        font-weight: normal;
+        color: red;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    #healthLabel {
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        margin-top: -10px;
+    }
+    #ammoInfo {
+        position: fixed;
+        bottom: 20px;
+        left: 150px;
+        color: white;
+        font-family: 'Arial', sans-serif;
+        z-index: 1001;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    #ammoValue {
+        font-family: 'AmazDooMLeft', Arial, sans-serif;
+        font-size: 48px;
+        font-weight: normal;
+        color: red;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    #ammoLabel {
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        margin-top: -10px;
+    }
+    #armorInfo {
+        position: fixed;
+        bottom: 20px;
+        left: 280px;
+        color: white;
+        font-family: 'Arial', sans-serif;
+        z-index: 1001;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    #armorValue {
+        font-family: 'AmazDooMLeft', Arial, sans-serif;
+        font-size: 48px;
+        font-weight: normal;
+        color: red;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    #armorLabel {
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        margin-top: -10px;
+    }
+    #pickupMessage {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-family: 'AmazDooMLeft', Arial, sans-serif;
+        font-size: 25px;
+        color: red;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    #redFlash {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 0, 0, 0.5);
+        display: none;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    #crosshair {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        display: none;
+    }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <h1 class="blink">FBI SEIZURE NOTICE</h1>
-    <p>This domain has been seized by the Federal Bureau of Investigation (FBI) pursuant to a seizure warrant issued by a United States District Court under the authority of 18 U.S.C. §§ 981 and 982, and 21 U.S.C. § 853.</p>
-    <p class="warning">The domain you are attempting to access was involved in the facilitation of the distribution of illegal goods and services across the internet.</p>
-    <p>Knowingly conducting continued business with this domain may result in federal criminal prosecution under 18 U.S.C. § 2.</p>
-    <p>For more information, please check <a href="https://www.fbi.gov/investigate/cyber" style="color: #4285f4;">https://www.fbi.gov/investigate/cyber</a></p>
-    <p class="warning blink">THIS IS AN OFFICIAL GOVERNMENT NOTICE</p>
+<div id="titleScreen">
+    <h1>WebDOOM</h1>
+    <img id="playButtonImage" src="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Play" alt="Play button" width="200">
+    <img id="settingsButtonImage" src="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Settings" alt="Settings button" width="200">
 </div>
-<script>
-    setTimeout(() => {
-        document.body.style.opacity = "1";
-    }, 500);
+<div id="settingsMenu" style="display: none;">
+    <h2>Settings</h2>
+    <div>
+        <label for="aimSensitivity">Aim Sensitivity:</label>
+        <input type="range" id="aimSensitivity" min="0.01" max="0.1" step="0.01" value="0.03">
+        <span id="aimSensitivityValue">0.03</span>
+    </div>
+    <div>
+        <label for="volume">Volume:</label>
+        <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
+        <span id="volumeValue">0.5</span>
+    </div>
+    <div>
+        <label for="enableCrosshair">Enable Crosshair:</label>
+        <input type="checkbox" id="enableCrosshair">
+    </div>
+    <div>
+        <label for="enableBloodParticles">Enable Blood Particles:</label>
+        <input type="checkbox" id="enableBloodParticles" checked>
+    </div>
+    <div>
+        <label for="backgroundMusic">Background Music:</label>
+        <select id="backgroundMusic">
+            <option value="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/At%20Doom's%20Gate">At Doom's Gate</option>
+            <option value="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/At%20Doom's%20Gate%20(Hanger%20version)" selected>Hangar</option>
+            <option value="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/The%20Only%20Thing%20They%20Fear%20Is%20You">The Only Thing They Fear Is You</option>
+        </select>
+    </div>
+    <div>
+        <h3>Controls:</h3>
+        <p>W, A, S, D: Move</p>
+        <p>Left/Right Arrow: Rotate</p>
+        <p>Space: Shoot</p>
+        <p>V: Melee Attack</p>
+    </div>
+    <button id="backButton">Back</button>
+</div>
+<div id="pickupMessage"></div>
+<div id="armorInfo" style="display: none;">
+    <div id="armorValue">30</div>
+    <div id="armorLabel">Armor</div>
+</div>
+<svg id="crosshair" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2"/>
+    <line x1="50" y1="0" x2="50" y2="100" stroke="white" stroke-width="2"/>
+    <line x1="0" y1="50" x2="100" y2="50" stroke="white" stroke-width="2"/>
+</svg>
+<canvas id="gameCanvas"></canvas>
+<img id="pistolImage" src="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Doom%20Pistol" alt="Doom-style pistol centered at the bottom of the screen" width="200" height="200">
+<img id="fistImage" src="https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Fist%20Swing" alt="Doom-style fist centered at the bottom of the screen" width="280" height="200">
+<div id="grayRectangle"></div>
+<div id="healthInfo" style="display: none;">
+    <div id="healthValue">100</div>
+    <div id="healthLabel">Health</div>
+</div>
+<div id="ammoInfo" style="display: none;">
+    <div id="ammoValue">20</div>
+    <div id="ammoLabel">Ammo</div>
+</div>
+<div id="pickupMessage"></div>
+<div id="redFlash"></div>
 
-    document.addEventListener('click', () => {
-        alert("WARNING: This site has been seized by the FBI. Further attempts to access it may be logged and investigated.");
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+let scene, camera, renderer, player, walls;
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+let rotateLeft = false;
+let rotateRight = false;
+let gameStarted = false;
+let isGameOver = false;
+let backgroundMusic;
+let shootSound;
+let deathSound;
+let isAnimating = false;
+let walkAnimationProgress = 0;
+let isWalking = false;
+let playerHitbox;
+let meleeHitbox;
+let cacodemons = [];
+let currentWave = 0;
+let waveSize = 3;
+let waveTimeout = null;
+let playerHealth = 100;
+let playerAmmo = 20;
+let playerArmor = 30;
+let gameStartTime = 0;
+let ammoPickups = [];
+let armorPickups = [];
+let lastAmmoSpawnTime = 0;
+let lastArmorSpawnTime = 0;
+let nextAmmoSpawnDelay = 0;
+let nextArmorSpawnDelay = 25000; // 25 seconds
+let rotationSpeed = 0.03;
+let gameVolume = 0.5;
+let isMeleeAttacking = false;
+let canMeleeAttack = true;
+let navigationGrid = [];
+const gridSize = 40;
+const cellSize = 1;
+let isCrosshairEnabled = false;
+let isBloodParticlesEnabled = true;
+let selectedBackgroundMusic = 'https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/At%20Doom\'s%20Gate%20(Hanger%20version)';
+const ammoPickupTexture = new THREE.TextureLoader().load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Ammo%20Pickup');
+
+function createBloodParticles(position) {
+    if (!isBloodParticlesEnabled) return;
+    const particleCount = 5;
+    const particles = new THREE.Group();
+    scene.add(particles);
+
+    for (let i = 0; i < particleCount; i++) {
+        const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+        const material = new THREE.MeshBasicMaterial({ color: 0x8B0000 });
+        const particle = new THREE.Mesh(geometry, material);
+        particle.position.copy(position);
+        particles.add(particle);
+
+        // Spread out animation
+        gsap.to(particle.position, {
+            duration: 0.3,
+            x: position.x + (Math.random() - 0.5) * 2,
+            y: position.y + (Math.random() - 0.5) * 2,
+            z: position.z + (Math.random() - 0.5) * 2,
+            ease: "power2.out"
+        });
+
+        // Sink, scale down, and fade out animation
+        gsap.to(particle.position, {
+            duration: 0.25,
+            y: position.y - 1,
+            delay: 0.3,
+            ease: "power2.in"
+        });
+        gsap.to(particle.scale, {
+            duration: 0.25,
+            x: 0,
+            y: 0,
+            z: 0,
+            delay: 0.3,
+            ease: "power2.in"
+        });
+        gsap.to(particle.material, {
+            duration: 0.25,
+            opacity: 0,
+            delay: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+                scene.remove(particles);
+            }
+        });
+    }
+}
+
+function damageCacodemon(cacodemon, damage = 1) {
+    cacodemon.health -= damage;
+    blinkCacodemon(cacodemon);
+    createBloodParticles(cacodemon.sprite.position.clone());
+    if (cacodemon.health <= 0) {
+        killCacodemon(cacodemon);
+    }
+}
+
+function createNavigationGrid() {
+    navigationGrid = [];
+    for (let x = 0; x < gridSize; x++) {
+        navigationGrid[x] = [];
+        for (let z = 0; z < gridSize; z++) {
+            navigationGrid[x][z] = 1;
+        }
+    }
+
+    walls.children.forEach(wall => {
+        const box = new THREE.Box3().setFromObject(wall);
+        const minX = Math.floor((box.min.x + 20) / cellSize);
+        const maxX = Math.ceil((box.max.x + 20) / cellSize);
+        const minZ = Math.floor((box.min.z + 20) / cellSize);
+        const maxZ = Math.ceil((box.max.z + 20) / cellSize);
+
+        for (let x = minX; x < maxX; x++) {
+            for (let z = minZ; z < maxZ; z++) {
+                if (x >= 0 && x < gridSize && z >= 0 && z < gridSize) {
+                    navigationGrid[x][z] = 0;
+                }
+            }
+        }
     });
+}
+
+function findPath(startX, startZ, endX, endZ) {
+    const openSet = [];
+    const closedSet = [];
+    const start = { x: startX, z: startZ, f: 0, g: 0, h: 0, parent: null };
+    const end = { x: endX, z: endZ };
+
+    openSet.push(start);
+
+    while (openSet.length > 0) {
+        let current = openSet[0];
+        let currentIndex = 0;
+
+        for (let i = 1; i < openSet.length; i++) {
+            if (openSet[i].f < current.f) {
+                current = openSet[i];
+                currentIndex = i;
+            }
+        }
+
+        openSet.splice(currentIndex, 1);
+        closedSet.push(current);
+
+        if (current.x === end.x && current.z === end.z) {
+            const path = [];
+            let temp = current;
+            while (temp !== null) {
+                path.push({ x: temp.x, z: temp.z });
+                temp = temp.parent;
+            }
+            return path.reverse();
+        }
+
+        const neighbors = [
+            { x: current.x + 1, z: current.z },
+            { x: current.x - 1, z: current.z },
+            { x: current.x, z: current.z + 1 },
+            { x: current.x, z: current.z - 1 },
+        ];
+
+        for (const neighbor of neighbors) {
+            if (
+                neighbor.x < 0 || neighbor.x >= gridSize ||
+                neighbor.z < 0 || neighbor.z >= gridSize ||
+                navigationGrid[neighbor.x][neighbor.z] === 0 ||
+                closedSet.find(node => node.x === neighbor.x && node.z === neighbor.z)
+            ) {
+                continue;
+            }
+
+            const gScore = current.g + 1;
+            const hScore = Math.abs(neighbor.x - end.x) + Math.abs(neighbor.z - end.z);
+            const fScore = gScore + hScore;
+
+            const openNode = openSet.find(node => node.x === neighbor.x && node.z === neighbor.z);
+            if (!openNode || gScore < openNode.g) {
+                const newNode = { x: neighbor.x, z: neighbor.z, f: fScore, g: gScore, h: hScore, parent: current };
+                if (!openNode) {
+                    openSet.push(newNode);
+                } else {
+                    Object.assign(openNode, newNode);
+                }
+            }
+        }
+    }
+
+    return null;
+}
+
+function init() {
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x141029);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas') });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    player = new THREE.Group();
+    player.position.set(0, 1, 0);
+    scene.add(player);
+    camera.position.set(0, 1.6, 0);
+    player.add(camera);
+
+    playerHitbox = new THREE.Box3(new THREE.Vector3(-0.5, 0, -0.5), new THREE.Vector3(0.5, 2, 0.5));
+
+    const textureLoader = new THREE.TextureLoader();
+    const floorTexture = textureLoader.load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Floor2');
+    const wallTexture = textureLoader.load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Wall2');
+
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(10, 10);
+
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set(4, 2);
+
+    const floorGeometry = new THREE.PlaneGeometry(40, 40);
+    const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture, side: THREE.DoubleSide });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = Math.PI / 2;
+    scene.add(floor);
+
+    walls = new THREE.Group();
+    const wallGeometry = new THREE.BoxGeometry(0.5, 12, 40); // Increased height to 12
+    const wallMaterial = new THREE.MeshStandardMaterial({ map: wallTexture });
+    
+    const wall1 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall1.position.set(-20, 6, 0);
+    walls.add(wall1);
+
+    const wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall2.position.set(20, 6, 0);
+    walls.add(wall2);
+
+    const wall3 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall3.rotation.y = Math.PI / 2;
+    wall3.position.set(0, 6, -20);
+    walls.add(wall3);
+
+    const wall4 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall4.rotation.y = Math.PI / 2;
+    wall4.position.set(0, 6, 20);
+    walls.add(wall4);
+
+    const innerWall1 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 12, 20), wallMaterial);
+    innerWall1.position.set(-10, 6, -10);
+    walls.add(innerWall1);
+
+    const innerWall2 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 12, 20), wallMaterial);
+    innerWall2.position.set(10, 6, 10);
+    innerWall2.rotation.y = Math.PI / 2;
+    walls.add(innerWall2);
+
+    const pillarGeometry = new THREE.BoxGeometry(2, 12, 2);
+    const pillarMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+
+    const pillar1 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+    pillar1.position.set(-15, 6, -15);
+    walls.add(pillar1);
+
+    const pillar2 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+    pillar2.position.set(15, 6, 15);
+    walls.add(pillar2);
+
+    const pillar3 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+    pillar3.position.set(-15, 6, 15);
+    walls.add(pillar3);
+
+    const pillar4 = new THREE.Mesh(pillarGeometry, pillarMaterial);
+    pillar4.position.set(15, 6, -15);
+    walls.add(pillar4);
+
+    scene.add(walls);
+
+    const roofTexture = textureLoader.load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Floor');
+    roofTexture.wrapS = THREE.RepeatWrapping;
+    roofTexture.wrapT = THREE.RepeatWrapping;
+    roofTexture.repeat.set(4, 4);
+
+    const roofGeometry = new THREE.PlaneGeometry(40, 40);
+    const roofMaterial = new THREE.MeshStandardMaterial({ map: roofTexture, side: THREE.DoubleSide });
+    const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+    roof.rotation.x = Math.PI / 2;
+    roof.position.y = 12; // Position the roof at the top of the walls
+    scene.add(roof);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3); // Reduced intensity
+    scene.add(ambientLight);
+
+    const pointLight1 = new THREE.PointLight(0xffffff, 0.5, 30);
+    pointLight1.position.set(0, 10, 0);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0xffffff, 0.5, 30);
+    pointLight2.position.set(-15, 10, -15);
+    scene.add(pointLight2);
+
+    const pointLight3 = new THREE.PointLight(0xffffff, 0.5, 30);
+    pointLight3.position.set(15, 10, 15);
+    scene.add(pointLight3);
+
+    document.addEventListener('keydown', onKeyDown, false);
+    document.addEventListener('keyup', onKeyUp, false);
+
+    backgroundMusic = new Audio();
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = gameVolume;
+
+    shootSound = new Audio('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Shoot');
+    deathSound = new Audio('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Death');
+    deathSound.volume = gameVolume;
+
+    document.getElementById('playButtonImage').addEventListener('click', startGame);
+    document.getElementById('settingsButtonImage').addEventListener('click', showSettings);
+    document.getElementById('backButton').addEventListener('click', hideSettings);
+    document.getElementById('aimSensitivity').addEventListener('input', updateAimSensitivity);
+    document.getElementById('volume').addEventListener('input', updateVolume);
+    document.getElementById('enableCrosshair').addEventListener('change', updateCrosshairVisibility);
+    document.getElementById('enableBloodParticles').addEventListener('change', updateBloodParticlesSetting);
+    document.getElementById('backgroundMusic').addEventListener('change', updateBackgroundMusicSetting);
+
+    createNavigationGrid();
+    animate();
+}
+
+function showPickupMessage(message) {
+    const pickupMessage = document.getElementById('pickupMessage');
+    pickupMessage.textContent = message;
+    pickupMessage.style.opacity = '1';
+    
+    setTimeout(() => {
+        pickupMessage.style.opacity = '0';
+    }, 2000);
+}
+
+function updateCrosshairVisibility() {
+    isCrosshairEnabled = document.getElementById('enableCrosshair').checked;
+    document.getElementById('crosshair').style.display = isCrosshairEnabled ? 'block' : 'none';
+}
+
+function updateBloodParticlesSetting() {
+    isBloodParticlesEnabled = document.getElementById('enableBloodParticles').checked;
+}
+
+function updateBackgroundMusicSetting() {
+    selectedBackgroundMusic = document.getElementById('backgroundMusic').value;
+}
+
+function startGame() {
+    document.getElementById('titleScreen').style.display = 'none';
+    document.getElementById('settingsMenu').style.display = 'none';
+    document.getElementById('pistolImage').style.display = 'block';
+    document.getElementById('grayRectangle').style.display = 'block';
+    document.getElementById('healthInfo').style.display = 'block';
+    document.getElementById('ammoInfo').style.display = 'block';
+    document.getElementById('armorInfo').style.display = 'block';
+    playerArmor = 30;
+    updateArmorDisplay();
+    updateCrosshairVisibility();
+    gameStarted = true;
+    isGameOver = false;
+
+    // Update the background music source and play it
+    backgroundMusic.src = selectedBackgroundMusic;
+    backgroundMusic.play();
+    
+    gameStartTime = Date.now();
+    spawnWave();
+}
+
+function updateArmorDisplay() {
+    document.getElementById('armorValue').textContent = playerArmor;
+}
+
+function showSettings() {
+    document.getElementById('titleScreen').style.display = 'none';
+    document.getElementById('settingsMenu').style.display = 'block';
+}
+
+function hideSettings() {
+    document.getElementById('settingsMenu').style.display = 'none';
+    document.getElementById('titleScreen').style.display = 'flex';
+    
+    updateBloodParticlesSetting();
+    updateBackgroundMusicSetting();
+}
+
+function updateAimSensitivity() {
+    rotationSpeed = parseFloat(this.value);
+    document.getElementById('aimSensitivityValue').textContent = rotationSpeed.toFixed(2);
+}
+
+function updateVolume() {
+    gameVolume = parseFloat(this.value);
+    document.getElementById('volumeValue').textContent = gameVolume.toFixed(1);
+    backgroundMusic.volume = gameVolume;
+    shootSound.volume = gameVolume;
+    deathSound.volume = gameVolume;
+}
+
+function performMeleeAttack() {
+    if (!canMeleeAttack || isMeleeAttacking || isAnimating || isGameOver) return;
+
+    isMeleeAttacking = true;
+    canMeleeAttack = false;
+    
+    const pistolImage = document.getElementById('pistolImage');
+    const fistImage = document.getElementById('fistImage');
+    
+    pistolImage.style.display = 'none';
+    fistImage.style.display = 'block';
+    fistImage.style.width = '280px';
+
+    const meleeHitboxSize = new THREE.Vector3(2, 2, 2);
+    const meleeHitboxPosition = player.position.clone().add(new THREE.Vector3(0, 1, -2).applyQuaternion(player.quaternion));
+    meleeHitbox = new THREE.Box3().setFromCenterAndSize(meleeHitboxPosition, meleeHitboxSize);
+
+    cacodemons.forEach(cacodemon => {
+        if (cacodemon.health <= 0) return;
+        
+        if (meleeHitbox.intersectsBox(cacodemon.hitbox)) {
+            damageCacodemon(cacodemon, 2);
+        }
+    });
+
+    setTimeout(() => {
+        isMeleeAttacking = false;
+        fistImage.style.display = 'none';
+        pistolImage.style.display = 'block';
+        pistolImage.style.width = '200px';
+        meleeHitbox = null; 
+        
+        setTimeout(() => {
+            canMeleeAttack = true;
+        }, 500);
+    }, 500);
+}
+
+function spawnWave() {
+    currentWave++;
+    for (let i = 0; i < waveSize; i++) {
+        spawnCacodemon();
+    }
+}
+
+function spawnCacodemon() {
+    const cacoDemonTexture = new THREE.TextureLoader().load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Cacodemon');
+    const cacoDemonMaterial = new THREE.SpriteMaterial({ map: cacoDemonTexture, color: 0xffffff });
+    const cacodemon = new THREE.Sprite(cacoDemonMaterial);
+    cacodemon.scale.set(3, 3, 1);
+    cacodemon.position.set(
+        Math.random() * 36 - 18,
+        3,
+        Math.random() * 36 - 18
+    );
+    scene.add(cacodemon);
+    
+    cacodemons.push({
+        sprite: cacodemon,
+        health: 5,
+        hitbox: new THREE.Box3(new THREE.Vector3(-2.25, -2.25, -0.75), new THREE.Vector3(2.25, 2.25, 0.75))
+    });
+}
+
+function checkWaveProgress() {
+    const aliveCacodemons = cacodemons.filter(c => c.health > 0);
+    if (aliveCacodemons.length <= 1 && !waveTimeout) {
+        waveTimeout = setTimeout(() => {
+            spawnWave();
+            waveTimeout = null;
+        }, 3000);
+    }
+}
+
+function updateCacodemons() {
+    if (Date.now() - gameStartTime < 10000) return;
+    
+    cacodemons.forEach(cacodemon => {
+        if (cacodemon.health <= 0) return;
+        
+        const playerPosition = new THREE.Vector3();
+        player.getWorldPosition(playerPosition);
+        
+        const startX = Math.floor((cacodemon.sprite.position.x + 20) / cellSize);
+        const startZ = Math.floor((cacodemon.sprite.position.z + 20) / cellSize);
+        const endX = Math.floor((playerPosition.x + 20) / cellSize);
+        const endZ = Math.floor((playerPosition.z + 20) / cellSize);
+
+        const path = findPath(startX, startZ, endX, endZ);
+
+        if (path && path.length > 1) {
+            const nextPoint = new THREE.Vector3(
+                path[1].x * cellSize - 20 + cellSize / 2,
+                3,
+                path[1].z * cellSize - 20 + cellSize / 2
+            );
+
+            const direction = new THREE.Vector3().subVectors(nextPoint, cacodemon.sprite.position).normalize();
+            cacodemon.sprite.position.add(direction.multiplyScalar(0.05));
+            cacodemon.sprite.position.y = 3;
+
+            cacodemon.hitbox.setFromCenterAndSize(cacodemon.sprite.position, new THREE.Vector3(4.5, 4.5, 1.5));
+
+            if (playerHitbox.intersectsBox(cacodemon.hitbox)) {
+                let damage = 2; 
+                if (playerArmor > 0) {
+                    let armorDamage = Math.min(3, playerArmor);
+                    playerArmor -= armorDamage;
+                    damage = Math.round(damage / 2);
+                }
+                playerHealth -= damage;
+                updateHealthDisplay();
+                updateArmorDisplay();
+                showRedFlash();
+
+                if (playerHealth <= 0) {
+                    playerDeath();
+                }
+
+                const pushBackDirection = direction.negate().multiplyScalar(10);
+                pushBackDirection.y = 0;
+                cacodemon.sprite.position.add(pushBackDirection);
+                cacodemon.sprite.position.y = 3;
+
+                cacodemon.hitbox.setFromCenterAndSize(cacodemon.sprite.position, new THREE.Vector3(4.5, 4.5, 1.5));
+            }
+        }
+        
+        cacodemon.sprite.lookAt(playerPosition);
+    });
+    
+    checkWaveProgress();
+}
+
+function showRedFlash() {
+    const redFlash = document.getElementById('redFlash');
+    redFlash.style.display = 'block';
+    setTimeout(() => {
+        redFlash.style.display = 'none';
+    }, 100);
+}
+
+function gameOver() {
+    isGameOver = true;
+    const redFlash = document.getElementById('redFlash');
+    redFlash.style.display = 'block';
+    redFlash.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+    
+    deathSound.play();
+    
+    gsap.to(camera.position, {
+        duration: 1,
+        y: -0.4,
+        ease: "power2.out",
+        onComplete: () => {
+            setTimeout(restartGame, 2000);
+        }
+    });
+}
+
+function restartGame() {
+    isGameOver = false;
+    playerHealth = 100;
+    playerAmmo = 20;
+    playerArmor = 30;
+    updateHealthDisplay();
+    updateArmorDisplay();
+    document.getElementById('ammoValue').textContent = playerAmmo;
+    player.position.set(0, 1, 0);
+    camera.position.set(0, 1.6, 0);
+    cacodemons.forEach(cacodemon => scene.remove(cacodemon.sprite));
+    cacodemons = [];
+    ammoPickups.forEach(pickup => scene.remove(pickup));
+    ammoPickups = [];
+    armorPickups.forEach(pickup => scene.remove(pickup));
+    armorPickups = [];
+    currentWave = 0;
+    clearTimeout(waveTimeout);
+    waveTimeout = null;
+    spawnWave();
+    
+    // Restart the selected background music
+    backgroundMusic.currentTime = 0;
+    backgroundMusic.play();
+    
+    const redFlash = document.getElementById('redFlash');
+    redFlash.style.display = 'none';
+    updateCrosshairVisibility();
+    gameStartTime = Date.now();
+}
+
+function playerDeath() {
+    if (isGameOver) return;
+    gameOver();
+}
+
+function updateHealthDisplay() {
+    document.getElementById('healthValue').textContent = playerHealth;
+}
+
+function shootGun() {
+    if (isAnimating || playerAmmo <= 0 || isGameOver || isMeleeAttacking) return;
+    
+    playerAmmo--;
+    document.getElementById('ammoValue').textContent = playerAmmo;
+
+    if (isAnimating) return;
+    
+    isAnimating = true;
+    const pistol = document.getElementById('pistolImage');
+    shootSound.currentTime = 0;
+    shootSound.play();
+
+    const rayOrigin = player.position.clone();
+    rayOrigin.y += 1;
+    const rayDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
+    const raycaster = new THREE.Raycaster(rayOrigin, rayDirection);
+
+    const intersects = [];
+
+    cacodemons.forEach(cacodemon => {
+        if (cacodemon.health <= 0) return;
+        
+        const intersection = raycaster.ray.intersectsBox(cacodemon.hitbox);
+        if (intersection) {
+            intersects.push({ cacodemon, distance: intersection.distance });
+        }
+    });
+
+    intersects.sort((a, b) => a.distance - b.distance);
+
+    if (intersects.length > 0) {
+        damageCacodemon(intersects[0].cacodemon);
+    }
+
+    setTimeout(() => {
+        pistol.style.transform = 'translateX(-50%) translateY(20px) scale(1.75)';
+
+        setTimeout(() => {
+            pistol.style.transform = 'translateX(-50%) scale(1.25)';
+            setTimeout(() => {
+                isAnimating = false;
+            }, 100);
+        }, 100);
+    }, 100);
+}
+
+function blinkCacodemon(cacodemon) {
+    const originalColor = cacodemon.sprite.material.color.getHex();
+    cacodemon.sprite.material.color.setHex(0xff0000);
+    setTimeout(() => {
+        cacodemon.sprite.material.color.setHex(originalColor);
+    }, 100);
+}
+
+function killCacodemon(cacodemon) {
+    const fadeOutAnimation = gsap.to(cacodemon.sprite.material, {
+        duration: 1,
+        opacity: 0,
+        onComplete: () => {
+            scene.remove(cacodemon.sprite);
+        }
+    });
+
+    const sinkAnimation = gsap.to(cacodemon.sprite.position, {
+        duration: 1,
+        y: -5,
+        ease: "power2.in"
+    });
+
+    if (Math.random() < 0.25) {
+        createAmmoPickup(cacodemon.sprite.position.clone());
+    }
+}
+
+function createAmmoPickup(position) {
+    const material = new THREE.SpriteMaterial({ map: ammoPickupTexture });
+    const ammoPickup = new THREE.Sprite(material);
+    ammoPickup.scale.set(1, 1, 1); 
+    ammoPickup.position.copy(position);
+    ammoPickup.position.y = 1;
+    scene.add(ammoPickup);
+    ammoPickups.push(ammoPickup);
+}
+
+function checkAmmoPickup() {
+    const playerPosition = new THREE.Vector3();
+    player.getWorldPosition(playerPosition);
+
+    for (let i = ammoPickups.length - 1; i >= 0; i--) {
+        const pickup = ammoPickups[i];
+        const distance = playerPosition.distanceTo(pickup.position);
+
+        if (distance < 1.5) {
+            playerAmmo += 10;
+            document.getElementById('ammoValue').textContent = playerAmmo;
+            showPickupMessage('Picked up ammo!');
+            scene.remove(pickup);
+            ammoPickups.splice(i, 1);
+        }
+    }
+}
+
+function spawnAmmoPickupIfNeeded() {
+    if (playerAmmo < 10 && Date.now() - lastAmmoSpawnTime > nextAmmoSpawnDelay) {
+        const position = new THREE.Vector3(
+            Math.random() * 36 - 18,
+            1,
+            Math.random() * 36 - 18
+        );
+        createAmmoPickup(position);
+        lastAmmoSpawnTime = Date.now();
+        nextAmmoSpawnDelay = Math.random() * (25000 - 15000) + 15000; 
+    }
+}
+
+function createArmorPickup(position) {
+    const armorPickupTexture = new THREE.TextureLoader().load('https://file.garden/ZtKFbTlmmU50iOV4/doom%20project/Armor%20Pickup');
+    const material = new THREE.SpriteMaterial({ map: armorPickupTexture });
+    const armorPickup = new THREE.Sprite(material);
+    armorPickup.scale.set(1, 1, 1);
+    armorPickup.position.copy(position);
+    armorPickup.position.y = 1;
+    scene.add(armorPickup);
+    armorPickups.push(armorPickup);
+}
+
+function checkArmorPickup() {
+    const playerPosition = new THREE.Vector3();
+    player.getWorldPosition(playerPosition);
+
+    for (let i = armorPickups.length - 1; i >= 0; i--) {
+        const pickup = armorPickups[i];
+        const distance = playerPosition.distanceTo(pickup.position);
+
+        if (distance < 1.5) {
+            playerArmor += 20;
+            updateArmorDisplay();
+            showPickupMessage('Picked up armor!');
+            scene.remove(pickup);
+            armorPickups.splice(i, 1);
+        }
+    }
+}
+
+function spawnArmorPickupIfNeeded() {
+    if (Date.now() - lastArmorSpawnTime > nextArmorSpawnDelay) {
+        const position = new THREE.Vector3(
+            Math.random() * 36 - 18,
+            1,
+            Math.random() * 36 - 18
+        );
+        createArmorPickup(position);
+        lastArmorSpawnTime = Date.now();
+    }
+}
+
+function onKeyDown(event) {
+    if (!gameStarted || isGameOver) return;
+    switch (event.keyCode) {
+        case 87:
+            moveForward = true;
+            isWalking = true;
+            break;
+        case 83:
+            moveBackward = true;
+            isWalking = true;
+            break;
+        case 65:
+            moveLeft = true;
+            isWalking = true;
+            break;
+        case 68:
+            moveRight = true;
+            isWalking = true;
+            break;
+        case 37:
+            rotateLeft = true;
+            break;
+        case 39:
+            rotateRight = true;
+            break;
+        case 32:
+            shootGun();
+            break;
+        case 86: // 'V' key
+            performMeleeAttack();
+            break;
+    }
+}
+
+function onKeyUp(event) {
+    if (!gameStarted || isGameOver) return;
+    switch (event.keyCode) {
+        case 87:
+            moveForward = false;
+            break;
+        case 83:
+            moveBackward = false;
+            break;
+        case 65:
+            moveLeft = false;
+            break;
+        case 68:
+            moveRight = false;
+            break;
+        case 37:
+            rotateLeft = false;
+            break;
+        case 39:
+            rotateRight = false;
+            break;
+    }
+    isWalking = moveForward || moveBackward || moveLeft || moveRight;
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (gameStarted && !isGameOver) {
+        const speed = 0.2; 
+
+        const oldPosition = player.position.clone();
+
+        if (moveForward) {
+            player.translateZ(-speed);
+        }
+        if (moveBackward) {
+            player.translateZ(speed);
+        }
+        if (moveLeft) {
+            player.translateX(-speed);
+        }
+        if (moveRight) {
+            player.translateX(speed);
+        }
+        if (rotateLeft) {
+            player.rotation.y += rotationSpeed;
+        }
+        if (rotateRight) {
+            player.rotation.y -= rotationSpeed;
+        }
+
+        if (checkCollision()) {
+            player.position.copy(oldPosition);
+        }
+
+        if (isWalking) {
+            walkAnimationProgress += 0.08;
+            const yOffset = Math.sin(walkAnimationProgress) * 0.09;
+            camera.position.y = 1.6 + yOffset;
+        } else {
+            camera.position.y = 1.6;
+            walkAnimationProgress = 0;
+        }
+
+        updateCacodemons();
+        checkAmmoPickup();
+        spawnAmmoPickupIfNeeded();
+        checkArmorPickup();
+        spawnArmorPickupIfNeeded();
+
+        updateHealthDisplay();
+        updateArmorDisplay();
+
+        armorPickups.forEach(pickup => {
+            pickup.lookAt(camera.position);
+        });
+    }
+
+    renderer.render(scene, camera);
+}
+
+function checkCollision() {
+    const playerPosition = new THREE.Vector3();
+    player.getWorldPosition(playerPosition);
+    playerHitbox.setFromCenterAndSize(playerPosition, new THREE.Vector3(1, 2, 1));
+
+    for (let i = 0; i < walls.children.length; i++) {
+        const object = walls.children[i];
+        const objectBox = new THREE.Box3().setFromObject(object);
+
+        if (playerHitbox.intersectsBox(objectBox)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+window.addEventListener('resize', function() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+init();
 </script>
-</body></html>
+</body>
+</html>
