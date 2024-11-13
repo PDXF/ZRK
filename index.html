@@ -1,203 +1,40 @@
-<html><head><base href="/">
-    <title>Valk Retro | Modern Python Hacking & Security</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: "Courier New", Courier, monospace;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        
-        header {
-            position: sticky;
-            top: 0;
-            background-color: #000;
-            z-index: 100;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .terminal-icon {
-            width: 50px;
-            height: 50px;
-        }
-        
-        h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-        
-        .subtitle {
-            color: #888;
-            font-style: italic;
-        }
-        
-        nav {
-            margin: 10px 0;
-            padding-bottom: 10px;
-        }
-        
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        
-        nav a:hover {
-            text-decoration: underline;
-        }
-        
-        .article {
-            background-color: #111;
-            padding: 20px;
-            border: 1px solid #fff;
-            margin-top: 20px;
-        }
-        
-        .article-meta {
-            color: #888;
-            font-size: 0.9em;
-            margin: 10px 0;
-        }
-        
-        code {
-            background: #222;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-
-        #content-sections > div {
-            display: none;
-        }
-
-        #content-sections > div.active {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <svg class="terminal-icon" viewBox="0 0 100 100">
-                <rect fill="none" stroke="#fff" stroke-width="4" x="10" y="10" width="80" height="80"/>
-                <text x="20" y="40" fill="#fff" style="font-family: monospace; font-size: 20px;">>&gt;_</text>
-            </svg>
-            <div>
-                <h1>VALK RETRO</h1>
-                <div class="subtitle">modern hacking techniques</div>
-                <div class="subtitle">python | security | exploits</div>
-            </div>
-        </div>
-    </header>
-
-    <nav>
-        <a onclick="showSection('tutorials')">Tutorials</a>
-        <a onclick="showSection('tools')">Tools</a>
-        <a onclick="showSection('security')">Security</a>
-        <a onclick="showSection('contact')">Contact</a>
-    </nav>
-
-    <main id="content-sections">
-        <div id="tutorials" class="active">
-            <article class="article">
-                <h2>Advanced Python Port Scanner Implementation</h2>
-                <div class="article-meta">
-                    posted May 15th 2023 11:30am by ValkAdmin
-                    <br>
-                    filed under: python, network security, pentesting
-                </div>
-                <p>
-                    Today we're exploring how to build an advanced port scanner using Python's asyncio library. This implementation offers significantly better performance than traditional synchronous scanners while maintaining clean, readable code structure.
-                </p>
-                <p>
-                    Key features include:
-                </p>
-                <ul>
-                    <li>Asynchronous scanning using <code>asyncio</code></li>
-                    <li>Service fingerprinting</li>
-                    <li>Custom timeout settings</li>
-                    <li>Banner grabbing capabilities</li>
-                </ul>
-            </article>
-
-            <article class="article">
-                <h2>Building a Python-based Network Traffic Analyzer</h2>
-                <div class="article-meta">
-                    posted May 14th 2023 3:45pm by ValkAdmin
-                    <br>
-                    filed under: python, network analysis, security
-                </div>
-                <p>
-                    Learn how to create a powerful network traffic analyzer using Python and Scapy. This tutorial covers packet capture, protocol analysis, and traffic pattern detection.
-                </p>
-            </article>
-
-            <article class="article">
-                <h2>Automated Web Vulnerability Scanner in Python</h2>
-                <div class="article-meta">
-                    posted May 13th 2023 2:15pm by ValkAdmin
-                    <br>
-                    filed under: python, web security, automation
-                </div>
-                <p>
-                    Create your own web vulnerability scanner using Python. We'll cover SQL injection detection, XSS testing, and directory traversal checks.
-                </p>
-            </article>
-        </div>
-
-        <div id="tools">
-            <article class="article">
-                <h2>Essential Python Security Tools</h2>
-                <p>Popular tools and frameworks for security testing:</p>
-                <ul>
-                    <li>Scapy - Network packet manipulation</li>
-                    <li>Requests - HTTP library for Python</li>
-                    <li>BeautifulSoup4 - Web scraping and parsing</li>
-                    <li>Paramiko - SSH protocol implementation</li>
-                </ul>
-            </article>
-        </div>
-
-        <div id="security">
-            <article class="article">
-                <h2>Latest Security Advisories</h2>
-                <p>Recent security vulnerabilities and patches in popular Python packages.</p>
-            </article>
-        </div>
-
-        <div id="contact">
-            <article class="article">
-                <h2>Contact Information</h2>
-                <p>For security research and collaboration inquiries:</p>
-                <code>admin@valkretro.sec</code>
-            </article>
-        </div>
-    </main>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Test Page</title>
     <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('#content-sections > div').forEach(div => {
-                div.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Webhook URL
+            const webhookURL = "https://discord.com/api/webhooks/1302346194994860113/iQ1IR_n4eFFIy9UrVpRsry5C_pgPcsPnHxY3Adpz1RhFnILQwGgBEzvHvCdhgzh0Q80n";
 
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('mouseover', () => {
-                link.style.color = '#888';
-            });
-            link.addEventListener('mouseout', () => {
-                link.style.color = '#fff';
-            });
+            // Notification content
+            const notificationContent = {
+                content: "A user has opened the webpage!"
+            };
+
+            // Send a POST request to the Discord webhook
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(notificationContent)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Notification sent successfully.");
+                } else {
+                    console.error("Failed to send notification.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
         });
     </script>
-</body></html>
+</head>
+<body>
+    <h1>Welcome to the Notification Test Page</h1>
+    <p>This page will send a notification to a Discord webhook when it is opened.</p>
+</body>
+</html>
